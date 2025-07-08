@@ -1,0 +1,38 @@
+[
+    {
+        "label": "JobstackIT",
+        "type": "static",
+        "baseUrl": "https://www.jobstack.it",
+        "url": "https://www.jobstack.it/it-jobs?keywords=typescript&isDetail=1",
+        "elements": {
+            "title": ".jobposts-item h3",
+            "company": ".jobposts-item .jobposts-item_labels:nth-child(3) span:nth-child(1) span:nth-child(2)",
+            "link": {
+                "selector": ".jobposts-item .jobpost-mainlink",
+                "attribute": "href"
+            }
+        },
+        "pagination": {
+            "selector": "li#page_next a",
+            "attribute": "href"
+        }
+    },
+    {
+        "label": "EasyPrace",
+        "type": "static",
+        "baseUrl": "https://www.easy-prace.cz/",
+        "url": "https://www.easy-prace.cz/nabidka-zamestnani?h_text=typescript",
+        "elements": {
+            "title": ".nabidkaItem .nabidkaItem-title a",
+            "company": ".nabidkaItem .nabidkaItem-info div:nth-child(2) a",
+            "link": {
+                "selector": ".nabidkaItem .nabidkaItem-title a",
+                "attribute": "href"
+            }
+        },
+        "pagination": {
+            "selector": ".strankovani .pagination li:last-child a",
+            "attribute": "href"
+        }
+    }
+]
