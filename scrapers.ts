@@ -1,12 +1,17 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-extra";
 import {
-  ScraperOptions,
   SiteConfigAPIItem,
+  SiteConfigPuppeteerItem,
   SiteConfigStaticItem,
 } from "./types";
 import { axiosClient } from "./utils";
+import AdblockerPlugin from "puppeteer-extra-plugin-adblocker";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
+
+puppeteer.use(StealthPlugin());
+puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
 
 const staticSiteScraper = async (options: SiteConfigStaticItem) => {
   try {
@@ -68,7 +73,52 @@ const apiScraper = async (options: SiteConfigAPIItem) => {
   }
 };
 
-const puppeteerScraper = async (options: ScraperOptions) => {};
+const puppeteerScraper = async (options: SiteConfigPuppeteerItem) => {
+  const browser = await puppeteer.launch({
+    headless: true,
+  });
+  const page = await browser.newPage();
+  await page.setUserAgent(
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+  );
+
+  await page.goto(options.url, { waitUntil: "networkidle2" });
+
+  await page.waitForSelector(options.waitSelectorElement, { timeout: 15000 });
+  let items: any[] = [];
+
+  for (let [key, value] of Object.entries(options.elements)) {
+    if (typeof value === "string") {
+      let resultItems = await page.evaluate(
+        (value) =>
+          [...document.querySelectorAll(value)].map((item, index) =>
+            item.textContent?.trim()
+          ),
+        value
+      );
+
+      resultItems.map((item, index) => {
+        if (!items[index]) items[index] = {};
+        items[index][key] = item;
+      });
+    } else {
+      let resultItems = await page.evaluate(
+        (value) =>
+          [...document.querySelectorAll(value.selector)].map((item, index) =>
+            item.getAttribute(value.attribute)
+          ),
+        value
+      );
+      resultItems.map((item, index) => {
+        if (!items[index]) items[index] = {};
+        items[index][key] = item;
+      });
+    }
+  }
+
+  await browser.close();
+  return items;
+};
 
 export default {
   staticSiteScraper,

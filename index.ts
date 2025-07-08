@@ -17,6 +17,11 @@ const start = async () => {
       case "static":
         data = await scrapers.staticSiteScraper(site);
         console.log(data);
+        console.log(data.length);
+        break;
+      case "puppeteer":
+        data = await scrapers.puppeteerScraper(site);
+        console.log(data);
         break;
     }
   }
