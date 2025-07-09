@@ -20,8 +20,8 @@ export type SiteConfigStaticItem = {
   pagination?: ElementParamSelector;
 } & SiteConfigItemBase;
 
-export type SiteConfigPuppeteerItem = {
-  type: "puppeteer";
+export type SiteConfigDynamicItem = {
+  type: "dynamic";
   waitSelectorElement: string;
   elements: Record<string, string | ElementParamSelector>;
 } & SiteConfigItemBase;
@@ -29,6 +29,6 @@ export type SiteConfigPuppeteerItem = {
 export type SiteConfigItem =
   | SiteConfigAPIItem
   | SiteConfigStaticItem
-  | SiteConfigPuppeteerItem;
+  | SiteConfigDynamicItem;
 
 export type ScraperOptions = {} & SiteConfigItem;

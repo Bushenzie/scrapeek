@@ -1,7 +1,7 @@
 [
     {
         "label": "JobsCZ",
-        "type": "puppeteer",
+        "type": "dynamic",
         "baseUrl": "https://www.jobs.cz/",
         "url": "https://www.jobs.cz/prace/?q=Typescript",
         "waitSelectorElement": "article.SearchResultCard",

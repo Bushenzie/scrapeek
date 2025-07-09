@@ -19,8 +19,8 @@ const start = async () => {
         console.log(data);
         console.log(data.length);
         break;
-      case "puppeteer":
-        data = await scrapers.puppeteerScraper(site);
+      case "dynamic":
+        data = await scrapers.dynamicSiteScraper(site);
         console.log(data);
         break;
     }
