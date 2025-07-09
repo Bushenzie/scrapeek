@@ -14,25 +14,23 @@ const staticSiteScraper = async (options: SiteConfigStaticItem) => {
 
     const $ = cheerio.load(response.data);
 
-    let items: any[] = [];
-    for (let [key, value] of Object.entries(options.elements)) {
-      if (typeof value === "string") {
-        $(value)
-          .toArray()
-          .map((item, index) => {
-            if (!items[index]) items[index] = {};
-            let itemValue = $(item).text().trim() ?? "";
-            items[index][key] = itemValue;
-          });
-      } else {
-        $(value.selector)
-          .toArray()
-          .map((item, index) => {
-            if (!items[index]) items[index] = {};
-            let itemValue = $(item).attr(value.attribute) ?? "";
-            items[index][key] = itemValue;
-          });
-      }
+    let items: (typeof options.elements)[] = [];
+
+    for (let [key, selectorProp] of Object.entries(options.elements)) {
+      const isPlainSelector = typeof selectorProp === "string";
+
+      $(isPlainSelector ? selectorProp : selectorProp.selector)
+        .toArray()
+        .map((item, index) => {
+          if (!items[index]) items[index] = {};
+          let itemValue: string = "";
+          if (isPlainSelector) {
+            itemValue = $(item).text().trim() ?? "";
+          } else {
+            itemValue = $(item).attr(selectorProp.attribute) ?? "";
+          }
+          items[index][key] = itemValue;
+        });
     }
 
     if (options.pagination) {
