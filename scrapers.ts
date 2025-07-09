@@ -108,6 +108,44 @@ const dynamicSiteScraper = async (options: SiteConfigDynamicItem) => {
     });
   }
 
+  if (options.pagination) {
+    const { selector, attribute } = options.pagination;
+
+    const isNextPageLinkVisible = await page.isVisible(selector);
+
+    if (!isNextPageLinkVisible) {
+      await browser.close();
+      return items;
+    }
+
+    const locator = await page.locator(selector);
+
+    const paginationLink = await locator.evaluate(
+      (item, { attribute }) => item.getAttribute(attribute) ?? null,
+      { attribute }
+    );
+
+    if ((await paginationLink) === null) {
+      await browser.close();
+      return items;
+    }
+
+    const nextPageLink = `${options.baseUrl}${paginationLink}`;
+
+    if (options.url === nextPageLink) {
+      await browser.close();
+      return items;
+    }
+
+    await browser.close();
+    const nextPageItems = await dynamicSiteScraper({
+      ...options,
+      url: nextPageLink,
+    });
+
+    items = [...items, ...nextPageItems];
+  }
+
   await browser.close();
   return items;
 };

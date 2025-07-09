@@ -2,7 +2,7 @@
     {
         "label": "JobsCZ",
         "type": "dynamic",
-        "baseUrl": "https://www.jobs.cz/",
+        "baseUrl": "https://www.jobs.cz",
         "url": "https://www.jobs.cz/prace/?q=Typescript",
         "waitSelectorElement": "article.SearchResultCard",
         "elements": {
@@ -14,7 +14,7 @@
             }
         },
         "pagination": {
-            "selector": ".SearchResultCard__titleLink",
+            "selector": "a.Pagination__button--next",
             "attribute": "href"
         }
     }

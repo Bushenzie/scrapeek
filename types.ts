@@ -24,6 +24,7 @@ export type SiteConfigDynamicItem = {
   type: "dynamic";
   waitSelectorElement: string;
   elements: Record<string, string | ElementParamSelector>;
+  pagination?: ElementParamSelector;
 } & SiteConfigItemBase;
 
 export type SiteConfigItem =

@@ -22,6 +22,7 @@ const start = async () => {
       case "dynamic":
         data = await scrapers.dynamicSiteScraper(site);
         console.log(data);
+        console.log(data.length);
         break;
     }
   }
