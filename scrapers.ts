@@ -77,29 +77,35 @@ const dynamicSiteScraper = async (options: SiteConfigDynamicItem) => {
   await page.goto(options.url);
 
   await page.waitForSelector(options.waitSelectorElement, { timeout: 15000 });
-  let items: any[] = [];
+  let items: (typeof options.elements)[] = [];
 
-  for (let [key, value] of Object.entries(options.elements)) {
-    if (typeof value === "string") {
-      let resultItems = await page.$$eval(value, (foundItems) =>
-        foundItems.map((item) => item.textContent?.trim())
-      );
-      resultItems.map((item, index) => {
-        if (!items[index]) items[index] = {};
-        items[index][key] = item;
-      });
-    } else {
-      let resultItems = await page.$$eval(
-        value.selector,
-        (foundItems, { value }) =>
-          foundItems.map((item) => item.getAttribute(value.attribute)),
-        { value }
-      );
-      resultItems.map((item, index) => {
-        if (!items[index]) items[index] = {};
-        items[index][key] = item;
-      });
-    }
+  for (let [key, selectorProp] of Object.entries(options.elements)) {
+    const isPlainSelector = typeof selectorProp === "string";
+
+    const locator = await page.locator(
+      isPlainSelector ? selectorProp : selectorProp.selector
+    );
+
+    const resultItems = await locator.evaluateAll(
+      (items, props) =>
+        items.map((item) => {
+          if (props.isPlainSelector) {
+            return item.textContent?.trim() ?? "";
+          }
+          return item.getAttribute(props.attribute) ?? "";
+        }),
+      {
+        items,
+        key,
+        isPlainSelector,
+        attribute: isPlainSelector ? selectorProp : selectorProp.attribute, // TODO
+      }
+    );
+
+    resultItems.map((item, index) => {
+      if (!items[index]) items[index] = {};
+      items[index][key] = item;
+    });
   }
 
   await browser.close();
