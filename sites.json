@@ -1,20 +1,22 @@
 [
     {
-        "label": "JobsCZ",
+        "label": "Jooble",
         "type": "dynamic",
-        "baseUrl": "https://www.jobs.cz",
-        "url": "https://www.jobs.cz/prace/?q=Typescript",
-        "waitSelectorElement": "article.SearchResultCard",
+        "baseUrl": "https://cz.jooble.org",
+        "url": "https://cz.jooble.org/SearchResult?ukw=ios",
+        "searchQuery": "ukw",
+        "waitSelectorElement": "._serpContentBlock ul",
         "elements": {
-            "title": ".SearchResultCard__titleLink",
-            "company": ".SearchResultCard__footerItem span",
+            "title": "div[data-test-name='_jobCard'] h2",
+            "company": "div[data-test-name='_jobCard'] p[data-test-name='_companyName']",
             "link": {
-                "selector": ".SearchResultCard__titleLink",
+                "selector": "div[data-test-name='_jobCard'] h2 a",
                 "attribute": "href"
             }
         },
         "pagination": {
-            "selector": "a.Pagination__button--next",
+            "type": "button",
+            "selector": "button[data-test-name='_loadMoreButton']",
             "attribute": "href"
         }
     }

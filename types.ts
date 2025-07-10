@@ -9,6 +9,10 @@ type ElementParamSelector = {
   attribute: string;
 };
 
+type PaginationParamSelector = {
+  type: "link" | "button";
+} & ElementParamSelector;
+
 export type SiteConfigAPIItem = {
   type: "api";
   query: Record<string, string | number>;
@@ -17,14 +21,16 @@ export type SiteConfigAPIItem = {
 export type SiteConfigStaticItem = {
   type: "static";
   elements: Record<string, string | ElementParamSelector>;
-  pagination?: ElementParamSelector;
+  searchQuery?: string;
+  pagination?: PaginationParamSelector;
 } & SiteConfigItemBase;
 
 export type SiteConfigDynamicItem = {
   type: "dynamic";
   waitSelectorElement: string;
   elements: Record<string, string | ElementParamSelector>;
-  pagination?: ElementParamSelector;
+  pagination?: PaginationParamSelector;
+  searchQuery?: string;
 } & SiteConfigItemBase;
 
 export type SiteConfigItem =

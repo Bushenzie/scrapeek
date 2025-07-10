@@ -109,7 +109,7 @@ const dynamicSiteScraper = async (options: SiteConfigDynamicItem) => {
   }
 
   if (options.pagination) {
-    const { selector, attribute } = options.pagination;
+    const { selector, attribute, type } = options.pagination;
 
     const isNextPageLinkVisible = await page.isVisible(selector);
 
@@ -119,6 +119,10 @@ const dynamicSiteScraper = async (options: SiteConfigDynamicItem) => {
     }
 
     const locator = await page.locator(selector);
+
+    if (type === "button") {
+      await locator.evaluate((item) => (item as HTMLButtonElement).click());
+    }
 
     const paginationLink = await locator.evaluate(
       (item, { attribute }) => item.getAttribute(attribute) ?? null,
