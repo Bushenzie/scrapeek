@@ -31,8 +31,7 @@ export const getValueFromFlatPath = <T extends object>(
         .slice(index + 1, segments.length)
         .join(".");
 
-      current =
-        current === undefined ? data[clearedSegment] : current[clearedSegment];
+      current = (current === undefined ? data : current)[clearedSegment];
 
       return current?.map((item) =>
         getValueFromFlatPath(item, remainingSegmentsPath)
@@ -43,16 +42,15 @@ export const getValueFromFlatPath = <T extends object>(
       const clearedSegment = segment.replace(indexSegmentRegex, "");
       const specifiedIndex = Number(indexRegex.exec(segment)?.[0]);
 
-      current =
-        current === undefined
-          ? data[clearedSegment][specifiedIndex]
-          : current[clearedSegment][specifiedIndex];
+      current = (current === undefined ? data : current)[clearedSegment][
+        specifiedIndex
+      ];
 
       index++;
       continue;
     }
 
-    current = current === undefined ? data[segment] : current[segment];
+    current = (current === undefined ? data : current)[segment];
 
     index++;
   }
