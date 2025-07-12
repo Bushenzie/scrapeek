@@ -6,7 +6,23 @@ import {
   SiteConfigDynamicItem,
   SiteConfigStaticItem,
 } from "./types";
-import { axiosClient } from "./utils";
+import { axiosClient, getValueFromFlatPath } from "./utils";
+
+const apiScraper = async (options: SiteConfigAPIItem) => {
+  try {
+    const response = await axiosClient.get(options.url);
+    const data = JSON.parse(response.data);
+
+    for (let [key, value] of Object.entries(options.items)) {
+      const keyValue = getValueFromFlatPath(data, value);
+      console.log(keyValue);
+    }
+
+    // return response.data;
+  } catch (err) {
+    throw new Error("There was error during api scrape");
+  }
+};
 
 const staticSiteScraper = async (options: SiteConfigStaticItem) => {
   try {
@@ -23,7 +39,7 @@ const staticSiteScraper = async (options: SiteConfigStaticItem) => {
         .toArray()
         .map((item, index) => {
           if (!items[index]) items[index] = {};
-          let itemValue: string = "";
+          let itemValue = "";
           if (isPlainSelector) {
             itemValue = $(item).text().trim() ?? "";
           } else {
@@ -54,15 +70,6 @@ const staticSiteScraper = async (options: SiteConfigStaticItem) => {
   } catch (err) {
     console.error(err);
     throw new Error("There was error during static scrape");
-  }
-};
-
-const apiScraper = async (options: SiteConfigAPIItem) => {
-  try {
-    const response = await axiosClient.get(options.url);
-    return response.data;
-  } catch (err) {
-    throw new Error("There was error during api scrape");
   }
 };
 
