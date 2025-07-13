@@ -13,20 +13,16 @@ const start = async () => {
     switch (site.type) {
       case "api":
         data = await scrapers.apiScraper(site);
-        console.log(data);
-        console.log(data.length);
         break;
       case "static":
         data = await scrapers.staticSiteScraper(site);
-        console.log(data);
-        console.log(data.length);
         break;
       case "dynamic":
         data = await scrapers.dynamicSiteScraper(site);
-        console.log(data);
-        console.log(data.length);
         break;
     }
+    console.log(data);
+    console.log(data.length);
   }
 };
 

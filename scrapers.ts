@@ -6,7 +6,7 @@ import {
   SiteConfigDynamicItem,
   SiteConfigStaticItem,
 } from "./types";
-import { axiosClient, convertPattern, getValueFromFlatPath } from "./utils";
+import { axiosClient, getValueFromFlatPath } from "./utils";
 
 const apiScraper = async (options: SiteConfigAPIItem) => {
   try {
@@ -14,19 +14,21 @@ const apiScraper = async (options: SiteConfigAPIItem) => {
     const data = JSON.parse(response.data);
 
     let items: (typeof options.fields)[] = [];
-    for (let [key, value] of Object.entries(options.fields)) {
-      const isComposable = value.startsWith("$") && value.endsWith("$");
-      const foundValues = getValueFromFlatPath(data, value);
+
+    for (let [fieldKey, fieldValue] of Object.entries(options.fields)) {
+      const isComposable =
+        fieldValue.startsWith("$") && fieldValue.endsWith("$");
+      const foundValues = getValueFromFlatPath(data, fieldValue);
 
       (foundValues ?? []).map((item, index) => {
         if (!items[index]) items[index] = {};
-        items[index][key] = item;
+        items[index][fieldKey] = item;
       });
 
       if (!isComposable) continue;
 
       const variableRegex = /(?<=\{).*?(?=\})/gi;
-      const cleanedComposable = value.slice(1, -1);
+      const cleanedComposable = fieldValue.slice(1, -1);
 
       const matches = cleanedComposable.match(variableRegex) ?? [];
 
@@ -37,23 +39,25 @@ const apiScraper = async (options: SiteConfigAPIItem) => {
 
         if (isPlainString) {
           for (let i = 0; i < items.length; i++) {
-            if (!items[i][key]) items[i][key] = cleanedComposable;
-            let formatted = items[i][key].replaceAll(`{${match}}`, matchValues);
-            items[i][key] = formatted;
+            if (!items[i][fieldKey]) items[i][fieldKey] = cleanedComposable;
+            let formatted = items[i][fieldKey].replaceAll(
+              `{${match}}`,
+              matchValues
+            );
+            items[i][fieldKey] = formatted;
           }
           return;
         }
         matchValues.map((item, index) => {
-          if (!items[index][key]) items[index][key] = cleanedComposable;
-          let formatted = items[index][key].replaceAll(`{${match}}`, item);
-          items[index][key] = formatted;
+          if (!items[index][fieldKey])
+            items[index][fieldKey] = cleanedComposable;
+          let formatted = items[index][fieldKey].replaceAll(`{${match}}`, item);
+          items[index][fieldKey] = formatted;
         });
       });
     }
 
-    console.log(items);
-    // return items;
-    return [];
+    return items;
   } catch (err) {
     throw new Error(err);
   }
@@ -104,7 +108,7 @@ const staticSiteScraper = async (options: SiteConfigStaticItem) => {
     return items;
   } catch (err) {
     console.error(err);
-    throw new Error("There was error during static scrape");
+    throw new Error(err);
   }
 };
 
