@@ -1,23 +1,13 @@
 [
     {
-        "label": "Jooble",
-        "type": "dynamic",
-        "baseUrl": "https://cz.jooble.org",
-        "url": "https://cz.jooble.org/SearchResult?ukw=ios",
-        "searchQuery": "ukw",
-        "waitSelectorElement": "._serpContentBlock ul",
-        "elements": {
-            "title": "div[data-test-name='_jobCard'] h2",
-            "company": "div[data-test-name='_jobCard'] p[data-test-name='_companyName']",
-            "link": {
-                "selector": "div[data-test-name='_jobCard'] h2 a",
-                "attribute": "href"
-            }
-        },
-        "pagination": {
-            "type": "button",
-            "selector": "button[data-test-name='_loadMoreButton']",
-            "attribute": "href"
+        "label": "StartupJobs",
+        "type": "api",
+        "baseUrl": "https://www.startupjobs.cz/",
+        "url": "https://core.startupjobs.cz/api/search/offers",
+        "fields": {
+            "title": "[member].title.cs",
+            "company": "[member].company.name",
+            "link": "$/nabidka/{[member].displayId}/{[member].slug}$"
         }
     }
 ]

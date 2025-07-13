@@ -57,3 +57,22 @@ export const getValueFromFlatPath = <T extends object>(
 
   return current;
 };
+
+export const convertPattern = (
+  pattern: string,
+  params: Record<string, string>
+) => {
+  let convertedPattern;
+  for (let [key, value] of Object.entries(params)) {
+    let correctPattern =
+      convertedPattern === undefined ? pattern : convertedPattern;
+
+    const hasKey = correctPattern.includes(`{${key}}`);
+
+    if (hasKey) {
+      convertedPattern = correctPattern.replaceAll(`{${key}}`, value);
+    }
+  }
+
+  return convertedPattern;
+};

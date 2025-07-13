@@ -6,21 +6,56 @@ import {
   SiteConfigDynamicItem,
   SiteConfigStaticItem,
 } from "./types";
-import { axiosClient, getValueFromFlatPath } from "./utils";
+import { axiosClient, convertPattern, getValueFromFlatPath } from "./utils";
 
 const apiScraper = async (options: SiteConfigAPIItem) => {
   try {
     const response = await axiosClient.get(options.url);
     const data = JSON.parse(response.data);
 
-    for (let [key, value] of Object.entries(options.items)) {
-      const keyValue = getValueFromFlatPath(data, value);
-      console.log(keyValue);
+    let items: (typeof options.fields)[] = [];
+    for (let [key, value] of Object.entries(options.fields)) {
+      const isComposable = value.startsWith("$") && value.endsWith("$");
+      const foundValues = getValueFromFlatPath(data, value);
+
+      (foundValues ?? []).map((item, index) => {
+        if (!items[index]) items[index] = {};
+        items[index][key] = item;
+      });
+
+      if (!isComposable) continue;
+
+      const variableRegex = /(?<=\{).*?(?=\})/gi;
+      const cleanedComposable = value.slice(1, -1);
+
+      const matches = cleanedComposable.match(variableRegex) ?? [];
+
+      matches.forEach((match) => {
+        const matchValues = getValueFromFlatPath(data, match);
+
+        const isPlainString = typeof matchValues !== "object";
+
+        if (isPlainString) {
+          for (let i = 0; i < items.length; i++) {
+            if (!items[i][key]) items[i][key] = cleanedComposable;
+            let formatted = items[i][key].replaceAll(`{${match}}`, matchValues);
+            items[i][key] = formatted;
+          }
+          return;
+        }
+        matchValues.map((item, index) => {
+          if (!items[index][key]) items[index][key] = cleanedComposable;
+          let formatted = items[index][key].replaceAll(`{${match}}`, item);
+          items[index][key] = formatted;
+        });
+      });
     }
 
-    // return response.data;
+    console.log(items);
+    // return items;
+    return [];
   } catch (err) {
-    throw new Error("There was error during api scrape");
+    throw new Error(err);
   }
 };
 

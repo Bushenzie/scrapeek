@@ -1,3 +1,5 @@
+import { Axios } from "axios";
+
 type SiteConfigItemBase = {
   url: string;
   label: string;
@@ -15,7 +17,9 @@ type PaginationParamSelector = {
 
 export type SiteConfigAPIItem = {
   type: "api";
-  items: Record<string, string>;
+  fields: Record<string, string>;
+  method?: "GET" | "POST";
+  headers?: Record<string, string>;
   query: Record<string, string | number>;
 } & SiteConfigItemBase;
 
