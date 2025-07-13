@@ -1,10 +1,18 @@
 import { Axios } from "axios";
 
-export const axiosClient = new Axios({
-  headers: {
-    "User-Agent":
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
-  },
+const userAgents = [
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+  "Mozilla/5.0 (Linux; Android 10; moto g fast) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.127 Mobile Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Whale/2.9.115.7 Safari/537.36",
+  "Mozilla/5.0 (Linux; Android 10; LM-Q730) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Mobile Safari/537.36",
+];
+
+export const axiosClient = new Axios({});
+
+axiosClient.interceptors.request.use((config) => {
+  const randomNum = Math.floor(Math.random() * userAgents.length);
+  config.headers["User-Agent"] = userAgents[randomNum];
+  return config;
 });
 
 export const getValueFromFlatPath = <T extends object>(
@@ -56,23 +64,4 @@ export const getValueFromFlatPath = <T extends object>(
   }
 
   return current;
-};
-
-export const convertPattern = (
-  pattern: string,
-  params: Record<string, string>
-) => {
-  let convertedPattern;
-  for (let [key, value] of Object.entries(params)) {
-    let correctPattern =
-      convertedPattern === undefined ? pattern : convertedPattern;
-
-    const hasKey = correctPattern.includes(`{${key}}`);
-
-    if (hasKey) {
-      convertedPattern = correctPattern.replaceAll(`{${key}}`, value);
-    }
-  }
-
-  return convertedPattern;
 };
