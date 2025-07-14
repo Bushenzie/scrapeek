@@ -98,9 +98,12 @@ const staticSiteScraper = async (options: SiteConfigStaticItem) => {
 
       if (nextPageLink === options.url) return items;
 
+      const newPageUrl = paginationLink.startsWith("http")
+        ? paginationLink
+        : `${options.baseUrl}${paginationLink}`;
       const nextPageItems = await staticSiteScraper({
         ...options,
-        url: `${options.baseUrl}${paginationLink}`,
+        url: newPageUrl,
       });
 
       items = [...items, ...nextPageItems];
