@@ -26,7 +26,7 @@ export const getValueFromFlatPath = <T extends object>(
   const arrayPathRegex = /^\[\w+\]/i;
   const bracketRegex = /[\[\]]/gi;
 
-  let current;
+  let current: any;
   let index = 0;
   for (let segment of segments) {
     const isIndexed = indexedPathRegex.test(segment);
@@ -41,7 +41,7 @@ export const getValueFromFlatPath = <T extends object>(
 
       current = (current === undefined ? data : current)[clearedSegment];
 
-      return current?.map((item) =>
+      return current?.map((item: any) =>
         getValueFromFlatPath(item, remainingSegmentsPath)
       );
     }

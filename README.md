@@ -19,4 +19,4 @@
 - API Scraping
 - Infinite scrolling
 - Specification of popups to close inside config
-- 
+- Server

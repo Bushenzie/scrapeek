@@ -1,12 +1,12 @@
-import axios from "axios";
 import playwright from "playwright";
 import * as cheerio from "cheerio";
-import {
+import type {
   SiteConfigAPIItem,
   SiteConfigDynamicItem,
+  SiteConfigItem,
   SiteConfigStaticItem,
-} from "./types";
-import { axiosClient, getValueFromFlatPath } from "./utils";
+} from "../types.ts";
+import { axiosClient, getValueFromFlatPath } from "./utils.ts";
 
 const apiScraper = async (options: SiteConfigAPIItem) => {
   try {
@@ -22,7 +22,7 @@ const apiScraper = async (options: SiteConfigAPIItem) => {
         fieldValue.startsWith("$") && fieldValue.endsWith("$");
       const foundValues = getValueFromFlatPath(data, fieldValue);
 
-      (foundValues ?? []).map((item, index) => {
+      (foundValues ?? []).map((item: any, index: number) => {
         if (!items[index]) items[index] = {};
         items[index][fieldKey] = item;
       });
@@ -50,7 +50,7 @@ const apiScraper = async (options: SiteConfigAPIItem) => {
           }
           return;
         }
-        matchValues.map((item, index) => {
+        matchValues.map((item: any, index: number) => {
           if (!items[index][fieldKey])
             items[index][fieldKey] = cleanedComposable;
           let formatted = items[index][fieldKey].replaceAll(`{${match}}`, item);
@@ -101,9 +101,6 @@ const apiScraper = async (options: SiteConfigAPIItem) => {
 
           items = [...items, ...nextPageData];
           break;
-        // case "link":
-        //  // impl
-        //   break;
         case "offsetLimit":
           const [offsetQuery, offsetNum] = options.pagination.offset;
           const [limitQuery, limitNum] = options.pagination.limit;
@@ -149,8 +146,8 @@ const apiScraper = async (options: SiteConfigAPIItem) => {
     }
 
     return items;
-  } catch (err) {
-    throw new Error(err);
+  } catch (err: unknown) {
+    throw new Error(err as any);
   }
 };
 
@@ -200,9 +197,8 @@ const staticSiteScraper = async (options: SiteConfigStaticItem) => {
       items = [...items, ...nextPageItems];
     }
     return items;
-  } catch (err) {
-    console.error(err);
-    throw new Error(err);
+  } catch (err: unknown) {
+    throw new Error(err as any);
   }
 };
 
@@ -294,7 +290,36 @@ const dynamicSiteScraper = async (options: SiteConfigDynamicItem) => {
   return items;
 };
 
+const scrapeData = async (configSites: SiteConfigItem[]) => {
+  let data: { title: string; company: string; link: string }[] = [];
+  for (let site of configSites) {
+    let innerData: any;
+    console.log(`Started ${site.type.toUpperCase()} scrape | ${site.label}`);
+    switch (site.type) {
+      case "api":
+        innerData = await apiScraper(site);
+        break;
+      case "static":
+        innerData = await staticSiteScraper(site);
+        break;
+      case "dynamic":
+        innerData = await dynamicSiteScraper(site);
+        break;
+    }
+
+    console.log(
+      `Finished ${site.type.toUpperCase()} scrape | ${site.label} | found: ${
+        innerData.length
+      } items`
+    );
+    data = [...data, ...innerData];
+  }
+
+  return data;
+};
+
 export default {
+  scrapeData,
   staticSiteScraper,
   apiScraper,
   dynamicSiteScraper,

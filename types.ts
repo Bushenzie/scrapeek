@@ -27,10 +27,6 @@ type APIPaginationNextPage = {
   path: string;
 };
 
-type APIPaginationLink = {
-  type: "link";
-};
-
 type APIPaginationPageSize = {
   type: "pageSize";
   page: [string, number];
@@ -47,7 +43,6 @@ type APIPagination = APIPaginationBase &
   (
     | APIPaginationCursor
     | APIPaginationNextPage
-    | APIPaginationLink
     | APIPaginationPageSize
     | APIPaginationOffsetLimit
   );
