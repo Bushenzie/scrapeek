@@ -9,8 +9,14 @@
   - API
     - You provide API endpoint, queries or pagination and just select data you want
 
+### Planned refactors
+
+- Zod JSON parsing
+- Better composable fields
+
 ### Planned features
 
 - API Scraping
 - Infinite scrolling
 - Specification of popups to close inside config
+- 

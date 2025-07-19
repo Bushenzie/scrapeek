@@ -3,11 +3,17 @@
         "label": "StartupJobs",
         "type": "api",
         "baseUrl": "https://www.startupjobs.cz/",
-        "url": "https://core.startupjobs.cz/api/search/offers",
+        "baseUrlAPI": "https://core.startupjobs.cz",
+        "url": "https://core.startupjobs.cz/api/search/offers?startupOnly=false&fields%5B%5D=back-end-vyvojar&fields%5B%5D=front-end-vyvojar&fields%5B%5D=full-stack-vyvojar",
         "fields": {
             "title": "[member].title.cs",
             "company": "[member].company.name",
             "link": "$/nabidka/{[member].displayId}/{[member].slug}$"
+        },
+        "pagination": {
+            "check": "[member]",
+            "type": "nextPage",
+            "path": "view.next"
         }
     }
 ]

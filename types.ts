@@ -1,5 +1,3 @@
-import { Axios } from "axios";
-
 type SiteConfigItemBase = {
   url: string;
   label: string;
@@ -15,12 +13,53 @@ type PaginationParamSelector = {
   type: "link" | "button";
 } & ElementParamSelector;
 
+type APIPaginationBase = {
+  check: string;
+};
+
+type APIPaginationCursor = {
+  type: "cursor";
+  path: [string, string];
+};
+
+type APIPaginationNextPage = {
+  type: "nextPage";
+  path: string;
+};
+
+type APIPaginationLink = {
+  type: "link";
+};
+
+type APIPaginationPageSize = {
+  type: "pageSize";
+  page: [string, number];
+  size: [string, number];
+};
+
+type APIPaginationOffsetLimit = {
+  type: "offsetLimit";
+  offset: [string, number];
+  limit: [string, number];
+};
+
+type APIPagination = APIPaginationBase &
+  (
+    | APIPaginationCursor
+    | APIPaginationNextPage
+    | APIPaginationLink
+    | APIPaginationPageSize
+    | APIPaginationOffsetLimit
+  );
+
 export type SiteConfigAPIItem = {
   type: "api";
   fields: Record<string, string>;
+  baseUrlAPI: string;
   method?: "GET" | "POST";
   headers?: Record<string, string>;
-  query: Record<string, string | number>;
+  query?: Record<string, string | number>;
+  pagination?: APIPagination;
 } & SiteConfigItemBase;
 
 export type SiteConfigStaticItem = {

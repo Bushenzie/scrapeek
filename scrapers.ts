@@ -10,7 +10,9 @@ import { axiosClient, getValueFromFlatPath } from "./utils";
 
 const apiScraper = async (options: SiteConfigAPIItem) => {
   try {
-    const response = await axiosClient.get(options.url);
+    const response = await axiosClient.get(options.url, {
+      params: options.query,
+    });
     const data = JSON.parse(response.data);
 
     let items: (typeof options.fields)[] = [];
@@ -55,6 +57,95 @@ const apiScraper = async (options: SiteConfigAPIItem) => {
           items[index][fieldKey] = formatted;
         });
       });
+    }
+
+    if (options.pagination) {
+      const toCheck = options.pagination.check;
+
+      const checkValue = getValueFromFlatPath(data, toCheck);
+
+      const isCheckValueEmptyString =
+        typeof checkValue === "string" && !checkValue;
+      const isCheckValueEmptyArray =
+        Array.isArray(checkValue) && checkValue.length === 0;
+
+      if (isCheckValueEmptyString || isCheckValueEmptyArray) return items;
+
+      switch (options.pagination.type) {
+        case "cursor":
+          const [cursorQuery, cursorPath] = options.pagination.path;
+          const cursorValue = getValueFromFlatPath(data, cursorPath);
+
+          if (!cursorValue) return items;
+
+          const cursorData = await apiScraper({
+            ...options,
+            query: {
+              [cursorQuery]: cursorValue,
+            },
+          });
+
+          items = [...items, ...cursorData];
+
+          break;
+        case "nextPage":
+          const nextPagePath = options.pagination.path;
+          const nextPageValue = getValueFromFlatPath(data, nextPagePath);
+          if (!nextPageValue) return items;
+
+          const nextPageUrl = `${options.baseUrlAPI}${nextPageValue}`;
+          const nextPageData = await apiScraper({
+            ...options,
+            url: nextPageUrl,
+          });
+
+          items = [...items, ...nextPageData];
+          break;
+        // case "link":
+        //  // impl
+        //   break;
+        case "offsetLimit":
+          const [offsetQuery, offsetNum] = options.pagination.offset;
+          const [limitQuery, limitNum] = options.pagination.limit;
+
+          const newOffset = offsetNum + limitNum;
+
+          const nextOffsetData = await apiScraper({
+            ...options,
+            pagination: {
+              ...options.pagination,
+              offset: [offsetQuery, newOffset],
+            },
+            query: {
+              [offsetQuery]: newOffset,
+              [limitQuery]: limitNum,
+            },
+          });
+
+          items = [...items, ...nextOffsetData];
+
+          break;
+        case "pageSize":
+          const [pageQuery, pageNum] = options.pagination.page;
+          const [sizeQuery, sizeNum] = options.pagination.size;
+
+          const newPage = pageNum + 1;
+
+          const nextPageIncrementedData = await apiScraper({
+            ...options,
+            pagination: {
+              ...options.pagination,
+              page: [pageQuery, newPage],
+            },
+            query: {
+              [pageQuery]: newPage,
+              [sizeQuery]: sizeNum,
+            },
+          });
+
+          items = [...items, ...nextPageIncrementedData];
+          break;
+      }
     }
 
     return items;
