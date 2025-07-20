@@ -5,7 +5,7 @@ import type {
   SiteConfigDynamicItem,
   SiteConfigItem,
   SiteConfigStaticItem,
-} from "../types.ts";
+} from "../types/index.ts";
 import { axiosClient, getValueFromFlatPath } from "./utils.ts";
 
 const apiScraper = async (options: SiteConfigAPIItem) => {

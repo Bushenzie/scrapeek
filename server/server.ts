@@ -1,7 +1,8 @@
+import "dotenv/config";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import fs from "node:fs/promises";
-import type { SiteConfigItem } from "./types.ts";
+import type { SiteConfigItem } from "./types/index.ts";
 import scrapers from "./lib/scrapers.ts";
 
 const app = new Hono();
@@ -23,9 +24,9 @@ app.get("/jobs", async (c) => {
 serve(
   {
     fetch: app.fetch,
-    port: 3000,
+    port: Number(process.env.PORT ?? 3001),
   },
   (info) => {
-    console.log(`Server is running on http://localhost:${info.port}`);
+    console.log(`Server running | Port: ${info.port}`);
   }
 );

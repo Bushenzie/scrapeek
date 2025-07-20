@@ -9,6 +9,21 @@
   - API
     - You provide API endpoint, queries or pagination and just select data you want
 
+### Requirements
+
+- Node.js v22.14.0
+- pnpm v10.9.0
+
+### Setup
+
+- Install all dependencies for both client && server _(+ root)_
+  - `pnpm install`
+  - `cd client && pnpm install`
+  - `cd server && pnpm install`
+- Set all the sites that should be scraped inside `/server/sites.json`
+- Set all `.env` based on `.env.example` in both `server` and `client`
+- In root run `pnpm start`
+
 ### Planned refactors
 
 - Zod JSON parsing
@@ -19,4 +34,3 @@
 - API Scraping
 - Infinite scrolling
 - Specification of popups to close inside config
-- Server
