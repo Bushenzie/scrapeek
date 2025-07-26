@@ -291,7 +291,7 @@ const dynamicSiteScraper = async (options: SiteConfigDynamicItem) => {
 };
 
 const scrapeData = async (configSites: SiteConfigItem[]) => {
-  let data: { title: string; company: string; link: string }[] = [];
+  let data: any = [];
   for (let site of configSites) {
     let innerData: any;
     console.log(`Started ${site.type.toUpperCase()} scrape | ${site.label}`);
@@ -312,7 +312,10 @@ const scrapeData = async (configSites: SiteConfigItem[]) => {
         innerData.length
       } items`
     );
-    data = [...data, ...innerData];
+    data = [
+      ...data,
+      { baseUrl: site.baseUrl, label: site.label, data: innerData },
+    ];
   }
 
   return data;

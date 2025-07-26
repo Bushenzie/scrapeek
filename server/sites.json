@@ -20,7 +20,7 @@
     {
         "label": "EasyPrace",
         "type": "static",
-        "baseUrl": "https://www.easy-prace.cz/",
+        "baseUrl": "https://www.easy-prace.cz",
         "url": "https://www.easy-prace.cz/nabidka-zamestnani?h_text=typescript",
         "elements": {
             "title": ".nabidkaItem .nabidkaItem-title a",
@@ -38,7 +38,7 @@
     {
         "label": "StartupJobs",
         "type": "api",
-        "baseUrl": "https://www.startupjobs.cz/",
+        "baseUrl": "https://www.startupjobs.cz",
         "baseUrlAPI": "https://core.startupjobs.cz",
         "url": "https://core.startupjobs.cz/api/search/offers?startupOnly=false&fields%5B%5D=back-end-vyvojar&fields%5B%5D=front-end-vyvojar&fields%5B%5D=full-stack-vyvojar",
         "fields": {
@@ -75,7 +75,7 @@
     {
         "label": "Webtrh",
         "type": "static",
-        "baseUrl": "https://webtrh.cz/",
+        "baseUrl": "https://webtrh.cz",
         "url": "https://webtrh.cz/poptavky/poptavky-vyvoje-a-programovani/",
         "elements": {
             "title": ".inquiry-box a .title span:nth-child(1)",
