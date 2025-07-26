@@ -1,16 +1,26 @@
 {
-    "name": "jobseek",
-    "version": "1.0.0",
-    "description": "",
-    "type": "module",
-    "scripts": {
-        "start": "concurrently -n \"Server,Client\" -c \"green,cyan\" \"cd server && pnpm dev\" \"cd client && pnpm dev\""
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "packageManager": "pnpm@10.9.0",
-    "dependencies": {
-        "concurrently": "^9.2.0"
-    }
+  "name": "jobseek-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.9.0",
+  "dependencies": {
+    "@hono/node-server": "^1.17.0",
+    "axios": "^1.10.0",
+    "cheerio": "^1.1.0",
+    "dotenv": "^17.2.0",
+    "hono": "^4.8.5",
+    "playwright": "^1.53.2",
+    "tsx": "^4.20.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15"
+  }
 }
