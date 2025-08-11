@@ -11,6 +11,9 @@ importers:
       '@hono/node-server':
         specifier: ^1.17.0
         version: 1.17.0(hono@4.8.5)
+      '@hono/zod-validator':
+        specifier: ^0.7.2
+        version: 0.7.2(hono@4.8.5)(zod@4.0.16)
       axios:
         specifier: ^1.10.0
         version: 1.10.0
@@ -29,6 +32,9 @@ importers:
       tsx:
         specifier: ^4.20.3
         version: 4.20.3
+      zod:
+        specifier: ^4.0.16
+        version: 4.0.16
     devDependencies:
       '@types/node':
         specifier: ^24.0.15
@@ -191,6 +197,12 @@ packages:
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
+
+  '@hono/zod-validator@0.7.2':
+    resolution: {integrity: sha512-ub5eL/NeZ4eLZawu78JpW/J+dugDAYhwqUIdp9KYScI6PZECij4Hx4UsrthlEUutqDDhPwRI0MscUfNkvn/mqQ==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.25.0 || ^4.0.0
 
   '@types/node@24.0.15':
     resolution: {integrity: sha512-oaeTSbCef7U/z7rDeJA138xpG3NuKc64/rZ2qmUFkFJmnMsAPaluIifqyWd8hSSMxyP9oie3dLAqYPblag9KgA==}
@@ -410,6 +422,9 @@ packages:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
     engines: {node: '>=18'}
 
+  zod@4.0.16:
+    resolution: {integrity: sha512-Djo/cM339grjI7/HmN+ixYO2FzEMcWr/On50UlQ/RjrWK1I/hPpWhpC76heCptnRFpH0LMwrEbUY50HDc0V8wg==}
+
 snapshots:
 
   '@esbuild/aix-ppc64@0.25.5':
@@ -490,6 +505,11 @@ snapshots:
   '@hono/node-server@1.17.0(hono@4.8.5)':
     dependencies:
       hono: 4.8.5
+
+  '@hono/zod-validator@0.7.2(hono@4.8.5)(zod@4.0.16)':
+    dependencies:
+      hono: 4.8.5
+      zod: 4.0.16
 
   '@types/node@24.0.15':
     dependencies:
@@ -749,3 +769,5 @@ snapshots:
       iconv-lite: 0.6.3
 
   whatwg-mimetype@4.0.0: {}
+
+  zod@4.0.16: {}

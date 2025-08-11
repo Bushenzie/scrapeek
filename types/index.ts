@@ -72,9 +72,8 @@ export type SiteConfigDynamicItem = {
   searchQuery?: string;
 } & SiteConfigItemBase;
 
-export type SiteConfigItem =
-  | SiteConfigAPIItem
-  | SiteConfigStaticItem
-  | SiteConfigDynamicItem;
+export type SiteConfigItem = {
+  id: string;
+} & (SiteConfigAPIItem | SiteConfigStaticItem | SiteConfigDynamicItem);
 
 export type ScraperOptions = {} & SiteConfigItem;
