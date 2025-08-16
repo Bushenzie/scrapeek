@@ -33,4 +33,5 @@
 
 - API Scraping
 - Infinite scrolling
+- Add ability to scrape data behind auth wall
 - Specification of popups to close inside config

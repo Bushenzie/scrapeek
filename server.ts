@@ -2,7 +2,7 @@ import "dotenv/config";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import configRoutes from "./routes/config.ts";
+import blueprintRoutes from "./routes/blueprint.ts";
 import runnerRoutes from "./routes/runner.ts";
 import { errorHandler } from "./middlewares/error-handler.ts";
 
@@ -13,7 +13,7 @@ app.use("/api/*", cors());
 
 app
   .basePath("/api")
-  .route("/config", configRoutes)
+  .route("/blueprint", blueprintRoutes)
   .route("/runner", runnerRoutes);
 
 serve(
