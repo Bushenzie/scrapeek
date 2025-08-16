@@ -5,40 +5,45 @@ const elementParamSelectorSchema = z.object({
   attribute: z.string().optional(),
 });
 
-const staticAndDynamicPaginationSchema = z.object({
-  ...elementParamSelectorSchema.shape,
-  variant: z.enum(["link", "button"]),
-});
+const staticAndDynamicPaginationSchema = elementParamSelectorSchema.extend(
+  z.object({
+    variant: z.enum(["link", "button"]),
+  })
+);
 
 const apiPaginationBase = z.object({
   fieldToCheck: z.string(),
 });
 
-const apiPaginationCursorSchema = z.object({
-  ...apiPaginationBase.shape,
-  type: z.literal("cursor"),
-  path: z.tuple([z.string(), z.string()]),
-});
+const apiPaginationCursorSchema = apiPaginationBase.extend(
+  z.object({
+    type: z.literal("cursor"),
+    path: z.tuple([z.string(), z.string()]),
+  })
+);
 
-const apiPaginationNextPageSchema = z.object({
-  ...apiPaginationBase.shape,
-  type: z.literal("nextPage"),
-  path: z.string(),
-});
+const apiPaginationNextPageSchema = apiPaginationBase.extend(
+  z.object({
+    type: z.literal("nextPage"),
+    path: z.string(),
+  })
+);
 
-const apiPaginationPageSizeSchema = z.object({
-  ...apiPaginationBase.shape,
-  type: z.literal("pageSize"),
-  path: z.tuple([z.string(), z.number().positive()]),
-  size: z.tuple([z.string(), z.number().positive()]),
-});
+const apiPaginationPageSizeSchema = apiPaginationBase.extend(
+  z.object({
+    type: z.literal("pageSize"),
+    path: z.tuple([z.string(), z.number().positive()]),
+    size: z.tuple([z.string(), z.number().positive()]),
+  })
+);
 
-const apiPaginationOffsetSchema = z.object({
-  ...apiPaginationBase.shape,
-  type: z.literal("offsetLimit"),
-  offset: z.tuple([z.string(), z.number().positive()]),
-  limit: z.tuple([z.string(), z.number().positive()]),
-});
+const apiPaginationOffsetSchema = apiPaginationBase.extend(
+  z.object({
+    type: z.literal("offsetLimit"),
+    offset: z.tuple([z.string(), z.number().positive()]),
+    limit: z.tuple([z.string(), z.number().positive()]),
+  })
+);
 
 const apiPaginationSchema = z.discriminatedUnion("type", [
   apiPaginationCursorSchema,
@@ -82,23 +87,26 @@ const baseBlueprintSchema = z.object({
   updatedAt: z.date(),
 });
 
-const apiBlueprintSchema = z.object({
-  ...baseBlueprintSchema.shape,
-  type: z.literal("api"),
-  config: apiConfigSchema,
-});
+const apiBlueprintSchema = baseBlueprintSchema.extend(
+  z.object({
+    type: z.literal("api"),
+    config: apiConfigSchema,
+  })
+);
 
-const staticBlueprintSchema = z.object({
-  ...baseBlueprintSchema.shape,
-  type: z.literal("static"),
-  config: staticConfigSchema,
-});
+const staticBlueprintSchema = baseBlueprintSchema.extend(
+  z.object({
+    type: z.literal("static"),
+    config: staticConfigSchema,
+  })
+);
 
-const dynamicBlueprintSchema = z.object({
-  ...baseBlueprintSchema.shape,
-  type: z.literal("dynamic"),
-  config: dynamicConfigSchema,
-});
+const dynamicBlueprintSchema = baseBlueprintSchema.extend(
+  z.object({
+    type: z.literal("dynamic"),
+    config: dynamicConfigSchema,
+  })
+);
 
 export const blueprintSchema = z.discriminatedUnion("type", [
   apiBlueprintSchema,
@@ -106,8 +114,7 @@ export const blueprintSchema = z.discriminatedUnion("type", [
   dynamicBlueprintSchema,
 ]);
 
-export type Blueprint = z.infer<typeof blueprintSchema>;
-
+// TODO: make it more DRY
 const apiEditableBlueprintSchema = apiBlueprintSchema.omit({
   id: true,
   updatedAt: true,
@@ -132,4 +139,5 @@ export const editableBlueprintSchema = z.discriminatedUnion("type", [
   dynamicEditableBlueprintSchema,
 ]);
 
+export type Blueprint = z.infer<typeof blueprintSchema>;
 export type EditableBlueprint = z.infer<typeof editableBlueprintSchema>;
