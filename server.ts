@@ -13,8 +13,8 @@ app.use("/api/*", cors());
 
 app
   .basePath("/api")
-  .route("/blueprint", blueprintRoutes)
-  .route("/runner", runnerRoutes);
+  .route("/blueprints", blueprintRoutes)
+  .route("/runners", runnerRoutes);
 
 serve(
   {
