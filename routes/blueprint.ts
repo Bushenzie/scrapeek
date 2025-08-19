@@ -1,8 +1,9 @@
 import { Hono } from "hono";
 import { db } from "../db/index.ts";
 import { blueprintTable } from "../db/schemas/schema.ts";
-import { type Blueprint } from "../schemas/blueprint.ts";
+import { editableBlueprintSchema } from "../schemas/blueprint.ts";
 import { eq } from "drizzle-orm";
+import { zValidator } from "@hono/zod-validator";
 
 const app = new Hono();
 
@@ -27,11 +28,8 @@ app.get("/:id", async (c) => {
   return c.json({ data: searchedBlueprint });
 });
 
-app.post("/", async (c) => {
-  const body = (await c.req.json()) as Omit<
-    Blueprint,
-    "id" | "createdAt" | "updatedAt"
-  >;
+app.post("/", zValidator("json", editableBlueprintSchema), async (c) => {
+  const body = await c.req.valid("json");
   const createdBlueprint = await db
     .insert(blueprintTable)
     .values({
@@ -62,12 +60,9 @@ app.delete("/:id", async (c) => {
   return c.json({ data: removedBlueprint });
 });
 
-app.patch("/:id", async (c) => {
+app.patch("/:id", zValidator("json", editableBlueprintSchema), async (c) => {
   const { id } = c.req.param();
-  const body = (await c.req.json()) as Omit<
-    Blueprint,
-    "id" | "createdAt" | "updatedAt"
-  >;
+  const body = await c.req.valid("json");
 
   await db.query.blueprintTable
     .findFirst({

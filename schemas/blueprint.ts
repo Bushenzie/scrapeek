@@ -5,45 +5,35 @@ const elementParamSelectorSchema = z.object({
   attribute: z.string().optional(),
 });
 
-const staticAndDynamicPaginationSchema = elementParamSelectorSchema.extend(
-  z.object({
-    variant: z.enum(["link", "button"]),
-  })
-);
+const staticAndDynamicPaginationSchema = elementParamSelectorSchema.extend({
+  variant: z.enum(["link", "button"]),
+});
 
 const apiPaginationBase = z.object({
   fieldToCheck: z.string(),
 });
 
-const apiPaginationCursorSchema = apiPaginationBase.extend(
-  z.object({
-    type: z.literal("cursor"),
-    path: z.tuple([z.string(), z.string()]),
-  })
-);
+const apiPaginationCursorSchema = apiPaginationBase.extend({
+  type: z.literal("cursor"),
+  path: z.tuple([z.string(), z.string()]),
+});
 
-const apiPaginationNextPageSchema = apiPaginationBase.extend(
-  z.object({
-    type: z.literal("nextPage"),
-    path: z.string(),
-  })
-);
+const apiPaginationNextPageSchema = apiPaginationBase.extend({
+  type: z.literal("nextPage"),
+  path: z.string(),
+});
 
-const apiPaginationPageSizeSchema = apiPaginationBase.extend(
-  z.object({
-    type: z.literal("pageSize"),
-    path: z.tuple([z.string(), z.number().positive()]),
-    size: z.tuple([z.string(), z.number().positive()]),
-  })
-);
+const apiPaginationPageSizeSchema = apiPaginationBase.extend({
+  type: z.literal("pageSize"),
+  path: z.tuple([z.string(), z.number().positive()]),
+  size: z.tuple([z.string(), z.number().positive()]),
+});
 
-const apiPaginationOffsetSchema = apiPaginationBase.extend(
-  z.object({
-    type: z.literal("offsetLimit"),
-    offset: z.tuple([z.string(), z.number().positive()]),
-    limit: z.tuple([z.string(), z.number().positive()]),
-  })
-);
+const apiPaginationOffsetSchema = apiPaginationBase.extend({
+  type: z.literal("offsetLimit"),
+  offset: z.tuple([z.string(), z.number().positive()]),
+  limit: z.tuple([z.string(), z.number().positive()]),
+});
 
 const apiPaginationSchema = z.discriminatedUnion("type", [
   apiPaginationCursorSchema,
@@ -78,34 +68,59 @@ const dynamicConfigSchema = z.object({
   pagination: staticAndDynamicPaginationSchema.optional(),
 });
 
-const baseBlueprintSchema = z.object({
+const databaseFieldsSchema = z.object({
   id: z.uuid(),
-  url: z.url().max(255),
-  baseUrl: z.url().max(255),
-  name: z.string().min(3),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
 
-const apiBlueprintSchema = baseBlueprintSchema.extend(
-  z.object({
-    type: z.literal("api"),
-    config: apiConfigSchema,
-  })
+const baseBlueprintSchema = z.object({
+  url: z.url().max(255),
+  baseUrl: z.url().max(255),
+  name: z.string().min(3),
+});
+
+const fullBaseBlueprintSchema = baseBlueprintSchema.extend(
+  databaseFieldsSchema.shape
 );
 
-const staticBlueprintSchema = baseBlueprintSchema.extend(
-  z.object({
-    type: z.literal("static"),
-    config: staticConfigSchema,
-  })
+const apiConfigBlueprintSchema = z.object({
+  type: z.literal("api"),
+  config: apiConfigSchema,
+});
+
+const staticConfigBlueprintSchema = z.object({
+  type: z.literal("static"),
+  config: staticConfigSchema,
+});
+
+const dynamicConfigBlueprintSchema = z.object({
+  type: z.literal("dynamic"),
+  config: dynamicConfigSchema,
+});
+
+const apiBlueprintSchema = fullBaseBlueprintSchema.extend(
+  apiConfigBlueprintSchema.shape
 );
 
-const dynamicBlueprintSchema = baseBlueprintSchema.extend(
-  z.object({
-    type: z.literal("dynamic"),
-    config: dynamicConfigSchema,
-  })
+const staticBlueprintSchema = fullBaseBlueprintSchema.extend(
+  staticConfigBlueprintSchema.shape
+);
+
+const dynamicBlueprintSchema = fullBaseBlueprintSchema.extend(
+  dynamicConfigBlueprintSchema.shape
+);
+
+const apiEditableBlueprintSchema = baseBlueprintSchema.extend(
+  apiConfigBlueprintSchema.shape
+);
+
+const staticEditableBlueprintSchema = baseBlueprintSchema.extend(
+  staticConfigBlueprintSchema.shape
+);
+
+const dynamicEditableBlueprintSchema = baseBlueprintSchema.extend(
+  dynamicConfigBlueprintSchema.shape
 );
 
 export const blueprintSchema = z.discriminatedUnion("type", [
@@ -113,25 +128,6 @@ export const blueprintSchema = z.discriminatedUnion("type", [
   staticBlueprintSchema,
   dynamicBlueprintSchema,
 ]);
-
-// TODO: make it more DRY
-const apiEditableBlueprintSchema = apiBlueprintSchema.omit({
-  id: true,
-  updatedAt: true,
-  createdAt: true,
-});
-
-const staticEditableBlueprintSchema = apiBlueprintSchema.omit({
-  id: true,
-  updatedAt: true,
-  createdAt: true,
-});
-
-const dynamicEditableBlueprintSchema = apiBlueprintSchema.omit({
-  id: true,
-  updatedAt: true,
-  createdAt: true,
-});
 
 export const editableBlueprintSchema = z.discriminatedUnion("type", [
   apiEditableBlueprintSchema,
