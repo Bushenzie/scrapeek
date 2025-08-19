@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { db } from "../db/index.ts";
+import { db } from "../db/db.ts";
 import { blueprintTable } from "../db/schemas/schema.ts";
 import { editableBlueprintSchema } from "../schemas/blueprint.ts";
 import { eq } from "drizzle-orm";
