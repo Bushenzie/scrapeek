@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 import { readJSON } from "../lib/json.ts";
-import type { SiteConfigItem } from "../types/index.ts";
 import scrapers from "../lib/scrapers.ts";
 import { zValidator } from "@hono/zod-validator";
 import * as z from "zod";
+import type { Blueprint } from "../schemas/blueprint.ts";
 
 const app = new Hono();
 
@@ -18,9 +18,9 @@ app.post(
   async (c) => {
     const { id } = await c.req.valid("json");
 
-    const config = await readJSON<SiteConfigItem[]>("../config.json");
+    const config = await readJSON<Blueprint[]>("../config.json");
 
-    let items: SiteConfigItem[] = [];
+    let items: Blueprint[] = [];
     if (Array.isArray(id)) {
       items = config.filter((configItem) => id.includes(configItem.id));
     } else {

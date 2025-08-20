@@ -2,7 +2,7 @@ import * as z from "zod";
 
 const elementParamSelectorSchema = z.object({
   selector: z.string(),
-  attribute: z.string().optional(),
+  attribute: z.string(), // TODO optional?
 });
 
 const staticAndDynamicPaginationSchema = elementParamSelectorSchema.extend({
@@ -25,7 +25,7 @@ const apiPaginationNextPageSchema = apiPaginationBase.extend({
 
 const apiPaginationPageSizeSchema = apiPaginationBase.extend({
   type: z.literal("pageSize"),
-  path: z.tuple([z.string(), z.number().positive()]),
+  page: z.tuple([z.string(), z.number().positive()]),
   size: z.tuple([z.string(), z.number().positive()]),
 });
 
