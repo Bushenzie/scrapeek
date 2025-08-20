@@ -4,6 +4,9 @@ import scrapers from "../lib/scrapers.ts";
 import { zValidator } from "@hono/zod-validator";
 import * as z from "zod";
 import type { Blueprint } from "../schemas/blueprint.ts";
+import { db } from "../db/db.ts";
+import { inArray } from "drizzle-orm";
+import { blueprintTable } from "../db/schemas/schema.ts";
 
 const app = new Hono();
 
@@ -18,22 +21,15 @@ app.post(
   async (c) => {
     const { id } = await c.req.valid("json");
 
-    const config = await readJSON<Blueprint[]>("../config.json");
+    const blueprints = (await db
+      .select()
+      .from(blueprintTable)
+      .where(inArray(blueprintTable.id, id))
+      .catch(() => {
+        throw new Error("No blueprints found");
+      })) as Blueprint[];
 
-    let items: Blueprint[] = [];
-    if (Array.isArray(id)) {
-      items = config.filter((configItem) => id.includes(configItem.id));
-    } else {
-      const searchedItem = config.find((configItem) => configItem.id === id);
-      if (searchedItem) items.push(searchedItem);
-    }
-
-    if (items.length === 0) {
-      c.status(404);
-      throw new Error(`Item with id '${id}' was not found`);
-    }
-
-    const data = await scrapers.scrapeData(items);
+    const data = await scrapers.scrapeData(blueprints);
 
     return c.json(data);
   }
