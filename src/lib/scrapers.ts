@@ -17,8 +17,7 @@ const apiScraper = async (blueprint: Blueprint) => {
 		let items: (typeof config.fields)[] = [];
 
 		for (const [fieldKey, fieldValue] of Object.entries(config.fields)) {
-			const isComposable =
-				fieldValue.startsWith("$") && fieldValue.endsWith("$");
+			const isComposable = fieldValue.startsWith("$") && fieldValue.endsWith("$");
 			const foundValues = getValueFromFlatPath(data, fieldValue);
 
 			(foundValues ?? []).forEach((item: any, index: number) => {
@@ -50,12 +49,8 @@ const apiScraper = async (blueprint: Blueprint) => {
 					return;
 				}
 				matchValues.forEach((item: any, index: number) => {
-					if (!items[index][fieldKey])
-						items[index][fieldKey] = cleanedComposable;
-					const formatted = items[index][fieldKey].replaceAll(
-						`{${match}}`,
-						item,
-					);
+					if (!items[index][fieldKey]) items[index][fieldKey] = cleanedComposable;
+					const formatted = items[index][fieldKey].replaceAll(`{${match}}`, item);
 					items[index][fieldKey] = formatted;
 				});
 			});
