@@ -12,16 +12,16 @@ app.onError(errorHandler);
 app.use("/api/*", cors());
 
 app
-	.basePath("/api")
-	.route("/blueprints", blueprintRoutes)
-	.route("/runners", runnerRoutes);
+  .basePath("/api")
+  .route("/blueprints", blueprintRoutes)
+  .route("/runners", runnerRoutes);
 
 serve(
-	{
-		fetch: app.fetch,
-		port: Number(env.PORT ?? 3001),
-	},
-	(info) => {
-		console.log(`Server running | Port: ${info.port}`);
-	},
+  {
+    fetch: app.fetch,
+    port: Number(env.PORT ?? 3001),
+  },
+  (info) => {
+    console.log(`Server running | Port: ${info.port}`);
+  }
 );
