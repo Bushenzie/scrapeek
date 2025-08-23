@@ -4,358 +4,365 @@ import type { Blueprint } from "../schemas/blueprint.ts";
 import { axiosClient, getValueFromFlatPath } from "./utils.ts";
 
 const apiScraper = async (blueprint: Blueprint) => {
-  if (blueprint.type !== "api") return;
+	if (blueprint.type !== "api") return;
 
-  const { config } = blueprint;
+	const { config } = blueprint;
 
-  try {
-    const response = await axiosClient.get(blueprint.url, {
-      params: config.query,
-    });
-    const data = JSON.parse(response.data);
+	try {
+		const response = await axiosClient.get(blueprint.url, {
+			params: config.query,
+		});
+		const data = JSON.parse(response.data);
 
-    let items: (typeof config.fields)[] = [];
+		let items: (typeof config.fields)[] = [];
 
-    for (let [fieldKey, fieldValue] of Object.entries(config.fields)) {
-      const isComposable =
-        fieldValue.startsWith("$") && fieldValue.endsWith("$");
-      const foundValues = getValueFromFlatPath(data, fieldValue);
+		for (const [fieldKey, fieldValue] of Object.entries(config.fields)) {
+			const isComposable =
+				fieldValue.startsWith("$") && fieldValue.endsWith("$");
+			const foundValues = getValueFromFlatPath(data, fieldValue);
 
-      (foundValues ?? []).map((item: any, index: number) => {
-        if (!items[index]) items[index] = {};
-        items[index][fieldKey] = item;
-      });
+			(foundValues ?? []).forEach((item: any, index: number) => {
+				if (!items[index]) items[index] = {};
+				items[index][fieldKey] = item;
+			});
 
-      if (!isComposable) continue;
+			if (!isComposable) continue;
 
-      const variableRegex = /(?<=\{).*?(?=\})/gi;
-      const cleanedComposable = fieldValue.slice(1, -1);
+			const variableRegex = /(?<=\{).*?(?=\})/gi;
+			const cleanedComposable = fieldValue.slice(1, -1);
 
-      const matches = cleanedComposable.match(variableRegex) ?? [];
+			const matches = cleanedComposable.match(variableRegex) ?? [];
 
-      matches.forEach((match) => {
-        const matchValues = getValueFromFlatPath(data, match);
+			matches.forEach((match) => {
+				const matchValues = getValueFromFlatPath(data, match);
 
-        const isPlainString = typeof matchValues !== "object";
+				const isPlainString = typeof matchValues !== "object";
 
-        if (isPlainString) {
-          for (let i = 0; i < items.length; i++) {
-            if (!items[i][fieldKey]) items[i][fieldKey] = cleanedComposable;
-            let formatted = items[i][fieldKey].replaceAll(
-              `{${match}}`,
-              matchValues
-            );
-            items[i][fieldKey] = formatted;
-          }
-          return;
-        }
-        matchValues.map((item: any, index: number) => {
-          if (!items[index][fieldKey])
-            items[index][fieldKey] = cleanedComposable;
-          let formatted = items[index][fieldKey].replaceAll(`{${match}}`, item);
-          items[index][fieldKey] = formatted;
-        });
-      });
-    }
+				if (isPlainString) {
+					for (let i = 0; i < items.length; i++) {
+						if (!items[i][fieldKey]) items[i][fieldKey] = cleanedComposable;
+						const formatted = items[i][fieldKey].replaceAll(
+							`{${match}}`,
+							matchValues,
+						);
+						items[i][fieldKey] = formatted;
+					}
+					return;
+				}
+				matchValues.forEach((item: any, index: number) => {
+					if (!items[index][fieldKey])
+						items[index][fieldKey] = cleanedComposable;
+					const formatted = items[index][fieldKey].replaceAll(
+						`{${match}}`,
+						item,
+					);
+					items[index][fieldKey] = formatted;
+				});
+			});
+		}
 
-    if (config.pagination) {
-      const toCheck = config.pagination.fieldToCheck;
+		if (config.pagination) {
+			const toCheck = config.pagination.fieldToCheck;
 
-      const checkValue = getValueFromFlatPath(data, toCheck);
+			const checkValue = getValueFromFlatPath(data, toCheck);
 
-      const isCheckValueEmptyString =
-        typeof checkValue === "string" && !checkValue;
-      const isCheckValueEmptyArray =
-        Array.isArray(checkValue) && checkValue.length === 0;
+			const isCheckValueEmptyString =
+				typeof checkValue === "string" && !checkValue;
+			const isCheckValueEmptyArray =
+				Array.isArray(checkValue) && checkValue.length === 0;
 
-      if (isCheckValueEmptyString || isCheckValueEmptyArray) return items;
+			if (isCheckValueEmptyString || isCheckValueEmptyArray) return items;
 
-      switch (config.pagination.type) {
-        case "cursor":
-          const [cursorQuery, cursorPath] = config.pagination.path;
-          const cursorValue = getValueFromFlatPath(data, cursorPath);
+			switch (config.pagination.type) {
+				case "cursor": {
+					const [cursorQuery, cursorPath] = config.pagination.path;
+					const cursorValue = getValueFromFlatPath(data, cursorPath);
 
-          if (!cursorValue) return items;
+					if (!cursorValue) return items;
 
-          let cursorData = await apiScraper({
-            ...blueprint,
-            config: {
-              ...config,
-              query: {
-                [cursorQuery]: cursorValue as string,
-              },
-            },
-          });
+					let cursorData = await apiScraper({
+						...blueprint,
+						config: {
+							...config,
+							query: {
+								[cursorQuery]: cursorValue as string,
+							},
+						},
+					});
 
-          if (!cursorData) cursorData = [];
+					if (!cursorData) cursorData = [];
 
-          items = [...items, ...cursorData];
+					items = [...items, ...cursorData];
 
-          break;
-        case "nextPage":
-          const nextPagePath = config.pagination.path;
-          const nextPageValue = getValueFromFlatPath(data, nextPagePath);
-          if (!nextPageValue) return items;
+					break;
+				}
+				case "nextPage": {
+					const nextPagePath = config.pagination.path;
+					const nextPageValue = getValueFromFlatPath(data, nextPagePath);
+					if (!nextPageValue) return items;
 
-          const nextPageUrl = `${config.apiBaseUrl}${nextPageValue}`;
-          let nextPageData = await apiScraper({
-            ...blueprint,
-            url: nextPageUrl,
-          });
+					const nextPageUrl = `${config.apiBaseUrl}${nextPageValue}`;
+					let nextPageData = await apiScraper({
+						...blueprint,
+						url: nextPageUrl,
+					});
 
-          if (!nextPageData) nextPageData = [];
+					if (!nextPageData) nextPageData = [];
 
-          items = [...items, ...nextPageData];
-          break;
-        case "offsetLimit":
-          const [offsetQuery, offsetNum] = config.pagination.offset;
-          const [limitQuery, limitNum] = config.pagination.limit;
+					items = [...items, ...nextPageData];
+					break;
+				}
+				case "offsetLimit": {
+					const [offsetQuery, offsetNum] = config.pagination.offset;
+					const [limitQuery, limitNum] = config.pagination.limit;
 
-          const newOffset = offsetNum + limitNum;
+					const newOffset = offsetNum + limitNum;
 
-          let nextOffsetData = await apiScraper({
-            ...blueprint,
-            config: {
-              ...config,
-              pagination: {
-                ...config.pagination,
-                offset: [offsetQuery, newOffset],
-              },
-              query: {
-                [offsetQuery]: newOffset,
-                [limitQuery]: limitNum,
-              },
-            },
-          });
+					let nextOffsetData = await apiScraper({
+						...blueprint,
+						config: {
+							...config,
+							pagination: {
+								...config.pagination,
+								offset: [offsetQuery, newOffset],
+							},
+							query: {
+								[offsetQuery]: newOffset,
+								[limitQuery]: limitNum,
+							},
+						},
+					});
 
-          if (!nextOffsetData) nextOffsetData = [];
+					if (!nextOffsetData) nextOffsetData = [];
 
-          items = [...items, ...nextOffsetData];
+					items = [...items, ...nextOffsetData];
 
-          break;
-        case "pageSize":
-          const [pageQuery, pageNum] = config.pagination.page;
-          const [sizeQuery, sizeNum] = config.pagination.size;
+					break;
+				}
+				case "pageSize": {
+					const [pageQuery, pageNum] = config.pagination.page;
+					const [sizeQuery, sizeNum] = config.pagination.size;
 
-          const newPage = pageNum + 1;
+					const newPage = pageNum + 1;
 
-          let nextPageIncrementedData = await apiScraper({
-            ...blueprint,
-            config: {
-              ...config,
-              pagination: {
-                ...config.pagination,
-                page: [pageQuery, newPage],
-              },
-              query: {
-                [pageQuery]: newPage,
-                [sizeQuery]: sizeNum,
-              },
-            },
-          });
+					let nextPageIncrementedData = await apiScraper({
+						...blueprint,
+						config: {
+							...config,
+							pagination: {
+								...config.pagination,
+								page: [pageQuery, newPage],
+							},
+							query: {
+								[pageQuery]: newPage,
+								[sizeQuery]: sizeNum,
+							},
+						},
+					});
 
-          if (!nextPageIncrementedData) nextPageIncrementedData = [];
+					if (!nextPageIncrementedData) nextPageIncrementedData = [];
 
-          items = [...items, ...nextPageIncrementedData];
-          break;
-      }
-    }
+					items = [...items, ...nextPageIncrementedData];
+					break;
+				}
+			}
+		}
 
-    return items;
-  } catch (err: unknown) {
-    throw new Error(err as any);
-  }
+		return items;
+	} catch (err: unknown) {
+		throw new Error(err as any);
+	}
 };
 
 const staticSiteScraper = async (blueprint: Blueprint) => {
-  if (blueprint.type !== "static") return;
+	if (blueprint.type !== "static") return;
 
-  const { config } = blueprint;
+	const { config } = blueprint;
 
-  try {
-    const response = await axiosClient.get(blueprint.url);
+	try {
+		const response = await axiosClient.get(blueprint.url);
 
-    const $ = cheerio.load(response.data);
+		const $ = cheerio.load(response.data);
 
-    let items: (typeof config.elements)[] = [];
+		let items: (typeof config.elements)[] = [];
 
-    for (let [key, selectorProp] of Object.entries(config.elements)) {
-      const isPlainSelector = typeof selectorProp === "string";
+		for (const [key, selectorProp] of Object.entries(config.elements)) {
+			const isPlainSelector = typeof selectorProp === "string";
 
-      $(isPlainSelector ? selectorProp : selectorProp.selector)
-        .toArray()
-        .map((item, index) => {
-          if (!items[index]) items[index] = {};
-          let itemValue = "";
-          if (isPlainSelector) {
-            itemValue = $(item).text().trim() ?? "";
-          } else {
-            itemValue = $(item).attr(selectorProp.attribute) ?? "";
-          }
-          items[index][key] = itemValue;
-        });
-    }
+			$(isPlainSelector ? selectorProp : selectorProp.selector)
+				.toArray()
+				.forEach((item, index) => {
+					if (!items[index]) items[index] = {};
+					let itemValue = "";
+					if (isPlainSelector) {
+						itemValue = $(item).text().trim() ?? "";
+					} else {
+						itemValue = $(item).attr(selectorProp.attribute) ?? "";
+					}
+					items[index][key] = itemValue;
+				});
+		}
 
-    if (config.pagination) {
-      const { selector, attribute } = config.pagination;
+		if (config.pagination) {
+			const { selector, attribute } = config.pagination;
 
-      const paginationLink = $(selector).attr(attribute) ?? null;
+			const paginationLink = $(selector).attr(attribute) ?? null;
 
-      if (paginationLink === null) return items;
-      const nextPageLink = `${blueprint.baseUrl}${paginationLink}`;
+			if (paginationLink === null) return items;
+			const nextPageLink = `${blueprint.baseUrl}${paginationLink}`;
 
-      if (nextPageLink === blueprint.url) return items;
+			if (nextPageLink === blueprint.url) return items;
 
-      const newPageUrl = paginationLink.startsWith("http")
-        ? paginationLink
-        : `${blueprint.baseUrl}${paginationLink}`;
-      let nextPageItems = await staticSiteScraper({
-        ...blueprint,
-        url: newPageUrl,
-      });
+			const newPageUrl = paginationLink.startsWith("http")
+				? paginationLink
+				: `${blueprint.baseUrl}${paginationLink}`;
+			let nextPageItems = await staticSiteScraper({
+				...blueprint,
+				url: newPageUrl,
+			});
 
-      if (!nextPageItems) nextPageItems = [];
+			if (!nextPageItems) nextPageItems = [];
 
-      items = [...items, ...nextPageItems];
-    }
-    return items;
-  } catch (err: unknown) {
-    throw new Error(err as any);
-  }
+			items = [...items, ...nextPageItems];
+		}
+		return items;
+	} catch (err: unknown) {
+		throw new Error(err as any);
+	}
 };
 
 const dynamicSiteScraper = async (blueprint: Blueprint) => {
-  if (blueprint.type !== "dynamic") return;
+	if (blueprint.type !== "dynamic") return;
 
-  const { config } = blueprint;
+	const { config } = blueprint;
 
-  const browser = await playwright["chromium"].launch({
-    headless: true,
-  });
+	const browser = await playwright.chromium.launch({
+		headless: true,
+	});
 
-  const context = await browser.newContext();
-  const page = await context.newPage();
+	const context = await browser.newContext();
+	const page = await context.newPage();
 
-  await page.goto(blueprint.url);
+	await page.goto(blueprint.url);
 
-  await page.waitForSelector(config.waitSelectorElement, { timeout: 15000 });
-  let items: (typeof config.elements)[] = [];
+	await page.waitForSelector(config.waitSelectorElement, { timeout: 15000 });
+	let items: (typeof config.elements)[] = [];
 
-  for (let [key, selectorProp] of Object.entries(config.elements)) {
-    const isPlainSelector = typeof selectorProp === "string";
+	for (const [key, selectorProp] of Object.entries(config.elements)) {
+		const isPlainSelector = typeof selectorProp === "string";
 
-    const locator = await page.locator(
-      isPlainSelector ? selectorProp : selectorProp.selector
-    );
+		const locator = await page.locator(
+			isPlainSelector ? selectorProp : selectorProp.selector,
+		);
 
-    const resultItems = await locator.evaluateAll(
-      (items, props) =>
-        items.map((item) => {
-          if (props.isPlainSelector) {
-            return item.textContent?.trim() ?? "";
-          }
-          return item.getAttribute(props.attribute) ?? "";
-        }),
-      {
-        items,
-        key,
-        isPlainSelector,
-        attribute: isPlainSelector ? selectorProp : selectorProp.attribute, // TODO
-      }
-    );
+		const resultItems = await locator.evaluateAll(
+			(items, props) =>
+				items.map((item) => {
+					if (props.isPlainSelector) {
+						return item.textContent?.trim() ?? "";
+					}
+					return item.getAttribute(props.attribute) ?? "";
+				}),
+			{
+				items,
+				key,
+				isPlainSelector,
+				attribute: isPlainSelector ? selectorProp : selectorProp.attribute, // TODO
+			},
+		);
 
-    resultItems.map((item, index) => {
-      if (!items[index]) items[index] = {};
-      items[index][key] = item;
-    });
-  }
+		resultItems.forEach((item, index) => {
+			if (!items[index]) items[index] = {};
+			items[index][key] = item;
+		});
+	}
 
-  if (config.pagination) {
-    const { selector, attribute, variant } = config.pagination;
+	if (config.pagination) {
+		const { selector, attribute, variant } = config.pagination;
 
-    const isNextPageLinkVisible = await page.isVisible(selector);
+		const isNextPageLinkVisible = await page.isVisible(selector);
 
-    if (!isNextPageLinkVisible) {
-      await browser.close();
-      return items;
-    }
+		if (!isNextPageLinkVisible) {
+			await browser.close();
+			return items;
+		}
 
-    const locator = await page.locator(selector);
+		const locator = await page.locator(selector);
 
-    if (variant === "button") {
-      await locator.evaluate((item) => (item as HTMLButtonElement).click());
-    }
+		if (variant === "button") {
+			await locator.evaluate((item) => (item as HTMLButtonElement).click());
+		}
 
-    const paginationLink = await locator.evaluate(
-      (item, { attribute }) => item.getAttribute(attribute) ?? null,
-      { attribute }
-    );
+		const paginationLink = await locator.evaluate(
+			(item, { attribute }) => item.getAttribute(attribute) ?? null,
+			{ attribute },
+		);
 
-    if ((await paginationLink) === null) {
-      await browser.close();
-      return items;
-    }
+		if ((await paginationLink) === null) {
+			await browser.close();
+			return items;
+		}
 
-    const nextPageLink = `${blueprint.baseUrl}${paginationLink}`;
+		const nextPageLink = `${blueprint.baseUrl}${paginationLink}`;
 
-    if (blueprint.url === nextPageLink) {
-      await browser.close();
-      return items;
-    }
+		if (blueprint.url === nextPageLink) {
+			await browser.close();
+			return items;
+		}
 
-    await browser.close();
-    let nextPageItems = await dynamicSiteScraper({
-      ...blueprint,
-      url: nextPageLink,
-    });
+		await browser.close();
+		let nextPageItems = await dynamicSiteScraper({
+			...blueprint,
+			url: nextPageLink,
+		});
 
-    if (!nextPageItems) nextPageItems = [];
+		if (!nextPageItems) nextPageItems = [];
 
-    items = [...items, ...nextPageItems];
-  }
+		items = [...items, ...nextPageItems];
+	}
 
-  await browser.close();
-  return items;
+	await browser.close();
+	return items;
 };
 
 const scrapeData = async (blueprints: Blueprint[]) => {
-  let data: any = [];
+	let data: any = [];
 
-  for (let blueprint of blueprints) {
-    let innerData: any;
+	for (const blueprint of blueprints) {
+		let innerData: any;
 
-    console.log(
-      `Started ${blueprint.type.toUpperCase()} scrape | ${blueprint.name}`
-    );
-    switch (blueprint.type) {
-      case "api":
-        innerData = await apiScraper(blueprint);
-        break;
-      case "static":
-        innerData = await staticSiteScraper(blueprint);
-        break;
-      case "dynamic":
-        innerData = await dynamicSiteScraper(blueprint);
-        break;
-    }
+		console.log(
+			`Started ${blueprint.type.toUpperCase()} scrape | ${blueprint.name}`,
+		);
+		switch (blueprint.type) {
+			case "api":
+				innerData = await apiScraper(blueprint);
+				break;
+			case "static":
+				innerData = await staticSiteScraper(blueprint);
+				break;
+			case "dynamic":
+				innerData = await dynamicSiteScraper(blueprint);
+				break;
+		}
 
-    console.log(
-      `Finished ${blueprint.type.toUpperCase()} scrape | ${
-        blueprint.name
-      } | found: ${innerData.length} items`
-    );
-    data = [
-      ...data,
-      { baseUrl: blueprint.baseUrl, label: blueprint.name, data: innerData },
-    ];
-  }
+		console.log(
+			`Finished ${blueprint.type.toUpperCase()} scrape | ${
+				blueprint.name
+			} | found: ${innerData.length} items`,
+		);
+		data = [
+			...data,
+			{ baseUrl: blueprint.baseUrl, label: blueprint.name, data: innerData },
+		];
+	}
 
-  return data;
+	return data;
 };
 
 export default {
-  scrapeData,
-  staticSiteScraper,
-  apiScraper,
-  dynamicSiteScraper,
+	scrapeData,
+	staticSiteScraper,
+	apiScraper,
+	dynamicSiteScraper,
 };

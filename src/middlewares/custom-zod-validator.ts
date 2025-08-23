@@ -1,6 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import type { ValidationTargets } from "hono";
-import { z } from "zod";
+import type { z } from "zod";
 import { StatusError } from "@/lib/error.ts";
 
 export const zodValidator = <
@@ -10,7 +10,7 @@ export const zodValidator = <
   target: Target,
   schema: Schema
 ) => {
-  return zValidator(target, schema, (result, c) => {
+  return zValidator(target, schema, (result) => {
     if (!result.success) {
       const { issues } = result.error;
 

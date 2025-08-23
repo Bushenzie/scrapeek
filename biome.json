@@ -11,14 +11,14 @@
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
-		"includes": ["!src/db/migrations/**"]
+		"includes": ["**/*.ts"]
 	},
 	"linter": {
 		"enabled": true,
 		"rules": {
 			"recommended": true
 		},
-		"includes": ["!src/db/migrations/**"]
+		"includes": ["**/*.ts"]
 	},
 	"javascript": {
 		"formatter": {
