@@ -1,5 +1,5 @@
-import { StatusError } from "@/lib/error.ts";
 import type { ErrorHandler } from "hono";
+import { StatusError } from "@/lib/error.ts";
 
 export const errorHandler: ErrorHandler = async (err, c) => {
   if (err instanceof StatusError) {

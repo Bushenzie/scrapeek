@@ -1,6 +1,6 @@
+import { zValidator } from "@hono/zod-validator";
 import type { ValidationTargets } from "hono";
 import { z } from "zod";
-import { zValidator } from "@hono/zod-validator";
 import { StatusError } from "@/lib/error.ts";
 
 export const zodValidator = <

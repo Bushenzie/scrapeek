@@ -1,7 +1,7 @@
-import playwright from "playwright";
 import * as cheerio from "cheerio";
-import { axiosClient, getValueFromFlatPath } from "./utils.ts";
+import playwright from "playwright";
 import type { Blueprint } from "../schemas/blueprint.ts";
+import { axiosClient, getValueFromFlatPath } from "./utils.ts";
 
 const apiScraper = async (blueprint: Blueprint) => {
   if (blueprint.type !== "api") return;

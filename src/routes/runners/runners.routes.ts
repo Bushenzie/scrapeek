@@ -1,11 +1,11 @@
-import { Hono } from "hono";
-import scrapers from "@/lib/scrapers.ts";
-import type { Blueprint } from "@/schemas/blueprint.ts";
-import { db } from "@/db/db.ts";
 import { inArray } from "drizzle-orm";
+import { Hono } from "hono";
+import { db } from "@/db/db.ts";
 import { blueprintTable } from "@/db/schemas/schema.ts";
-import { runnerSchema } from "./runners.schemas.ts";
+import scrapers from "@/lib/scrapers.ts";
 import { zodValidator } from "@/middlewares/custom-zod-validator.ts";
+import type { Blueprint } from "@/schemas/blueprint.ts";
+import { runnerSchema } from "./runners.schemas.ts";
 
 const app = new Hono();
 
