@@ -9,6 +9,9 @@
     "db:migrate": "pnpm exec drizzle-kit migrate",
     "db:rm": "pnpm exec drizzle-kit drop",
     "db:studio": "pnpm exec drizzle-kit studio",
+    "biome:format": "pnpm exec biome format --write",
+    "biome:lint": "pnpm exec biome lint --write",
+    "biome:check": "pnpm exec biome check --write",
     "start": "tsx watch server.ts"
   },
   "keywords": [],
@@ -28,6 +31,7 @@
     "zod": "^4.0.16"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.2.0",
     "@types/node": "^24.0.15",
     "drizzle-kit": "^0.31.4",
     "tsx": "^4.20.3"
