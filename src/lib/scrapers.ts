@@ -339,7 +339,7 @@ const scrapeData = async (blueprints: Blueprint[]) => {
     const scrapedData = await Promise.all(scrapersToRun);
 
     return scrapedData;
-  } catch (err) {
+  } catch {
     throw new StatusError("Error during scrape", 500);
   }
 };
