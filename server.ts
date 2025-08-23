@@ -1,10 +1,10 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import blueprintRoutes from "./routes/blueprint.ts";
-import runnerRoutes from "./routes/runner.ts";
-import { errorHandler } from "./middlewares/error-handler.ts";
-import { env } from "./lib/env.ts";
+import blueprintRoutes from "@/routes/blueprints/blueprints.routes.ts";
+import runnerRoutes from "@/routes/runners/runners.routes.ts";
+import { errorHandler } from "./src/middlewares/error-handler.ts";
+import { env } from "./src/lib/env.ts";
 
 const app = new Hono();
 

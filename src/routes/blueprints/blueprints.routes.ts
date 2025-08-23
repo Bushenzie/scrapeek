@@ -1,9 +1,10 @@
 import { Hono } from "hono";
-import { db } from "../db/db.ts";
-import { blueprintTable } from "../db/schemas/schema.ts";
-import { editableBlueprintSchema } from "../schemas/blueprint.ts";
+import { db } from "@/db/db.ts";
+import { blueprintTable } from "@/db/schemas/schema.ts";
+import { editableBlueprintSchema } from "@/schemas/blueprint.ts";
 import { eq } from "drizzle-orm";
-import { zValidator } from "@hono/zod-validator";
+import { searchableBlueprint } from "./blueprints.schemas.ts";
+import { zodValidator } from "@/middlewares/custom-zod-validator.ts";
 
 const app = new Hono();
 
@@ -13,8 +14,8 @@ app.get("/", async (c) => {
   return c.json({ data: blueprints });
 });
 
-app.get("/:id", async (c) => {
-  const { id } = c.req.param();
+app.get("/:id", zodValidator("param", searchableBlueprint), async (c) => {
+  const { id } = c.req.valid("param");
 
   const searchedBlueprint = await db.query.blueprintTable.findFirst({
     where: (blueprints, { eq }) => eq(blueprints.id, id),
@@ -28,7 +29,7 @@ app.get("/:id", async (c) => {
   return c.json({ data: searchedBlueprint });
 });
 
-app.post("/", zValidator("json", editableBlueprintSchema), async (c) => {
+app.post("/", zodValidator("json", editableBlueprintSchema), async (c) => {
   const body = await c.req.valid("json");
   const createdBlueprint = await db
     .insert(blueprintTable)
@@ -40,7 +41,7 @@ app.post("/", zValidator("json", editableBlueprintSchema), async (c) => {
   return c.json({ data: createdBlueprint });
 });
 
-app.delete("/:id", async (c) => {
+app.delete("/:id", zodValidator("param", searchableBlueprint), async (c) => {
   const { id } = c.req.param();
 
   await db.query.blueprintTable
@@ -60,7 +61,7 @@ app.delete("/:id", async (c) => {
   return c.json({ data: removedBlueprint });
 });
 
-app.patch("/:id", zValidator("json", editableBlueprintSchema), async (c) => {
+app.patch("/:id", zodValidator("json", editableBlueprintSchema), async (c) => {
   const { id } = c.req.param();
   const body = await c.req.valid("json");
 
