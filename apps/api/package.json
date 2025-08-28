@@ -10,9 +10,9 @@
     "db:migrate": "pnpm exec drizzle-kit migrate",
     "db:rm": "pnpm exec drizzle-kit drop",
     "db:studio": "pnpm exec drizzle-kit studio",
-    "biome:format": "pnpm exec biome format --write",
-    "biome:lint": "pnpm exec biome lint --write",
-    "biome:check": "pnpm exec biome check --write",
+    "format": "pnpm exec biome format --write",
+    "lint": "pnpm exec biome lint --write",
+    "check": "pnpm exec biome check --write",
     "dev": "tsx watch server.ts"
   },
   "keywords": [],
