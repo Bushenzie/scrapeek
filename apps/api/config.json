@@ -1,0 +1,108 @@
+[
+    {
+        "id": "testing_id1",
+        "name": "JobstackIT",
+        "type": "static",
+        "baseUrl": "https://www.jobstack.it",
+        "url": "https://www.jobstack.it/it-jobs?keywords=typescript&isDetail=1",
+        "config": {
+            "elements": {
+                "title": ".jobposts-item h3",
+                "company": ".jobposts-item .jobposts-item_names:nth-child(3) span:nth-child(1) span:nth-child(2)",
+                "link": {
+                    "selector": ".jobposts-item .jobpost-mainlink",
+                    "attribute": "href"
+                }
+            },
+            "pagination": {
+                "selector": "li#page_next a",
+                "attribute": "href"
+            }
+        }
+    },
+    {
+        "id": "testing_id2",
+        "name": "EasyPrace",
+        "type": "static",
+        "baseUrl": "https://www.easy-prace.cz",
+        "url": "https://www.easy-prace.cz/nabidka-zamestnani?h_text=typescript",
+        "config": {
+            "elements": {
+                "title": ".nabidkaItem .nabidkaItem-title a",
+                "company": ".nabidkaItem .nabidkaItem-info div:nth-child(2) a",
+                "variant": {
+                    "selector": ".nabidkaItem .nabidkaItem-title a",
+                    "attribute": "href"
+                }
+            },
+            "pagination": {
+                "selector": ".strankovani .pagination li:last-child a",
+                "attribute": "href"
+            }
+        }
+    },
+    {
+        "id": "testing_id3",
+        "name": "StartupJobs",
+        "type": "api",
+        "baseUrl": "https://www.startupjobs.cz",
+        "url": "https://core.startupjobs.cz/api/search/offers?startupOnly=false&fields%5B%5D=back-end-vyvojar&fields%5B%5D=front-end-vyvojar&fields%5B%5D=full-stack-vyvojar",
+        "config": {
+            "apiBaseUrl": "https://core.startupjobs.cz",
+            "fields": {
+                "title": "[member].title.cs",
+                "company": "[member].company.name",
+                "link": "$/nabidka/{[member].displayId}/{[member].slug}$"
+            },
+            "pagination": {
+                "fieldToCheck": "[member]",
+                "type": "nextPage",
+                "path": "view.next"
+            }
+        }
+    },
+    {
+        "id": "testing_id4",
+        "name": "JobsCZ",
+        "type": "dynamic",
+        "baseUrl": "https://www.jobs.cz",
+        "url": "https://www.jobs.cz/prace/?q=Typescript",
+        "config": {
+            "waitSelectorElement": "article.SearchResultCard",
+            "elements": {
+                "title": ".SearchResultCard__titleLink",
+                "company": ".SearchResultCard__footerItem span",
+                "link": {
+                    "selector": ".SearchResultCard__titleLink",
+                    "attribute": "href"
+                }
+            },
+            "pagination": {
+                "variant": "link",
+                "selector": "a.Pagination__button--next",
+                "attribute": "href"
+            }
+        }
+    },
+    {
+        "id": "testing_id5",
+        "name": "Webtrh",
+        "type": "static",
+        "baseUrl": "https://webtrh.cz",
+        "url": "https://webtrh.cz/poptavky/poptavky-vyvoje-a-programovani/",
+        "config": {
+            "elements": {
+                "title": ".inquiry-box a .title span:nth-child(1)",
+                "link": {
+                    "selector": ".inquiry-box a",
+                    "attribute": "href"
+                }
+            },
+            "pagination": {
+                "variant": "link",
+                "selector": "a.next.page-numbers",
+                "attribute": "href"
+            }
+        }
+    }
+]
