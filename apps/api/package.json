@@ -20,6 +20,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.9.0",
   "dependencies": {
+    "@scrapeek/shared": "workspace:*",
     "@hono/node-server": "^1.17.0",
     "@hono/zod-validator": "^0.7.2",
     "@neondatabase/serverless": "^1.0.1",
@@ -36,6 +37,7 @@
     "@biomejs/biome": "2.2.0",
     "@types/node": "^24.0.15",
     "drizzle-kit": "^0.31.4",
-    "tsx": "^4.20.3"
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
   }
 }

@@ -1,10 +1,10 @@
+import type { Blueprint } from "@scrapeek/shared/blueprint";
 import { inArray } from "drizzle-orm";
 import { Hono } from "hono";
 import { db } from "@/db/db.ts";
 import { blueprintTable } from "@/db/schemas/blueprint.ts";
 import scrapers from "@/lib/scrapers.ts";
 import { zodValidator } from "@/middlewares/custom-zod-validator.ts";
-import type { Blueprint } from "@/schemas/blueprint.ts";
 import { runnerSchema } from "./runners.schemas.ts";
 
 const app = new Hono();

@@ -9,8 +9,6 @@ export const Route = createFileRoute("/(blueprints)/blueprints/")({
 async function RouteComponent() {
   const { data } = useBlueprints();
 
-  console.log(data);
-
   return (
     <div className="w-screen h-screen">
       {/* {data?.data?.map((item: { name: string; id: string }) => (

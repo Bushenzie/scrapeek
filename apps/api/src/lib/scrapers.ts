@@ -1,6 +1,6 @@
+import type { Blueprint } from "@scrapeek/shared/blueprint";
 import * as cheerio from "cheerio";
 import playwright from "playwright";
-import type { Blueprint } from "../schemas/blueprint.ts";
 import { StatusError } from "./error.ts";
 import { axiosClient, getValueFromFlatPath } from "./utils.ts";
 

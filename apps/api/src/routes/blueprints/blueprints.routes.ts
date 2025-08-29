@@ -1,9 +1,9 @@
+import { editableBlueprintSchema } from "@scrapeek/shared/blueprint";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { db } from "@/db/db.ts";
 import { blueprintTable } from "@/db/schemas/blueprint.ts";
 import { zodValidator } from "@/middlewares/custom-zod-validator.ts";
-import { editableBlueprintSchema } from "@/schemas/blueprint.ts";
 import { searchableBlueprint } from "./blueprints.schemas.ts";
 
 const app = new Hono();
