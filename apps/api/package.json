@@ -1,0 +1,43 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "db:generate": "pnpm exec drizzle-kit generate",
+    "db:migrate": "pnpm exec drizzle-kit migrate",
+    "db:rm": "pnpm exec drizzle-kit drop",
+    "db:studio": "pnpm exec drizzle-kit studio",
+    "format": "pnpm exec biome format --write",
+    "lint": "pnpm exec biome lint --write",
+    "check": "pnpm exec biome check --write",
+    "dev": "tsx watch server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.9.0",
+  "dependencies": {
+    "@scrapeek/shared": "workspace:*",
+    "@hono/node-server": "^1.17.0",
+    "@hono/zod-validator": "^0.7.2",
+    "@neondatabase/serverless": "^1.0.1",
+    "axios": "^1.10.0",
+    "better-auth": "^1.3.7",
+    "cheerio": "^1.1.0",
+    "dotenv": "^17.2.0",
+    "drizzle-orm": "^0.44.4",
+    "hono": "^4.8.5",
+    "playwright": "^1.53.2",
+    "zod": "^4.0.16"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.0",
+    "@types/node": "^24.0.15",
+    "drizzle-kit": "^0.31.4",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
+  }
+}
