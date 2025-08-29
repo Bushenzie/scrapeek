@@ -1,8 +1,9 @@
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { axiosClient } from "./axios";
+import type { Blueprint } from "@scrapeek/shared/blueprint";
 
 export const useBlueprints = () => {
-  return useQuery({
+  return useQuery<Blueprint[]>({
     queryKey: ["blueprints"],
     queryFn: async () => {
       try {

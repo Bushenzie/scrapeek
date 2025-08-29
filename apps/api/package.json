@@ -13,7 +13,8 @@
     "format": "pnpm exec biome format --write",
     "lint": "pnpm exec biome lint --write",
     "check": "pnpm exec biome check --write",
-    "dev": "tsx watch server.ts"
+    "dev": "tsx watch server.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",

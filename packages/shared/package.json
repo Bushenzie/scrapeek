@@ -4,12 +4,16 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "tsc"
+        "build": "tsup"
     },
     "exports": {
-        "./blueprint": "./src/schemas/blueprint.ts"
+        "./blueprint": {
+            "types": "./dist/blueprint.d.ts",
+            "default": "./dist/blueprint.js"
+        }
     },
     "devDependencies": {
+        "tsup": "^8.5.0",
         "typescript": "^5.9.2"
     },
     "dependencies": {

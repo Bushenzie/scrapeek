@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-	component: App,
+  component: App,
 });
 
 function App() {
-	return <div className="text-center">Scrapeek client</div>;
+  return <div className="text-center">Scrapeek client</div>;
 }
