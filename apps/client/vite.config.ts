@@ -15,11 +15,6 @@ const config = defineConfig({
     }),
     viteReact(),
   ],
-  resolve: {
-    alias: {
-      "@scrapeek/shared": "../../packages/shared/src",
-    },
-  },
 });
 
 export default config;
