@@ -1,9 +1,14 @@
+import { Button } from "@/components/ui/button/button";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-  component: App,
+  component: Homepage,
 });
 
-function App() {
-  return <div className="text-center">Scrapeek client</div>;
+function Homepage() {
+  return (
+    <div>
+      <Button>test</Button>
+    </div>
+  );
 }

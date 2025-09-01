@@ -9,11 +9,13 @@
 		"build": "vite build",
 		"serve": "vite preview",
 		"test": "vitest run",
+		"component": "pnpm dlx shadcn@canary add",
 		"format": "pnpm exec biome format --write",
 		"lint": "pnpm exec biome lint --write",
 		"check": "pnpm exec biome check --write"
 	},
 	"dependencies": {
+		"@radix-ui/react-slot": "^1.2.3",
 		"@scrapeek/shared": "workspace:*",
 		"@tailwindcss/postcss": "^4.1.12",
 		"@tailwindcss/vite": "^4.0.6",
@@ -35,6 +37,7 @@
 		"tailwind-merge": "^3.3.1",
 		"tailwindcss": "^4.1.12",
 		"vite-tsconfig-paths": "^5.1.4",
+		"zocker": "^3.0.0",
 		"zod": "^4.0.14"
 	},
 	"devDependencies": {

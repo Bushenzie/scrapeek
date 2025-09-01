@@ -40,8 +40,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
-        {children}
+      <body className="bg-blueprint-900 font-mono text-blueprint-100">
+        <div className="w-full max-w-[1280px] mx-auto px-4 py-8">
+          {children}
+        </div>
+        <div className="absolute -z-10 inset-0 h-full w-full bg-[linear-gradient(to_right,var(--color-blueprint-700)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-blueprint-700)_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
         <Scripts />
       </body>
     </html>
