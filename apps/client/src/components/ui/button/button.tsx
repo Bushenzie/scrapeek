@@ -1,16 +1,11 @@
-import { type FC, type ComponentProps } from "react";
 import { Slot } from "@radix-ui/react-slot";
-import { type VariantProps } from "class-variance-authority";
+import type { FC } from "react";
 
 import { cn } from "@/lib/utils";
+import type { ButtonProps } from "./button.types";
 import { buttonVariants } from "./button.variants";
 
-type ButtonProps = ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  };
-
-const Button: FC<ButtonProps> = ({
+export const Button: FC<ButtonProps> = ({
   className,
   variant,
   size,
@@ -27,5 +22,3 @@ const Button: FC<ButtonProps> = ({
     />
   );
 };
-
-export { Button, buttonVariants };

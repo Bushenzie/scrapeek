@@ -1,9 +1,9 @@
-import { Box } from "@/components/ui/box/box";
-import { Button } from "@/components/ui/button/button";
 import { blueprintSchema } from "@scrapeek/shared/blueprint";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { PenLine, Trash } from "lucide-react";
+import { PenLine } from "lucide-react";
 import { zocker } from "zocker";
+import { Box } from "@/components/ui/box/box";
+import { LinkButton } from "@/components/ui/link-button/link-button";
 
 export const Route = createFileRoute("/(blueprints)/blueprints/")({
   component: BlueprintList,
@@ -17,9 +17,7 @@ async function BlueprintList() {
       <Box className="w-full">
         <div className="flex justify-between">
           <h1 className="text-2xl">Blueprints</h1>
-          <Button>
-            <Link to="/blueprints/add">Add</Link>
-          </Button>
+          <LinkButton to="/blueprints/add">Add</LinkButton>
         </div>
         <div className="w-full h-[1px] bg-blueprint-200 my-4"></div>
         <div className="flex flex-col">

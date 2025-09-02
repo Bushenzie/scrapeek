@@ -1,9 +1,15 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
+import { GoBackButton } from "@/components/ui/go-back-button/go-back-button";
 
-export const Route = createFileRoute('/(blueprints)/blueprints/add')({
-  component: RouteComponent,
-})
+export const Route = createFileRoute("/(blueprints)/blueprints/add")({
+	component: RouteComponent,
+});
 
 function RouteComponent() {
-  return <div>Hello "/(blueprints)/blueprints/add"!</div>
+	return (
+		<div>
+			<GoBackButton />
+			Hello "/(blueprints)/blueprints/add"!
+		</div>
+	);
 }

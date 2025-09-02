@@ -1,13 +1,12 @@
 import { cn } from "@/lib/utils";
-import type { ComponentProps, FC, PropsWithChildren } from "react";
-
-type BoxProps = ComponentProps<"div"> & PropsWithChildren;
+import type { BoxProps } from "./box.types";
+import type { FC } from "react";
 
 export const Box: FC<BoxProps> = ({ children, className }) => {
   return (
     <div
       className={cn(
-        "border rounded-4xl p-6 bg-blueprint-700/60 border-blueprint-400",
+        "border rounded-4xl p-6 shadow-2xl bg-blueprint-700/75 border-blueprint-400",
         className
       )}
     >
