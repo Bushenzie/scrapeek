@@ -8,165 +8,165 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as authLoginRouteImport } from './routes/(auth)/login'
-import { Route as blueprintsBlueprintsIndexRouteImport } from './routes/(blueprints)/blueprints.index'
-import { Route as blueprintsBlueprintsAddRouteImport } from './routes/(blueprints)/blueprints.add'
-import { Route as blueprintsBlueprintsBlueprintIdRouteImport } from './routes/(blueprints)/blueprints.$blueprintId'
-import { Route as blueprintsBlueprintsBlueprintIdEditRouteImport } from './routes/(blueprints)/blueprints_.$blueprintId.edit'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as IndexRouteImport } from "./routes/index";
+import { Route as authLoginRouteImport } from "./routes/(auth)/login";
+import { Route as blueprintsBlueprintsIndexRouteImport } from "./routes/(blueprints)/blueprints.index";
+import { Route as blueprintsBlueprintsAddRouteImport } from "./routes/(blueprints)/blueprints.add";
+import { Route as blueprintsBlueprintsBlueprintIdRouteImport } from "./routes/(blueprints)/blueprints.$blueprintId";
+import { Route as blueprintsBlueprintsBlueprintIdEditRouteImport } from "./routes/(blueprints)/blueprints_.$blueprintId.edit";
 
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/",
+	path: "/",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const authLoginRoute = authLoginRouteImport.update({
-  id: '/(auth)/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/(auth)/login",
+	path: "/login",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const blueprintsBlueprintsIndexRoute =
-  blueprintsBlueprintsIndexRouteImport.update({
-    id: '/(blueprints)/blueprints/',
-    path: '/blueprints/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+	blueprintsBlueprintsIndexRouteImport.update({
+		id: "/(blueprints)/blueprints/",
+		path: "/blueprints/",
+		getParentRoute: () => rootRouteImport,
+	} as any);
 const blueprintsBlueprintsAddRoute = blueprintsBlueprintsAddRouteImport.update({
-  id: '/(blueprints)/blueprints/add',
-  path: '/blueprints/add',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/(blueprints)/blueprints/add",
+	path: "/blueprints/add",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const blueprintsBlueprintsBlueprintIdRoute =
-  blueprintsBlueprintsBlueprintIdRouteImport.update({
-    id: '/(blueprints)/blueprints/$blueprintId',
-    path: '/blueprints/$blueprintId',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+	blueprintsBlueprintsBlueprintIdRouteImport.update({
+		id: "/(blueprints)/blueprints/$blueprintId",
+		path: "/blueprints/$blueprintId",
+		getParentRoute: () => rootRouteImport,
+	} as any);
 const blueprintsBlueprintsBlueprintIdEditRoute =
-  blueprintsBlueprintsBlueprintIdEditRouteImport.update({
-    id: '/(blueprints)/blueprints_/$blueprintId/edit',
-    path: '/blueprints/$blueprintId/edit',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+	blueprintsBlueprintsBlueprintIdEditRouteImport.update({
+		id: "/(blueprints)/blueprints_/$blueprintId/edit",
+		path: "/blueprints/$blueprintId/edit",
+		getParentRoute: () => rootRouteImport,
+	} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/login': typeof authLoginRoute
-  '/blueprints/$blueprintId': typeof blueprintsBlueprintsBlueprintIdRoute
-  '/blueprints/add': typeof blueprintsBlueprintsAddRoute
-  '/blueprints': typeof blueprintsBlueprintsIndexRoute
-  '/blueprints/$blueprintId/edit': typeof blueprintsBlueprintsBlueprintIdEditRoute
+	"/": typeof IndexRoute;
+	"/login": typeof authLoginRoute;
+	"/blueprints/$blueprintId": typeof blueprintsBlueprintsBlueprintIdRoute;
+	"/blueprints/add": typeof blueprintsBlueprintsAddRoute;
+	"/blueprints": typeof blueprintsBlueprintsIndexRoute;
+	"/blueprints/$blueprintId/edit": typeof blueprintsBlueprintsBlueprintIdEditRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/login': typeof authLoginRoute
-  '/blueprints/$blueprintId': typeof blueprintsBlueprintsBlueprintIdRoute
-  '/blueprints/add': typeof blueprintsBlueprintsAddRoute
-  '/blueprints': typeof blueprintsBlueprintsIndexRoute
-  '/blueprints/$blueprintId/edit': typeof blueprintsBlueprintsBlueprintIdEditRoute
+	"/": typeof IndexRoute;
+	"/login": typeof authLoginRoute;
+	"/blueprints/$blueprintId": typeof blueprintsBlueprintsBlueprintIdRoute;
+	"/blueprints/add": typeof blueprintsBlueprintsAddRoute;
+	"/blueprints": typeof blueprintsBlueprintsIndexRoute;
+	"/blueprints/$blueprintId/edit": typeof blueprintsBlueprintsBlueprintIdEditRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/(auth)/login': typeof authLoginRoute
-  '/(blueprints)/blueprints/$blueprintId': typeof blueprintsBlueprintsBlueprintIdRoute
-  '/(blueprints)/blueprints/add': typeof blueprintsBlueprintsAddRoute
-  '/(blueprints)/blueprints/': typeof blueprintsBlueprintsIndexRoute
-  '/(blueprints)/blueprints_/$blueprintId/edit': typeof blueprintsBlueprintsBlueprintIdEditRoute
+	__root__: typeof rootRouteImport;
+	"/": typeof IndexRoute;
+	"/(auth)/login": typeof authLoginRoute;
+	"/(blueprints)/blueprints/$blueprintId": typeof blueprintsBlueprintsBlueprintIdRoute;
+	"/(blueprints)/blueprints/add": typeof blueprintsBlueprintsAddRoute;
+	"/(blueprints)/blueprints/": typeof blueprintsBlueprintsIndexRoute;
+	"/(blueprints)/blueprints_/$blueprintId/edit": typeof blueprintsBlueprintsBlueprintIdEditRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/login'
-    | '/blueprints/$blueprintId'
-    | '/blueprints/add'
-    | '/blueprints'
-    | '/blueprints/$blueprintId/edit'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/login'
-    | '/blueprints/$blueprintId'
-    | '/blueprints/add'
-    | '/blueprints'
-    | '/blueprints/$blueprintId/edit'
-  id:
-    | '__root__'
-    | '/'
-    | '/(auth)/login'
-    | '/(blueprints)/blueprints/$blueprintId'
-    | '/(blueprints)/blueprints/add'
-    | '/(blueprints)/blueprints/'
-    | '/(blueprints)/blueprints_/$blueprintId/edit'
-  fileRoutesById: FileRoutesById
+	fileRoutesByFullPath: FileRoutesByFullPath;
+	fullPaths:
+		| "/"
+		| "/login"
+		| "/blueprints/$blueprintId"
+		| "/blueprints/add"
+		| "/blueprints"
+		| "/blueprints/$blueprintId/edit";
+	fileRoutesByTo: FileRoutesByTo;
+	to:
+		| "/"
+		| "/login"
+		| "/blueprints/$blueprintId"
+		| "/blueprints/add"
+		| "/blueprints"
+		| "/blueprints/$blueprintId/edit";
+	id:
+		| "__root__"
+		| "/"
+		| "/(auth)/login"
+		| "/(blueprints)/blueprints/$blueprintId"
+		| "/(blueprints)/blueprints/add"
+		| "/(blueprints)/blueprints/"
+		| "/(blueprints)/blueprints_/$blueprintId/edit";
+	fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  authLoginRoute: typeof authLoginRoute
-  blueprintsBlueprintsBlueprintIdRoute: typeof blueprintsBlueprintsBlueprintIdRoute
-  blueprintsBlueprintsAddRoute: typeof blueprintsBlueprintsAddRoute
-  blueprintsBlueprintsIndexRoute: typeof blueprintsBlueprintsIndexRoute
-  blueprintsBlueprintsBlueprintIdEditRoute: typeof blueprintsBlueprintsBlueprintIdEditRoute
+	IndexRoute: typeof IndexRoute;
+	authLoginRoute: typeof authLoginRoute;
+	blueprintsBlueprintsBlueprintIdRoute: typeof blueprintsBlueprintsBlueprintIdRoute;
+	blueprintsBlueprintsAddRoute: typeof blueprintsBlueprintsAddRoute;
+	blueprintsBlueprintsIndexRoute: typeof blueprintsBlueprintsIndexRoute;
+	blueprintsBlueprintsBlueprintIdEditRoute: typeof blueprintsBlueprintsBlueprintIdEditRoute;
 }
 
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(auth)/login': {
-      id: '/(auth)/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof authLoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(blueprints)/blueprints/': {
-      id: '/(blueprints)/blueprints/'
-      path: '/blueprints'
-      fullPath: '/blueprints'
-      preLoaderRoute: typeof blueprintsBlueprintsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(blueprints)/blueprints/add': {
-      id: '/(blueprints)/blueprints/add'
-      path: '/blueprints/add'
-      fullPath: '/blueprints/add'
-      preLoaderRoute: typeof blueprintsBlueprintsAddRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(blueprints)/blueprints/$blueprintId': {
-      id: '/(blueprints)/blueprints/$blueprintId'
-      path: '/blueprints/$blueprintId'
-      fullPath: '/blueprints/$blueprintId'
-      preLoaderRoute: typeof blueprintsBlueprintsBlueprintIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(blueprints)/blueprints_/$blueprintId/edit': {
-      id: '/(blueprints)/blueprints_/$blueprintId/edit'
-      path: '/blueprints/$blueprintId/edit'
-      fullPath: '/blueprints/$blueprintId/edit'
-      preLoaderRoute: typeof blueprintsBlueprintsBlueprintIdEditRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-  }
+declare module "@tanstack/react-router" {
+	interface FileRoutesByPath {
+		"/": {
+			id: "/";
+			path: "/";
+			fullPath: "/";
+			preLoaderRoute: typeof IndexRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/(auth)/login": {
+			id: "/(auth)/login";
+			path: "/login";
+			fullPath: "/login";
+			preLoaderRoute: typeof authLoginRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/(blueprints)/blueprints/": {
+			id: "/(blueprints)/blueprints/";
+			path: "/blueprints";
+			fullPath: "/blueprints";
+			preLoaderRoute: typeof blueprintsBlueprintsIndexRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/(blueprints)/blueprints/add": {
+			id: "/(blueprints)/blueprints/add";
+			path: "/blueprints/add";
+			fullPath: "/blueprints/add";
+			preLoaderRoute: typeof blueprintsBlueprintsAddRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/(blueprints)/blueprints/$blueprintId": {
+			id: "/(blueprints)/blueprints/$blueprintId";
+			path: "/blueprints/$blueprintId";
+			fullPath: "/blueprints/$blueprintId";
+			preLoaderRoute: typeof blueprintsBlueprintsBlueprintIdRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/(blueprints)/blueprints_/$blueprintId/edit": {
+			id: "/(blueprints)/blueprints_/$blueprintId/edit";
+			path: "/blueprints/$blueprintId/edit";
+			fullPath: "/blueprints/$blueprintId/edit";
+			preLoaderRoute: typeof blueprintsBlueprintsBlueprintIdEditRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+	}
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  authLoginRoute: authLoginRoute,
-  blueprintsBlueprintsBlueprintIdRoute: blueprintsBlueprintsBlueprintIdRoute,
-  blueprintsBlueprintsAddRoute: blueprintsBlueprintsAddRoute,
-  blueprintsBlueprintsIndexRoute: blueprintsBlueprintsIndexRoute,
-  blueprintsBlueprintsBlueprintIdEditRoute:
-    blueprintsBlueprintsBlueprintIdEditRoute,
-}
+	IndexRoute: IndexRoute,
+	authLoginRoute: authLoginRoute,
+	blueprintsBlueprintsBlueprintIdRoute: blueprintsBlueprintsBlueprintIdRoute,
+	blueprintsBlueprintsAddRoute: blueprintsBlueprintsAddRoute,
+	blueprintsBlueprintsIndexRoute: blueprintsBlueprintsIndexRoute,
+	blueprintsBlueprintsBlueprintIdEditRoute:
+		blueprintsBlueprintsBlueprintIdEditRoute,
+};
 export const routeTree = rootRouteImport
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+	._addFileChildren(rootRouteChildren)
+	._addFileTypes<FileRouteTypes>();

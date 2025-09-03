@@ -1,39 +1,39 @@
-import * as SelectPrimitive from "@radix-ui/react-select";
+import type * as SelectPrimitive from "@radix-ui/react-select";
 
 export type SelectProps = React.ComponentProps<typeof SelectPrimitive.Root>;
 
 export type SelectGroupProps = React.ComponentProps<
-  typeof SelectPrimitive.Group
+	typeof SelectPrimitive.Group
 >;
 
 export type SelectValueProps = React.ComponentProps<
-  typeof SelectPrimitive.Value
+	typeof SelectPrimitive.Value
 >;
 
 export type SelectTriggerProps = React.ComponentProps<
-  typeof SelectPrimitive.Trigger
+	typeof SelectPrimitive.Trigger
 > & {
-  size?: "sm" | "default";
+	size?: "sm" | "default";
 };
 
 export type SelectContentProps = React.ComponentProps<
-  typeof SelectPrimitive.Content
+	typeof SelectPrimitive.Content
 >;
 
 export type SelectLabelProps = React.ComponentProps<
-  typeof SelectPrimitive.Label
+	typeof SelectPrimitive.Label
 >;
 
 export type SelectItemProps = React.ComponentProps<typeof SelectPrimitive.Item>;
 
 export type SelectSeparatorProps = React.ComponentProps<
-  typeof SelectPrimitive.Separator
+	typeof SelectPrimitive.Separator
 >;
 
 export type SelectScrollUpButtonProps = React.ComponentProps<
-  typeof SelectPrimitive.ScrollUpButton
+	typeof SelectPrimitive.ScrollUpButton
 >;
 
 export type SelectScrollDownButtonProps = React.ComponentProps<
-  typeof SelectPrimitive.ScrollDownButton
+	typeof SelectPrimitive.ScrollDownButton
 >;
