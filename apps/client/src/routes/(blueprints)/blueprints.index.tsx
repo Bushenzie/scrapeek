@@ -4,6 +4,7 @@ import { PenLine } from "lucide-react";
 import { zocker } from "zocker";
 import { Box } from "@/components/ui/box/box";
 import { LinkButton } from "@/components/ui/link-button/link-button";
+import { Separator } from "@/components/ui/separator/separator";
 
 export const Route = createFileRoute("/(blueprints)/blueprints/")({
   component: BlueprintList,
@@ -19,7 +20,7 @@ async function BlueprintList() {
           <h1 className="text-2xl">Blueprints</h1>
           <LinkButton to="/blueprints/add">Add</LinkButton>
         </div>
-        <div className="w-full h-[1px] bg-blueprint-200 my-4"></div>
+        <Separator className="my-4" />
         <div className="flex flex-col">
           {mockData.map((blueprint) => (
             <Link
