@@ -10,7 +10,7 @@ import { GoBackButton } from "@/components/ui/go-back-button/go-back-button";
 import { Input } from "@/components/ui/input/input";
 import { Separator } from "@/components/ui/separator/separator";
 
-export const Route = createFileRoute("/(blueprints)/blueprints/add")({
+export const Route = createFileRoute("/blueprints/add")({
   component: RouteComponent,
 });
 

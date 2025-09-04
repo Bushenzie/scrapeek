@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
-import type { BoxProps } from "./box.types";
 import type { FC } from "react";
+import { cn } from "@/lib/utils/utils";
+import type { BoxProps } from "./box.types";
 
 export const Box: FC<BoxProps> = ({ children, className }) => {
   return (
