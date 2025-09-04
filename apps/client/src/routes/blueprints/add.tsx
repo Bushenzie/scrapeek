@@ -11,10 +11,10 @@ import { Input } from "@/components/ui/input/input";
 import { Separator } from "@/components/ui/separator/separator";
 
 export const Route = createFileRoute("/blueprints/add")({
-  component: RouteComponent,
+  component: AddBlueprintPage,
 });
 
-function RouteComponent() {
+function AddBlueprintPage() {
   const form = useForm({
     defaultValues: {
       type: "static",

@@ -1,17 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { GoBackButton } from "@/components/ui/go-back-button/go-back-button";
 
-export const Route = createFileRoute(
-	"/blueprints/_/$blueprintId/edit",
-)({
-	component: RouteComponent,
+export const Route = createFileRoute("/blueprints/_/$blueprintId/edit")({
+  component: EditBlueprintPage,
 });
 
-function RouteComponent() {
-	return (
-		<div>
-			<GoBackButton />
-			Hello "/(blueprints)/blueprints/$blueprintId/edit"!
-		</div>
-	)
+function EditBlueprintPage() {
+  const { blueprintId } = Route.useParams();
+
+  return (
+    <div>
+      <GoBackButton />
+      Editing {blueprintId}
+    </div>
+  );
 }
