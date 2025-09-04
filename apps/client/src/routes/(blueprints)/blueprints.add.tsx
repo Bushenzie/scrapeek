@@ -1,4 +1,7 @@
-import { editableBlueprintSchema } from "@scrapeek/shared/blueprint";
+import {
+  type EditableBlueprint,
+  editableBlueprintSchema,
+} from "@scrapeek/shared/blueprint";
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute } from "@tanstack/react-router";
 import { Box } from "@/components/ui/box/box";
@@ -14,12 +17,14 @@ export const Route = createFileRoute("/(blueprints)/blueprints/add")({
 function RouteComponent() {
   const form = useForm({
     defaultValues: {
-      name: "Blueprint name",
       type: "static",
+      name: "Blueprint",
+      baseUrl: "http://localhost:3001",
+      config: {
+        elements: {},
+      },
     },
-    validators: {
-      onChange: editableBlueprintSchema,
-    },
+    listeners: {},
     onSubmit: ({ value }) => {
       console.log(value);
     },
@@ -41,6 +46,9 @@ function RouteComponent() {
         <form onSubmit={handleSubmit}>
           <form.Field
             name="name"
+            validators={{
+              onChangeAsyncDebounceMs: 500,
+            }}
             children={(field) => (
               <Input
                 value={field.state.value}
@@ -55,7 +63,7 @@ function RouteComponent() {
               <Input
                 value={field.state.value}
                 name={field.name}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onChange={(e) => field.handleChange(e.target.value as "api")}
               />
             )}
           />
