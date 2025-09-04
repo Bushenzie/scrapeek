@@ -44,7 +44,7 @@ const apiPaginationSchema = z.discriminatedUnion("type", [
 
 const apiConfigSchema = z.object({
   fields: z.record(z.string(), z.string()),
-  apiBaseUrl: z.url(),
+  apiBaseUrl: z.url("Provided string must be URL"),
   method: z.enum(["GET", "POST"]).optional(),
   headers: z.record(z.string(), z.string()).optional(),
   query: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
@@ -75,9 +75,9 @@ const databaseFieldsSchema = z.object({
 });
 
 const baseBlueprintSchema = z.object({
-  url: z.url().max(255),
-  baseUrl: z.url().max(255),
-  name: z.string().min(3),
+  url: z.url("Provided string must be URL").max(255),
+  baseUrl: z.url("Provided string must be URL").max(255),
+  name: z.string().min(3, "Minimum length of name is 3 chars"),
 });
 
 const fullBaseBlueprintSchema = baseBlueprintSchema.extend(
