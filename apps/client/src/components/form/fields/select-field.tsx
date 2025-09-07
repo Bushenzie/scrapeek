@@ -27,6 +27,7 @@ export const SelectField: FC<SelectFieldProps> = ({
 }) => {
   const field = useFieldContext<string>();
 
+  const currentValue = useStore(field.store, (state) => state.value);
   const errors = useStore(field.store, (state) => state.meta.errors);
 
   return (
@@ -37,7 +38,9 @@ export const SelectField: FC<SelectFieldProps> = ({
         onValueChange={(val) => field.handleChange(val)}
       >
         <SelectTrigger>
-          <SelectValue>{triggerLabel}</SelectValue>
+          <SelectValue>
+            {currentValue ? currentValue : triggerLabel}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {options.map((option, index) => (
