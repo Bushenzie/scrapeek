@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Box } from "@/components/ui/box/box";
 import { Button } from "@/components/ui/button/button";
+import { Checkbox } from "@/components/ui/checkbox/checkbox";
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import {
@@ -62,6 +63,7 @@ function Homepage() {
           </TabsContent>
           <TabsContent value="password">Change your password here.</TabsContent>
         </Tabs>
+        <Checkbox />
       </Box>
     </div>
   );
