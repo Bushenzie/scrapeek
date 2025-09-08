@@ -27,7 +27,10 @@ export const RadioGroupItem: FC<RadioGroupItemProps> = ({
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
       className={cn(
-        "border-blueprint-400 text-primary focus-visible:ring focus-visible:ring-blueprint-400 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 aspect-square size-4 shrink-0 rounded-full border shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50",
+        "focus-visible:ring focus-visible:ring-blueprint-400",
+        "dark:aria-invalid:ring-destructive/40 dark:bg-blueprint-900/30",
+        "aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
+        "border-blueprint-400 text-primary aspect-square size-5 shrink-0 rounded-sm border shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
@@ -36,7 +39,7 @@ export const RadioGroupItem: FC<RadioGroupItemProps> = ({
         data-slot="radio-group-indicator"
         className="relative flex items-center justify-center"
       >
-        <CircleIcon className="fill-blueprint-200 absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2" />
+        <CircleIcon className="fill-blueprint-100 absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );
