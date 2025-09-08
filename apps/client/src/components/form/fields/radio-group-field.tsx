@@ -37,7 +37,7 @@ export const RadioGroupField: FC<RadioGroupFieldProps> = ({
               value={option.value}
               id={`${option.value}-${index}`}
             />
-            <Label>{option.label}</Label>
+            <Label htmlFor={`${option.value}-${index}`}>{option.label}</Label>
           </div>
         ))}
       </RadioGroup>

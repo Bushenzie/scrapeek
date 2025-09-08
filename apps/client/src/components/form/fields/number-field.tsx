@@ -5,12 +5,12 @@ import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import { useFieldContext } from "@/hooks/use-app-form";
 
-type InputFieldProps = {
+type NumberFieldProps = {
   label: string;
 };
 
-export const InputField: FC<InputFieldProps> = ({ label }) => {
-  const field = useFieldContext<string>();
+export const NumberField: FC<NumberFieldProps> = ({ label }) => {
+  const field = useFieldContext<number>();
 
   const errors = useStore(field.store, (state) => state.meta.errors);
 
@@ -18,9 +18,10 @@ export const InputField: FC<InputFieldProps> = ({ label }) => {
     <div className="flex flex-col gap-2">
       <Label>{label}</Label>
       <Input
+        type="number"
         name={field.name}
         value={field.state.value}
-        onChange={(e) => field.handleChange(e.target.value)}
+        onChange={(e) => field.handleChange(e.target.valueAsNumber)}
       />
       {errors.length > 0 && (
         <>
