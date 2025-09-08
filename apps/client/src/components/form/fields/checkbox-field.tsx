@@ -25,7 +25,7 @@ export const CheckboxField: FC<CheckboxFieldProps> = ({ label }) => {
           field.handleChange(checked as boolean);
         }}
       />
-      <Label htmlFor="id">{label}</Label>
+      <Label htmlFor={id}>{label}</Label>
       {errors.length > 0 && (
         <>
           {errors.map((error: ZodError) => (

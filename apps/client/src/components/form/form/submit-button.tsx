@@ -4,9 +4,10 @@ import { useFormContext } from "@/hooks/use-app-form";
 
 type SubmitButtonProps = {
   btnText?: string;
+  onClick?: () => void;
 };
 
-export const SubmitButton: FC<SubmitButtonProps> = ({ btnText }) => {
+export const SubmitButton: FC<SubmitButtonProps> = ({ btnText, onClick }) => {
   const form = useFormContext();
 
   return (
@@ -16,6 +17,7 @@ export const SubmitButton: FC<SubmitButtonProps> = ({ btnText }) => {
         <Button
           type="submit"
           size={"lg"}
+          onClick={onClick}
           disabled={!isValid}
           loading={isSubmitting}
         >
