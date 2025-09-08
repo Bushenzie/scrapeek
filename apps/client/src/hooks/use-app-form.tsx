@@ -5,6 +5,7 @@ import { RadioGroupField } from "@/components/form/fields/radio-group-field";
 import { SelectField } from "@/components/form/fields/select-field";
 import { TextField } from "@/components/form/fields/text-field";
 import { TextareaField } from "@/components/form/fields/textarea-field";
+import { SubmitButton } from "@/components/form/form/submit-button";
 
 export const { fieldContext, formContext, useFieldContext, useFormContext } =
   createFormHookContexts();
@@ -20,5 +21,7 @@ export const { useAppForm, withForm } = createFormHook({
     RadioGroupField,
     TextareaField,
   },
-  formComponents: {},
+  formComponents: {
+    SubmitButton,
+  },
 });
