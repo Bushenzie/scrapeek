@@ -1,5 +1,4 @@
 import { Slot } from "@radix-ui/react-slot";
-import { LoaderCircle } from "lucide-react";
 import type { FC } from "react";
 import { cn } from "@/lib/utils/utils";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
@@ -8,8 +7,8 @@ import { buttonVariants } from "./button.variants";
 
 export const Button: FC<ButtonProps> = ({
   className,
-  variant,
   size,
+  variant,
   disabled = false,
   loading = false,
   asChild = false,

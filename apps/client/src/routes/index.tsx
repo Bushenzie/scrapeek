@@ -2,6 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Box } from "@/components/ui/box/box";
 import { Button } from "@/components/ui/button/button";
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog/dialog";
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import {
@@ -30,7 +40,7 @@ export const Route = createFileRoute("/")({
 function Homepage() {
   return (
     <div>
-      <Box>
+      <Box className="flex flex-col items-start gap-4">
         <Input placeholder="test" />
         <RadioGroup defaultValue="2">
           <div className="flex items-center gap-2">
@@ -52,7 +62,6 @@ function Homepage() {
           </SelectContent>
         </Select>
         <Textarea placeholder="test" />
-        <Button>test</Button>
         <Tabs defaultValue="account" className="w-[400px]">
           <TabsList>
             <TabsTrigger value="account">Account</TabsTrigger>
@@ -63,7 +72,41 @@ function Homepage() {
           </TabsContent>
           <TabsContent value="password">Change your password here.</TabsContent>
         </Tabs>
-        <Checkbox />
+        <div className="flex gap-2">
+          <Checkbox id="checkbox" />
+          <Label htmlFor="checkbox">Click this to enable checkbox</Label>
+        </div>
+
+        <div className="flex gap-2">
+          <Button variant={"primary"}>Primary</Button>
+          <Button variant={"destructive"}>Destructive</Button>
+          <Button variant={"ghost"}>Ghost</Button>
+          <Button variant={"link"}>Link</Button>
+          <Button variant={"outline"}>Outline</Button>
+          <Button variant={"secondary"}>Secondary</Button>
+        </div>
+
+        <Dialog>
+          <DialogTrigger>
+            <Button variant={"outline"}>Open dialog</Button>
+          </DialogTrigger>
+          <DialogContent overlayClickClose>
+            <DialogHeader>
+              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogDescription>
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
+              </DialogDescription>
+            </DialogHeader>
+
+            <DialogFooter>
+              <DialogClose>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </Box>
     </div>
   );
