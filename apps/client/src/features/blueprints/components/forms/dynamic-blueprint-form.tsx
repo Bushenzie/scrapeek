@@ -1,27 +1,25 @@
-// import { useStore } from "@tanstack/react-form";
-import { type FC } from "react";
-import { Button } from "@/components/ui/button/button";
+import {
+  BlueprintType,
+  type EditableDynamicBlueprint,
+} from "@scrapeek/shared/blueprint";
+import type { FC } from "react";
 import { Label } from "@/components/ui/label/label";
 import { Textarea } from "@/components/ui/textarea/textarea";
 import { useAppForm } from "@/hooks/use-app-form";
 
-export const AddBlueprintForm: FC = () => {
-  const defaultValues = {
-    type: "api" as "api" | "static" | "dynamic",
-    name: "Blueprint",
-    url: "http://localhost:3001/api/offers",
-    pagination: true,
-    count: 1,
-    test: "wtf" as "wtf" | "lol" | "omg",
-    // baseUrl: "http://localhost:3001",
-    // config: {},
-  };
-
+export const DynamicBlueprintForm: FC = () => {
   const form = useAppForm({
-    defaultValues,
-    onSubmit: ({ value }) => {
-      alert(JSON.stringify(value));
-    },
+    defaultValues: {
+      type: BlueprintType.DYNAMIC,
+      name: "",
+      url: "",
+      baseUrl: "",
+      config: {
+        elements: [{ key: "", selector: "", attribute: undefined }],
+        pagination: {},
+        waitSelectorElement: "",
+      },
+    } as EditableDynamicBlueprint,
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,37 +34,16 @@ export const AddBlueprintForm: FC = () => {
           <form onSubmit={handleSubmit} className="space-y-4 col-span-1">
             <form.AppField
               name="name"
-              children={(field) => <field.TextField label="Name" />}
+              children={(field) => <field.TextField label="Blueprint name" />}
             />
+
             <form.AppField
               name="url"
               children={(field) => <field.TextField label="URL" />}
             />
             <form.AppField
-              name="type"
-              children={(field) => (
-                <field.RadioGroupField
-                  label="Type"
-                  options={[
-                    {
-                      label: "API",
-                      value: "api",
-                    },
-                    {
-                      label: "Static",
-                      value: "static",
-                    },
-                    {
-                      label: "Dynamic",
-                      value: "dynamic",
-                    },
-                  ]}
-                />
-              )}
-            />
-            <form.AppField
-              name={"pagination"}
-              children={(field) => <field.CheckboxField label="Pagination" />}
+              name="baseUrl"
+              children={(field) => <field.TextField label="Base URL" />}
             />
           </form>
         </div>
