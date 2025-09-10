@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+export enum BlueprintType {
+  API = "api",
+  STATIC = "static",
+  DYNAMIC = "dynamic",
+}
+
 const elementParamSelectorSchema = z.object({
   selector: z.string(),
   attribute: z.string(), // TODO optional?
@@ -43,7 +49,7 @@ const apiPaginationSchema = z.discriminatedUnion("type", [
 ]);
 
 const apiConfigSchema = z.object({
-  fields: z.record(z.string(), z.string()),
+  fields: z.array(z.object({ key: z.string(), selector: z.string() })),
   apiBaseUrl: z.url("Provided string must be URL"),
   method: z.enum(["GET", "POST"]).optional(),
   headers: z.record(z.string(), z.string()).optional(),
@@ -52,17 +58,23 @@ const apiConfigSchema = z.object({
 });
 
 const staticConfigSchema = z.object({
-  elements: z.record(
-    z.string(),
-    z.union([z.string(), elementParamSelectorSchema])
+  elements: z.array(
+    z.object({
+      key: z.string(),
+      selector: z.string(),
+      attribute: z.string().optional(),
+    })
   ),
   pagination: staticAndDynamicPaginationSchema.optional(),
 });
 
 const dynamicConfigSchema = z.object({
-  elements: z.record(
-    z.string(),
-    z.union([z.string(), elementParamSelectorSchema])
+  elements: z.array(
+    z.object({
+      key: z.string(),
+      selector: z.string(),
+      attribute: z.string().optional(),
+    })
   ),
   waitSelectorElement: z.string(),
   pagination: staticAndDynamicPaginationSchema.optional(),
@@ -85,41 +97,41 @@ const fullBaseBlueprintSchema = baseBlueprintSchema.extend(
 );
 
 const apiConfigBlueprintSchema = z.object({
-  type: z.literal("api"),
+  type: z.literal(BlueprintType.API),
   config: apiConfigSchema,
 });
 
 const staticConfigBlueprintSchema = z.object({
-  type: z.literal("static"),
+  type: z.literal(BlueprintType.STATIC),
   config: staticConfigSchema,
 });
 
 const dynamicConfigBlueprintSchema = z.object({
-  type: z.literal("dynamic"),
+  type: z.literal(BlueprintType.DYNAMIC),
   config: dynamicConfigSchema,
 });
 
-const apiBlueprintSchema = fullBaseBlueprintSchema.extend(
+export const apiBlueprintSchema = fullBaseBlueprintSchema.extend(
   apiConfigBlueprintSchema.shape
 );
 
-const staticBlueprintSchema = fullBaseBlueprintSchema.extend(
+export const staticBlueprintSchema = fullBaseBlueprintSchema.extend(
   staticConfigBlueprintSchema.shape
 );
 
-const dynamicBlueprintSchema = fullBaseBlueprintSchema.extend(
+export const dynamicBlueprintSchema = fullBaseBlueprintSchema.extend(
   dynamicConfigBlueprintSchema.shape
 );
 
-const apiEditableBlueprintSchema = baseBlueprintSchema.extend(
+export const apiEditableBlueprintSchema = baseBlueprintSchema.extend(
   apiConfigBlueprintSchema.shape
 );
 
-const staticEditableBlueprintSchema = baseBlueprintSchema.extend(
+export const staticEditableBlueprintSchema = baseBlueprintSchema.extend(
   staticConfigBlueprintSchema.shape
 );
 
-const dynamicEditableBlueprintSchema = baseBlueprintSchema.extend(
+export const dynamicEditableBlueprintSchema = baseBlueprintSchema.extend(
   dynamicConfigBlueprintSchema.shape
 );
 
@@ -134,6 +146,17 @@ export const editableBlueprintSchema = z.discriminatedUnion("type", [
   staticEditableBlueprintSchema,
   dynamicEditableBlueprintSchema,
 ]);
+
+export type APIBlueprint = z.infer<typeof apiBlueprintSchema>;
+export type EditableAPIBlueprint = z.infer<typeof apiEditableBlueprintSchema>;
+export type StaticBlueprint = z.infer<typeof staticBlueprintSchema>;
+export type EditableStaticBlueprint = z.infer<
+  typeof staticEditableBlueprintSchema
+>;
+export type DynamicBlueprint = z.infer<typeof dynamicBlueprintSchema>;
+export type EditableDynamicBlueprint = z.infer<
+  typeof dynamicEditableBlueprintSchema
+>;
 
 export type Blueprint = z.infer<typeof blueprintSchema>;
 export type EditableBlueprint = z.infer<typeof editableBlueprintSchema>;
