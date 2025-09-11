@@ -147,6 +147,7 @@ export const StaticBlueprintForm: FC = () => {
 
             <div className="flex gap-2">
               <Checkbox
+                id="pagination"
                 checked={showPagination}
                 onCheckedChange={handlePaginationChange}
               />
