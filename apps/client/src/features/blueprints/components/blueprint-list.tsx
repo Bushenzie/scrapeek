@@ -1,26 +1,11 @@
-import { type Blueprint } from "@scrapeek/shared/blueprint";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { PenLine } from "lucide-react";
 import { Suspense } from "react";
 import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner";
-import { axiosClient } from "@/lib/api/axios";
+import { useBlueprintsList } from "../api/queries/use-blueprints-list";
 
 export const BlueprintList = () => {
-  const { data } = useSuspenseQuery<Blueprint[]>({
-    queryKey: ["blueprint"],
-    queryFn: async () => {
-      try {
-        const response = await axiosClient.get<{ data: Blueprint[] }>(
-          "/blueprints"
-        );
-        const blueprints = await response.data.data;
-        return blueprints;
-      } catch {
-        throw new Error("Failed to fetch blueprints");
-      }
-    },
-  });
+  const { data } = useBlueprintsList();
 
   return (
     <div className="flex flex-col">

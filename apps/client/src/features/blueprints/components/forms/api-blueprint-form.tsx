@@ -1,9 +1,11 @@
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import {
+  type APIBlueprint,
   apiEditableBlueprintSchema,
   BlueprintType,
   type EditableAPIBlueprint,
 } from "@scrapeek/shared/blueprint";
+import { formOptions } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
 import { XIcon } from "lucide-react";
 import { type FC, useState } from "react";
@@ -13,30 +15,42 @@ import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import { Textarea } from "@/components/ui/textarea/textarea";
 import { useAppForm } from "@/hooks/use-app-form";
-import { useAddBlueprint } from "../../api/use-add-blueprint";
+import { useAddBlueprint } from "../../api/mutations/use-add-blueprint";
+import { useEditBlueprint } from "../../api/mutations/use-edit-blueprint";
 
 // TODO: Cleanup this form
 
-export const APIBlueprintForm: FC = () => {
+type APIBlueprintFormProps = {
+  blueprint?: APIBlueprint;
+};
+
+export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
   const [showPagination, setShowPagination] = useState(false);
   const router = useRouter();
 
+  const defaultOptions = formOptions({
+    defaultValues:
+      blueprint ??
+      ({
+        type: BlueprintType.API,
+        name: "",
+        url: "",
+        baseUrl: "",
+        config: {
+          apiBaseUrl: "",
+          fields: [{ key: "", selector: "" }],
+          headers: {},
+          method: "GET",
+          pagination: {},
+          query: {},
+        },
+      } as EditableAPIBlueprint),
+  });
+
   const addBlueprint = useAddBlueprint();
+  const editBlueprint = useEditBlueprint();
   const form = useAppForm({
-    defaultValues: {
-      type: BlueprintType.API,
-      name: "",
-      url: "",
-      baseUrl: "",
-      config: {
-        apiBaseUrl: "",
-        fields: [{ key: "", selector: "" }],
-        headers: {},
-        method: "GET",
-        pagination: {},
-        query: {},
-      },
-    } as EditableAPIBlueprint,
+    ...defaultOptions,
     validators: {
       onChange: apiEditableBlueprintSchema,
     },
@@ -99,7 +113,11 @@ export const APIBlueprintForm: FC = () => {
       },
     },
     onSubmit: ({ value }) => {
-      addBlueprint.mutate(value);
+      if (blueprint) {
+        editBlueprint.mutate(value);
+      } else {
+        addBlueprint.mutate(value);
+      }
       router.navigate({ to: "/blueprints" });
     },
   });
@@ -134,7 +152,6 @@ export const APIBlueprintForm: FC = () => {
               name="name"
               children={(field) => <field.TextField label="Blueprint name" />}
             />
-
             <form.AppField
               name="url"
               children={(field) => <field.TextField label="URL" />}
@@ -353,10 +370,9 @@ export const APIBlueprintForm: FC = () => {
         />
       </div>
       <div className="flex my-2 justify-end">
-        {/* <form.AppForm>
-          <form.SubmitButton btnText="Add blueprint" />
-        </form.AppForm> */}
-        <Button onClick={form.handleSubmit}>Add blueprint</Button>
+        <Button onClick={form.handleSubmit}>
+          {blueprint ? "Edit blueprint" : "Add blueprint"}
+        </Button>
       </div>
     </>
   );

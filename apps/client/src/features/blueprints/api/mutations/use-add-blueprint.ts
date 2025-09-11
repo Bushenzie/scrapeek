@@ -1,8 +1,10 @@
 import type { Blueprint, EditableBlueprint } from "@scrapeek/shared/blueprint";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/api/axios";
 
 export const useAddBlueprint = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["add-blueprint"],
     mutationFn: async (blueprint: EditableBlueprint) => {
@@ -17,6 +19,9 @@ export const useAddBlueprint = () => {
       } catch {
         throw new Error("Something went wrong during addition of blueprint");
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-blueprints"] });
     },
   });
 };

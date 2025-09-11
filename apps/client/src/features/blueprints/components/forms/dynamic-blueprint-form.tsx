@@ -1,9 +1,11 @@
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import {
   BlueprintType,
+  type DynamicBlueprint,
   dynamicEditableBlueprintSchema,
   type EditableDynamicBlueprint,
 } from "@scrapeek/shared/blueprint";
+import { formOptions } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
 import { XIcon } from "lucide-react";
 import { type FC, useState } from "react";
@@ -13,31 +15,49 @@ import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import { Textarea } from "@/components/ui/textarea/textarea";
 import { useAppForm } from "@/hooks/use-app-form";
-import { useAddBlueprint } from "../../api/use-add-blueprint";
+import { useAddBlueprint } from "../../api/mutations/use-add-blueprint";
+import { useEditBlueprint } from "../../api/mutations/use-edit-blueprint";
 
-export const DynamicBlueprintForm: FC = () => {
+type DynamicBlueprintFormProps = {
+  blueprint?: DynamicBlueprint;
+};
+
+export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
+  blueprint,
+}) => {
   const [showPagination, setShowPagination] = useState(false);
   const router = useRouter();
 
   const addBlueprint = useAddBlueprint();
+  const editBlueprint = useEditBlueprint();
+
+  const defaultOptions = formOptions({
+    defaultValues:
+      blueprint ??
+      ({
+        type: BlueprintType.DYNAMIC,
+        name: "",
+        url: "",
+        baseUrl: "",
+        config: {
+          elements: [{ key: "", selector: "", attribute: undefined }],
+          pagination: {},
+          waitSelectorElement: "",
+        },
+      } as EditableDynamicBlueprint),
+  });
 
   const form = useAppForm({
-    defaultValues: {
-      type: BlueprintType.DYNAMIC,
-      name: "",
-      url: "",
-      baseUrl: "",
-      config: {
-        elements: [{ key: "", selector: "", attribute: undefined }],
-        pagination: {},
-        waitSelectorElement: "",
-      },
-    } as EditableDynamicBlueprint,
+    ...defaultOptions,
     validators: {
       onChange: dynamicEditableBlueprintSchema,
     },
     onSubmit: ({ value }) => {
-      addBlueprint.mutate(value);
+      if (blueprint) {
+        editBlueprint.mutate(value);
+      } else {
+        addBlueprint.mutate(value);
+      }
       router.navigate({ to: "/blueprints" });
     },
   });
@@ -223,9 +243,14 @@ export const DynamicBlueprintForm: FC = () => {
         />
       </div>
       <div className="flex my-2 justify-end">
-        <form.AppForm>
-          <form.SubmitButton btnText="Add blueprint" />
-        </form.AppForm>
+        {/* <form.AppForm>
+          <form.SubmitButton
+            btnText={blueprint ? "Edit blueprint" : "Add blueprint"}
+          />
+        </form.AppForm> */}
+        <Button onClick={form.handleSubmit}>
+          {blueprint ? "Edit blueprint" : "Add blueprint"}
+        </Button>
       </div>
     </>
   );
