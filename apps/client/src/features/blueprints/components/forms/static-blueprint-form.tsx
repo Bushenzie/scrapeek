@@ -1,9 +1,10 @@
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import {
   BlueprintType,
-  type StaticBlueprint,
+  type EditableStaticBlueprint,
+  staticEditableBlueprintSchema,
 } from "@scrapeek/shared/blueprint";
-import { redirect, useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { XIcon } from "lucide-react";
 import { type FC, useState } from "react";
 import { Button } from "@/components/ui/button/button";
@@ -28,7 +29,10 @@ export const StaticBlueprintForm: FC = () => {
       config: {
         elements: [{ key: "", selector: "", attribute: undefined }],
       },
-    } as StaticBlueprint,
+    } as EditableStaticBlueprint,
+    validators: {
+      onChange: staticEditableBlueprintSchema,
+    },
     onSubmit: ({ value }) => {
       addBlueprint.mutate(value);
       router.navigate({ to: "/blueprints" });
@@ -212,7 +216,7 @@ export const StaticBlueprintForm: FC = () => {
       <div className="flex my-2 justify-end">
         <form.AppForm>
           <form.SubmitButton
-            onClick={() => form.handleSubmit()}
+            // onClick={() => form.handleSubmit()}
             btnText="Add blueprint"
           />
         </form.AppForm>
