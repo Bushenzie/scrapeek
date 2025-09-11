@@ -112,7 +112,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
                 children={(field) => (
                   <>
                     {field.state.value.map((_, index) => (
-                      <>
+                      <div key={index}>
                         <div className="grid grid-cols-8 gap-2">
                           <form.AppField
                             name={`config.elements[${index}].key`}
@@ -163,7 +163,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
                             <XIcon />
                           </Button>
                         </div>
-                      </>
+                      </div>
                     ))}
                     <Button
                       className="w-full"

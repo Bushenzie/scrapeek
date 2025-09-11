@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { PenLine } from "lucide-react";
 import { Suspense } from "react";
 import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner";
 import { useBlueprintsList } from "../api/queries/use-blueprints-list";
+import { RemoveBlueprintModal } from "./remove-blueprint-modal";
 
 export const BlueprintList = () => {
   const { data } = useBlueprintsList();
@@ -12,32 +12,28 @@ export const BlueprintList = () => {
       <Suspense fallback={<LoadingSpinner size="lg" className="mx-auto" />}>
         {data.length > 0 &&
           data.map((blueprint) => (
-            <Link
-              to="/blueprints/$blueprintId"
-              params={{
-                blueprintId: blueprint.id,
-              }}
-              className="flex justify-between cursor-pointer p-2 hover:bg-blueprint-700"
+            <div
+              className="flex justify-between p-2 hover:bg-blueprint-700"
               key={blueprint.id}
             >
               <div className="flex flex-col gap-1">
-                <h2 className="text-md">{blueprint.name}</h2>
+                <Link
+                  to="/blueprints/$blueprintId"
+                  params={{
+                    blueprintId: blueprint.id,
+                  }}
+                  className="text-md"
+                >
+                  {blueprint.name}
+                </Link>
                 <p className="text-sm text-blueprint-200">
                   {blueprint.type.toUpperCase()}
                 </p>
               </div>
               <div className="flex items-center justify-center gap-4 pr-4">
-                <Link
-                  to="/blueprints/$blueprintId/edit"
-                  params={{
-                    blueprintId: blueprint.id,
-                  }}
-                  className="text-blueprint-200 p-0 m-0"
-                >
-                  <PenLine className="w-5 h-5" />
-                </Link>
+                <RemoveBlueprintModal blueprintId={blueprint.id} />
               </div>
-            </Link>
+            </div>
           ))}
       </Suspense>
     </div>

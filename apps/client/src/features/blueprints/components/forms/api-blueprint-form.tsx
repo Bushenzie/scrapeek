@@ -172,7 +172,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                 children={(field) => (
                   <>
                     {field.state.value.map((_, index) => (
-                      <>
+                      <div key={index}>
                         <div className="grid grid-cols-6 gap-2">
                           <form.AppField
                             name={`config.fields[${index}].key`}
@@ -208,7 +208,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                             <XIcon />
                           </Button>
                         </div>
-                      </>
+                      </div>
                     ))}
                     <Button
                       className="w-full"

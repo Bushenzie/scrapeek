@@ -2,22 +2,21 @@ import type { Blueprint } from "@scrapeek/shared/blueprint";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/api/axios";
 
-export const useEditBlueprint = () => {
+export const useRemoveBlueprint = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["edit-blueprint"],
-    mutationFn: async (blueprint: Partial<Blueprint>) => {
+    mutationKey: ["remove-blueprint"],
+    mutationFn: async (blueprintId: string) => {
       try {
         const response = await axiosClient<Blueprint>({
-          method: "patch",
-          url: `/blueprints/${blueprint.id}`,
-          data: blueprint,
+          method: "delete",
+          url: `/blueprints/${blueprintId}`,
         });
         const data = await response.data;
         return data;
       } catch {
-        throw new Error("Something went wrong during edit of blueprint");
+        throw new Error("Something went wrong during removal of blueprint");
       }
     },
     onSuccess: () => {

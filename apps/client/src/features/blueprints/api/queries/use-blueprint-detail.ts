@@ -19,7 +19,7 @@ export const useBlueprintDetail = ({
         const blueprints = await response.data.data;
         return blueprints;
       } catch {
-        throw new Error("Failed to fetch blueprints");
+        throw new Error("Failed to fetch blueprint");
       }
     },
   });
