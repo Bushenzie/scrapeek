@@ -25,7 +25,9 @@ type DynamicBlueprintFormProps = {
 export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
   blueprint,
 }) => {
-  const [showPagination, setShowPagination] = useState(false);
+  const [showPagination, setShowPagination] = useState(
+    blueprint && blueprint?.config.pagination ? true : false
+  );
   const router = useRouter();
 
   const addBlueprint = useAddBlueprint();
