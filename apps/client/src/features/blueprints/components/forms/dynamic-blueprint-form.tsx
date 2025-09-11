@@ -243,14 +243,11 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
         />
       </div>
       <div className="flex my-2 justify-end">
-        {/* <form.AppForm>
+        <form.AppForm>
           <form.SubmitButton
             btnText={blueprint ? "Edit blueprint" : "Add blueprint"}
           />
-        </form.AppForm> */}
-        <Button onClick={form.handleSubmit}>
-          {blueprint ? "Edit blueprint" : "Add blueprint"}
-        </Button>
+        </form.AppForm>
       </div>
     </>
   );

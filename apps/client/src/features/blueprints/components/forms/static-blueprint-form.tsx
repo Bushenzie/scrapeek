@@ -234,15 +234,11 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
         />
       </div>
       <div className="flex my-2 justify-end">
-        {/* <form.AppForm>
+        <form.AppForm>
           <form.SubmitButton
-            // onClick={() => form.handleSubmit()}
             btnText={blueprint ? "Edit blueprint" : "Add blueprint"}
           />
-        </form.AppForm> */}
-        <Button onClick={form.handleSubmit}>
-          {blueprint ? "Edit blueprint" : "Add blueprint"}
-        </Button>
+        </form.AppForm>
       </div>
     </>
   );

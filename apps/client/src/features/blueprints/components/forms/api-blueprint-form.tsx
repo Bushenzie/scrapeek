@@ -370,9 +370,11 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
         />
       </div>
       <div className="flex my-2 justify-end">
-        <Button onClick={form.handleSubmit}>
-          {blueprint ? "Edit blueprint" : "Add blueprint"}
-        </Button>
+        <form.AppForm>
+          <form.SubmitButton
+            btnText={blueprint ? "Edit blueprint" : "Add blueprint"}
+          />
+        </form.AppForm>
       </div>
     </>
   );
