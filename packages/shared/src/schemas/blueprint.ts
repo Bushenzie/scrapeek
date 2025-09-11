@@ -21,7 +21,10 @@ const apiPaginationBase = z.object({
 
 const apiPaginationCursorSchema = apiPaginationBase.extend({
   type: z.literal("cursor"),
-  path: z.tuple([z.string(), z.string()]),
+  path: z.object({
+    queryKey: z.string(),
+    path: z.string(),
+  }),
 });
 
 const apiPaginationNextPageSchema = apiPaginationBase.extend({
@@ -31,14 +34,26 @@ const apiPaginationNextPageSchema = apiPaginationBase.extend({
 
 const apiPaginationPageSizeSchema = apiPaginationBase.extend({
   type: z.literal("pageSize"),
-  page: z.tuple([z.string(), z.number().positive()]),
-  size: z.tuple([z.string(), z.number().positive()]),
+  page: z.object({
+    queryKey: z.string(),
+    value: z.number().positive(),
+  }),
+  size: z.object({
+    queryKey: z.string(),
+    value: z.number().positive(),
+  }),
 });
 
 const apiPaginationOffsetSchema = apiPaginationBase.extend({
   type: z.literal("offsetLimit"),
-  offset: z.tuple([z.string(), z.number().positive()]),
-  limit: z.tuple([z.string(), z.number().positive()]),
+  offset: z.object({
+    queryKey: z.string(),
+    value: z.number().positive(),
+  }),
+  limit: z.object({
+    queryKey: z.string(),
+    value: z.number().positive(),
+  }),
 });
 
 const apiPaginationSchema = z.discriminatedUnion("type", [

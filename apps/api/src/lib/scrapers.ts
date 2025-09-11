@@ -76,8 +76,8 @@ const apiScraper = async (blueprint: Blueprint) => {
 
       switch (config.pagination.type) {
         case "cursor": {
-          const [cursorQuery, cursorPath] = config.pagination.path;
-          const cursorValue = getValueFromFlatPath(data, cursorPath);
+          const { queryKey, path } = config.pagination.path;
+          const cursorValue = getValueFromFlatPath(data, path);
 
           if (!cursorValue) return items;
 
@@ -86,7 +86,7 @@ const apiScraper = async (blueprint: Blueprint) => {
             config: {
               ...config,
               query: {
-                [cursorQuery]: cursorValue as string,
+                [queryKey]: cursorValue as string,
               },
             },
           });
@@ -114,10 +114,12 @@ const apiScraper = async (blueprint: Blueprint) => {
           break;
         }
         case "offsetLimit": {
-          const [offsetQuery, offsetNum] = config.pagination.offset;
-          const [limitQuery, limitNum] = config.pagination.limit;
+          const { queryKey: offsetQueryKey, value: offsetNumber } =
+            config.pagination.offset;
+          const { queryKey: limitQueryKey, value: limitNumber } =
+            config.pagination.limit;
 
-          const newOffset = offsetNum + limitNum;
+          const newOffsetValue = offsetNumber + limitNumber;
 
           let nextOffsetData = await apiScraper({
             ...blueprint,
@@ -125,11 +127,11 @@ const apiScraper = async (blueprint: Blueprint) => {
               ...config,
               pagination: {
                 ...config.pagination,
-                offset: [offsetQuery, newOffset],
+                offset: { queryKey: offsetQueryKey, value: newOffsetValue },
               },
               query: {
-                [offsetQuery]: newOffset,
-                [limitQuery]: limitNum,
+                [offsetQueryKey]: newOffsetValue,
+                [limitQueryKey]: limitNumber,
               },
             },
           });
@@ -141,10 +143,12 @@ const apiScraper = async (blueprint: Blueprint) => {
           break;
         }
         case "pageSize": {
-          const [pageQuery, pageNum] = config.pagination.page;
-          const [sizeQuery, sizeNum] = config.pagination.size;
+          const { queryKey: pageQueryKey, value: pageNumber } =
+            config.pagination.page;
+          const { queryKey: sizeQueryKey, value: sizeNumber } =
+            config.pagination.size;
 
-          const newPage = pageNum + 1;
+          const newPageNumber = pageNumber + 1;
 
           let nextPageIncrementedData = await apiScraper({
             ...blueprint,
@@ -152,11 +156,15 @@ const apiScraper = async (blueprint: Blueprint) => {
               ...config,
               pagination: {
                 ...config.pagination,
-                page: [pageQuery, newPage],
+                // page: [pageQuery, newPage],
+                page: {
+                  queryKey: pageQueryKey,
+                  value: newPageNumber,
+                },
               },
               query: {
-                [pageQuery]: newPage,
-                [sizeQuery]: sizeNum,
+                [pageQueryKey]: newPageNumber,
+                [sizeQueryKey]: sizeNumber,
               },
             },
           });
