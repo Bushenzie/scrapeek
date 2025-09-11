@@ -15,7 +15,7 @@ export const TextField: FC<TextFieldProps> = ({ label }) => {
   const errors = useStore(field.store, (state) => state.meta.errors);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 w-full">
       <Label>{label}</Label>
       <Input
         name={field.name}

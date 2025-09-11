@@ -31,13 +31,13 @@ export const SelectField: FC<SelectFieldProps> = ({
   const errors = useStore(field.store, (state) => state.meta.errors);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 w-full">
       <Label>{label}</Label>
       <Select
         value={field.state.value}
         onValueChange={(val) => field.handleChange(val)}
       >
-        <SelectTrigger>
+        <SelectTrigger className="w-full">
           <SelectValue>
             {currentValue ? currentValue : triggerLabel}
           </SelectValue>
