@@ -1,18 +1,19 @@
-import { useStore } from "@tanstack/react-form";
 import { type FC } from "react";
-import type { ZodError } from "zod";
 import { Label } from "@/components/ui/label/label";
 import { Textarea } from "@/components/ui/textarea/textarea";
 import { useFieldContext } from "@/hooks/use-app-form";
+import { ErrorField } from "./error-field";
 
 type TextareaFieldProps = {
   label: string;
+  showError?: boolean;
 };
 
-export const TextareaField: FC<TextareaFieldProps> = ({ label }) => {
+export const TextareaField: FC<TextareaFieldProps> = ({
+  label,
+  showError = true,
+}) => {
   const field = useFieldContext<string>();
-
-  const errors = useStore(field.store, (state) => state.meta.errors);
 
   return (
     <div className="flex flex-col gap-2">
@@ -22,13 +23,7 @@ export const TextareaField: FC<TextareaFieldProps> = ({ label }) => {
         value={field.state.value}
         onChange={(e) => field.handleChange(e.target.value)}
       />
-      {errors.length > 0 && (
-        <>
-          {errors.map((error: ZodError) => (
-            <span className="text-red-600">{error.message}</span>
-          ))}
-        </>
-      )}
+      {showError && <ErrorField fieldMeta={field.getMeta()} />}
     </div>
   );
 };

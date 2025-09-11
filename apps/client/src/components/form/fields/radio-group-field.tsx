@@ -1,12 +1,11 @@
-import { useStore } from "@tanstack/react-form";
 import { type FC } from "react";
-import type { ZodError } from "zod";
 import { Label } from "@/components/ui/label/label";
 import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group/radio-group";
 import { useFieldContext } from "@/hooks/use-app-form";
+import { ErrorField } from "./error-field";
 
 type RadioGroupFieldProps = {
   label: string;
@@ -14,15 +13,15 @@ type RadioGroupFieldProps = {
     label: string;
     value: string;
   }[];
+  showError?: boolean;
 };
 
 export const RadioGroupField: FC<RadioGroupFieldProps> = ({
   label,
   options,
+  showError = true,
 }) => {
   const field = useFieldContext<string>();
-
-  const errors = useStore(field.store, (state) => state.meta.errors);
 
   return (
     <div className="flex flex-col gap-2">
@@ -41,13 +40,7 @@ export const RadioGroupField: FC<RadioGroupFieldProps> = ({
           </div>
         ))}
       </RadioGroup>
-      {errors.length > 0 && (
-        <>
-          {errors.map((error: ZodError) => (
-            <span className="text-red-600">{error.message}</span>
-          ))}
-        </>
-      )}
+      {showError && <ErrorField fieldMeta={field.getMeta()} />}
     </div>
   );
 };
