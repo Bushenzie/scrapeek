@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog/dialog";
 import { useAppForm } from "@/hooks/use-app-form";
-import { blueprintTypeSelectSchema } from "../schemas/blueprint-type";
+import { blueprintTypeSelectSchema } from "../../schemas/blueprint-type";
 
 export const AddBlueprintDialog = () => {
   const router = useRouter();
