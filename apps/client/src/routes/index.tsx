@@ -40,7 +40,7 @@ export const Route = createFileRoute("/")({
 function Homepage() {
   return (
     <div>
-      <Box className="flex flex-col items-start gap-4">
+      <Box className="flex flex-col p-6 items-start gap-4">
         <Input placeholder="test" />
         <RadioGroup defaultValue="2">
           <div className="flex items-center gap-2">

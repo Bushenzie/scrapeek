@@ -17,7 +17,7 @@ export const Separator: FC<SeparatorProps> = ({
       decorative={decorative}
       orientation={orientation}
       className={cn(
-        "bg-blueprint-200 shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
+        "bg-blueprint-400 shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
         className
       )}
       {...props}

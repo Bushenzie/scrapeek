@@ -12,7 +12,7 @@ export const EditBlueprint: FC<EditBlueprintProps> = ({ blueprintId }) => {
   const { data: blueprint } = useBlueprintDetail({ blueprintId });
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col p-6">
       {blueprint.type === "api" && <APIBlueprintForm blueprint={blueprint} />}
       {blueprint.type === "static" && (
         <StaticBlueprintForm blueprint={blueprint} />

@@ -21,7 +21,7 @@ function ViewBlueprintPage() {
     <div>
       <GoBackButton />
       <Box className="w-full">
-        <div className="flex justify-between">
+        <div className="flex justify-between p-6">
           <h1 className="text-2xl">Blueprint</h1>
           <div className="flex gap-2 items-center">
             <LinkButton
@@ -34,7 +34,7 @@ function ViewBlueprintPage() {
           </div>
           {/* <GoBackButton /> */}
         </div>
-        <Separator className="my-4" />
+        <Separator />
         <Suspense fallback={<LoadingSpinner size="lg" className="mx-auto" />}>
           <BlueprintDetail blueprintId={blueprintId} />
         </Suspense>

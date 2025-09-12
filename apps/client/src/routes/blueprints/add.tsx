@@ -21,13 +21,15 @@ function AddBlueprintPage() {
     <div>
       <GoBackButton />
       <Box>
-        <div className="flex items-start flex-col gap-2">
+        <div className="flex items-start flex-col gap-2 n p-6">
           <h1 className="text-2xl">Add blueprint</h1>
         </div>
-        <Separator className="my-4" />
-        {type === "api" && <APIBlueprintForm />}
-        {type === "static" && <StaticBlueprintForm />}
-        {type === "dynamic" && <DynamicBlueprintForm />}
+        <Separator />
+        <div className="p-6">
+          {type === "api" && <APIBlueprintForm />}
+          {type === "static" && <StaticBlueprintForm />}
+          {type === "dynamic" && <DynamicBlueprintForm />}
+        </div>
       </Box>
     </div>
   );
