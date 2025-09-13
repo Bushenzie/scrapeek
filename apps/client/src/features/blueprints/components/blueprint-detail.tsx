@@ -1,5 +1,6 @@
 import { type FC } from "react";
 import { Button } from "@/components/ui/button/button";
+import { CodeBlock } from "@/components/ui/code-block/code-block";
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import { Textarea } from "@/components/ui/textarea/textarea";
@@ -10,9 +11,7 @@ type BlueprintDetailProps = {
   blueprintId: string;
 };
 
-export const BlueprintDetail: FC<BlueprintDetailProps> = async ({
-  blueprintId,
-}) => {
+export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
   const { data: blueprint } = useBlueprintDetail({ blueprintId });
   const { data, mutate: runScraper } = useRunBlueprint({
     blueprintIds: [blueprintId],
@@ -40,20 +39,19 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = async ({
         <div className="col-span-1">
           <div className="flex flex-col gap-2">
             <Label>Last scraper run result</Label>
-
-            <Textarea
-              value={JSON.stringify(
+            <CodeBlock
+              code={JSON.stringify(
                 typeof data?.[0] === "object" ? data[0] : {},
                 null,
                 4
               )}
-              className="text-blueprint-200"
-              readOnly
-            />
+              lang="json"
+              theme="one-dark-pro"
+            ></CodeBlock>
           </div>
         </div>
       </div>
-      <div className="flex justify-end gap-2 pb-6 pr-6">
+      <div className="flex justify-end gap-2 pb-6 pr-6 ">
         <Button variant={"outline"}>Test run</Button>
         <Button onClick={handleRunScraper}>Run scraper</Button>
       </div>
