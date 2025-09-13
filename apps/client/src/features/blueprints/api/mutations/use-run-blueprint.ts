@@ -8,13 +8,14 @@ type RunBlueprintProps = {
 export const useRunBlueprint = ({ blueprintIds }: RunBlueprintProps) => {
   return useMutation({
     mutationKey: ["blueprint", "run", blueprintIds],
-    mutationFn: async () => {
+    mutationFn: async (mode?: "normal" | "test") => {
       try {
         const response = await axiosClient<[any[]]>({
           method: "post",
           url: `/runners`,
           data: {
             blueprintIds,
+            mode,
           },
         });
         const runnerResults = await response.data;

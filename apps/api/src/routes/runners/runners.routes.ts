@@ -10,19 +10,21 @@ import { runnerSchema } from "./runners.schemas.ts";
 const app = new Hono();
 
 app.post("/", zodValidator("json", runnerSchema), async (c) => {
-	const { blueprintIds } = await c.req.valid("json");
+  const { blueprintIds, mode } = await c.req.valid("json");
 
-	const blueprints = (await db
-		.select()
-		.from(blueprintTable)
-		.where(inArray(blueprintTable.id, blueprintIds))
-		.catch(() => {
-			throw new Error("No blueprints found");
-		})) as Blueprint[];
+  const blueprints = (await db
+    .select()
+    .from(blueprintTable)
+    .where(inArray(blueprintTable.id, blueprintIds))
+    .catch(() => {
+      throw new Error("No blueprints found");
+    })) as Blueprint[];
 
-	const data = await scrapers.scrapeData(blueprints);
+  const isTestRun = mode === "test";
 
-	return c.json(data);
+  const data = await scrapers.scrapeData(blueprints, isTestRun);
+
+  return c.json(data);
 });
 
 export default app;

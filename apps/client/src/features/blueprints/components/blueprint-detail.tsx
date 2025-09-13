@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button/button";
 import { CodeBlock } from "@/components/ui/code-block/code-block";
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
-import { Textarea } from "@/components/ui/textarea/textarea";
 import { useRunBlueprint } from "../api/mutations/use-run-blueprint";
 import { useBlueprintDetail } from "../api/queries/use-blueprint-detail";
 
@@ -18,7 +17,11 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
   });
 
   const handleRunScraper = () => {
-    runScraper();
+    runScraper("normal");
+  };
+
+  const handleTestRunScraper = () => {
+    runScraper("test");
   };
 
   return (
@@ -46,13 +49,15 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
                 4
               )}
               lang="json"
-              theme="one-dark-pro"
-            ></CodeBlock>
+              theme="github-dark-dimmed"
+            />
           </div>
         </div>
       </div>
       <div className="flex justify-end gap-2 pb-6 pr-6 ">
-        <Button variant={"outline"}>Test run</Button>
+        <Button variant={"outline"} onClick={handleTestRunScraper}>
+          Test run
+        </Button>
         <Button onClick={handleRunScraper}>Run scraper</Button>
       </div>
     </div>
