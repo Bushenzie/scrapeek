@@ -131,6 +131,11 @@ pre.shiki {
   @apply !rounded-md !bg-blueprint-900 !border !border-blueprint-400 !p-3;
 }
 
+pre.shiki,
 pre.shiki > code {
-  @apply !break-words !whitespace-break-spaces text-sm;
+  @apply !max-h-96;
+}
+
+pre.shiki > code {
+  @apply !break-words !whitespace-break-spaces text-sm !max-h-20;
 }
