@@ -35,7 +35,7 @@ export const AddBlueprintDialog = () => {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button>Add</Button>
       </DialogTrigger>
       <DialogContent>

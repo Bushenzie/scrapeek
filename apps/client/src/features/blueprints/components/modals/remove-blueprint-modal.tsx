@@ -27,7 +27,7 @@ export const RemoveBlueprintModal: FC<RemoveBlueprintModalProps> = ({
 
   return (
     <Dialog>
-      <DialogTrigger className="z-10">
+      <DialogTrigger className="z-10" asChild>
         <Button variant={"destructive"}>
           <Trash className="w-5 h-5 p-0 m-0" />
         </Button>
