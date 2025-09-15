@@ -201,7 +201,7 @@ export const apiScraper = async (
     }
     console.log(`FINISH | API Scrape | ${blueprint.name}`);
     return items;
-  } catch (err: unknown) {
-    throw new Error(err as any);
+  } catch (err) {
+    throw new Error((err as Error).message);
   }
 };

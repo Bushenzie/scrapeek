@@ -20,25 +20,22 @@ export const dynamicSiteScraper = async (
   await page.goto(blueprint.url);
 
   await page.waitForSelector(config.waitSelectorElement, { timeout: 15000 });
-  let items: any[] = [];
+  let items: Record<string, string>[] = [];
 
   for (const element of config.elements) {
-    const isPlainSelector = element.attribute === undefined;
-
     const locator = await page.locator(element.selector);
 
     if (testRun) {
       const resultItem = await locator.first().evaluate(
         (item, props) => {
-          if (props.isPlainSelector) {
-            return item.textContent?.trim() ?? "";
+          if (props.attribute) {
+            return item.getAttribute(props.attribute) ?? "";
           }
-          return item.getAttribute(props.attribute) ?? "";
+          return item.textContent?.trim() ?? "";
         },
         {
           key: element.key,
-          isPlainSelector,
-          attribute: element.attribute!,
+          attribute: element.attribute,
         }
       );
 
@@ -50,16 +47,15 @@ export const dynamicSiteScraper = async (
     const resultItems = await locator.evaluateAll(
       (items, props) =>
         items.map((item) => {
-          if (props.isPlainSelector) {
-            return item.textContent?.trim() ?? "";
+          if (props.attribute) {
+            return item.getAttribute(props.attribute) ?? "";
           }
-          return item.getAttribute(props.attribute) ?? "";
+          return item.textContent?.trim() ?? "";
         }),
       {
         items,
         key: element.key,
-        isPlainSelector,
-        attribute: element.attribute!,
+        attribute: element.attribute,
       }
     );
 

@@ -16,22 +16,19 @@ export const staticSiteScraper = async (
 
     const $ = cheerio.load(response.data);
 
-    let items: any[] = [];
+    let items: Record<string, string>[] = [];
 
     for (const element of config.elements) {
-      const isPlainSelector = element.attribute === undefined;
-
       if (testRun) {
         const $item = $(element.selector).first();
         if (!items[0]) items[0] = {};
         let itemValue = "";
-        if (isPlainSelector) {
-          itemValue = $item.text().trim() ?? "";
+        if (element.attribute !== undefined) {
+          itemValue = $item.attr(element.attribute) ?? "";
         } else {
-          itemValue = $item.attr(element.attribute!) ?? "";
+          itemValue = $item.text().trim() ?? "";
         }
         items[0][element.key] = itemValue;
-        // items[0].page = pageNum;
         continue;
       }
 
@@ -40,13 +37,12 @@ export const staticSiteScraper = async (
         .forEach((item, index) => {
           if (!items[index]) items[index] = {};
           let itemValue = "";
-          if (isPlainSelector) {
-            itemValue = $(item).text().trim() ?? "";
+          if (element.attribute !== undefined) {
+            itemValue = $(item).attr(element.attribute) ?? "";
           } else {
-            itemValue = $(item).attr(element.attribute!) ?? "";
+            itemValue = $(item).text().trim() ?? "";
           }
           items[index][element.key] = itemValue;
-          // items[index].page = page;
         });
     }
 
@@ -79,7 +75,7 @@ export const staticSiteScraper = async (
     }
     console.log(`FINISH | STATIC Scrape | ${blueprint.name}`);
     return items;
-  } catch (err: unknown) {
-    throw new Error(err as any);
+  } catch (err) {
+    throw new Error((err as Error).message);
   }
 };
