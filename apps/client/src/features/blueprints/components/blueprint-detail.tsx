@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { type FC, useMemo } from "react";
 import { Button } from "@/components/ui/button/button";
 import { CodeBlock } from "@/components/ui/code-block/code-block";
 import { Input } from "@/components/ui/input/input";
@@ -15,6 +15,20 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
   const { data, mutate: runScraper } = useRunBlueprint({
     blueprintIds: [blueprintId],
   });
+
+  const getLastScrapedData = () => {
+    const source =
+      (data && Array.isArray(data) ? data[0] : data) ?? blueprint?.result?.data;
+
+    const lastScrapedData = source ?? {};
+
+    return JSON.stringify(lastScrapedData, null, 4);
+  };
+
+  const lastScrapedData = useMemo(
+    () => getLastScrapedData(),
+    [blueprint, data]
+  );
 
   const handleRunScraper = () => {
     runScraper("normal");
@@ -43,11 +57,7 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
           <div className="flex flex-col gap-2">
             <Label>Last scraper run result</Label>
             <CodeBlock
-              code={JSON.stringify(
-                typeof data?.[0] === "object" ? data[0] : {},
-                null,
-                4
-              )}
+              code={lastScrapedData}
               lang="json"
               theme="github-dark-dimmed"
             />

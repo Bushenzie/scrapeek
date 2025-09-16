@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { formatDistance } from "date-fns";
 import { useBlueprintsList } from "../api/queries/use-blueprints-list";
 
 export const BlueprintList = () => {
@@ -18,8 +19,15 @@ export const BlueprintList = () => {
           >
             <div className="flex flex-col gap-1 py-2 px-4">
               <h1 className="text-md">{blueprint.name}</h1>
-              <p className="text-sm text-blueprint-200">
-                {blueprint.type.toUpperCase()}
+              <p className="text-sm space-x-2 text-blueprint-200">
+                <span>{blueprint.type.toUpperCase()}</span>
+                <span>|</span>
+                {blueprint.result?.updatedAt && (
+                  <span>
+                    Last scrape:{" "}
+                    {formatDistance(blueprint.result.updatedAt, new Date())}
+                  </span>
+                )}
               </p>
             </div>
           </Link>
