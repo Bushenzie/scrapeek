@@ -22,12 +22,18 @@ export const BlueprintList = () => {
               <p className="text-sm space-x-2 text-blueprint-200">
                 <span>{blueprint.type.toUpperCase()}</span>
                 <span>|</span>
-                {blueprint.result?.updatedAt && (
-                  <span>
-                    Last scrape:{" "}
-                    {formatDistance(blueprint.result.updatedAt, new Date())}
-                  </span>
-                )}
+                <span>
+                  Last scrape:{" "}
+                  {blueprint.result?.updatedAt ? (
+                    <>
+                      {formatDistance(blueprint.result.updatedAt, new Date(), {
+                        addSuffix: true,
+                      })}
+                    </>
+                  ) : (
+                    "never"
+                  )}
+                </span>
               </p>
             </div>
           </Link>
