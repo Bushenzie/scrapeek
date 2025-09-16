@@ -15,6 +15,13 @@
       "when": 1756187551874,
       "tag": "0001_next_stone_men",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1757974133429,
+      "tag": "0002_worthless_doctor_faustus",
+      "breakpoints": true
     }
   ]
 }

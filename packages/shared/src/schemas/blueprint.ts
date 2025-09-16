@@ -105,6 +105,15 @@ const baseBlueprintSchema = z.object({
   url: z.url("Provided string must be URL").max(255),
   baseUrl: z.url("Provided string must be URL").max(255),
   name: z.string().min(3, "Minimum length of name is 3 chars"),
+  result: z
+    .object({
+      id: z.uuid(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+      data: z.json(),
+      blueprintId: z.uuid(),
+    })
+    .optional(),
 });
 
 const fullBaseBlueprintSchema = baseBlueprintSchema.extend(

@@ -1,21 +1,30 @@
+import { relations } from "drizzle-orm";
 import {
-	jsonb,
-	pgEnum,
-	pgTable,
-	timestamp,
-	uuid,
-	varchar,
+  jsonb,
+  pgEnum,
+  pgTable,
+  timestamp,
+  uuid,
+  varchar,
 } from "drizzle-orm/pg-core";
+import { resultTable } from "./result.ts";
 
 export const configTypeEnum = pgEnum("type", ["api", "static", "dynamic"]);
 
 export const blueprintTable = pgTable("blueprint", {
-	id: uuid("id").primaryKey().notNull().defaultRandom(),
-	type: configTypeEnum("type").notNull(),
-	url: varchar("url", { length: 255 }).notNull(),
-	baseUrl: varchar("base_url", { length: 255 }).notNull(),
-	name: varchar("name", { length: 255 }).notNull(),
-	config: jsonb("config").notNull(),
-	createdAt: timestamp("created_at").notNull().defaultNow(),
-	updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  type: configTypeEnum("type").notNull(),
+  url: varchar("url", { length: 255 }).notNull(),
+  baseUrl: varchar("base_url", { length: 255 }).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  config: jsonb("config").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
+
+export const blueprintRelations = relations(blueprintTable, ({ one }) => ({
+  result: one(resultTable, {
+    fields: [blueprintTable.id],
+    references: [resultTable.blueprintId],
+  }),
+}));
