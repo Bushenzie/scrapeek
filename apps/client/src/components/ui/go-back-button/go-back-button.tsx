@@ -3,10 +3,11 @@ import { Undo2 } from "lucide-react";
 import { type FC } from "react";
 import { cn } from "@/lib/utils/utils";
 import { Button } from "../button/button";
-import type { ButtonProps } from "../button/button.types";
+import type { GoBackButtonProps } from "./go-back-button.types";
 
-export const GoBackButton: FC<ButtonProps> = ({
+export const GoBackButton: FC<GoBackButtonProps> = ({
   variant = "link",
+  fallbackTo,
   className,
   onClick,
   ...props
@@ -15,7 +16,10 @@ export const GoBackButton: FC<ButtonProps> = ({
   const canGoBack = useCanGoBack();
 
   const navigateBack = () => {
-    if (!canGoBack) return;
+    if (!canGoBack) {
+      if (fallbackTo) router.navigate({ to: fallbackTo });
+      return;
+    }
 
     router.history.back();
   };
@@ -28,7 +32,7 @@ export const GoBackButton: FC<ButtonProps> = ({
         onClick?.(e);
         navigateBack();
       }}
-      disabled={!canGoBack}
+      disabled={!canGoBack && !fallbackTo}
       {...props}
     >
       <Undo2 /> Go Back

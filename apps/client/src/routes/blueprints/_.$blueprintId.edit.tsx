@@ -15,7 +15,7 @@ function ViewBlueprintPage() {
 
   return (
     <div>
-      <GoBackButton className="h-max" />
+      <GoBackButton className="h-max" fallbackTo=".." />
       <Box className="w-full">
         <div className="flex justify-between p-6">
           <h1 className="text-2xl">Blueprint Edit</h1>

@@ -19,7 +19,7 @@ function AddBlueprintPage() {
   const { type } = useSearch({ from: "/blueprints/add" });
   return (
     <div>
-      <GoBackButton />
+      <GoBackButton fallbackTo=".." />
       <Box>
         <div className="flex items-start flex-col gap-2 n p-6">
           <h1 className="text-2xl">Add blueprint</h1>
