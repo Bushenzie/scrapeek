@@ -23,16 +23,19 @@ export const apiScraper = async (
         field.selector.startsWith("$") && field.selector.endsWith("$");
       const foundValues = getValueFromFlatPath(data, field.selector);
 
-      if (testRun) {
-        if (!items[0]) items[0] = {};
-        items[0][field.key] = (foundValues ?? [])[0];
-        continue;
-      }
-
-      (foundValues ?? []).forEach((item: any, index: number) => {
+      const setItemsValue = (item: any, index: number) => {
         if (!items[index]) items[index] = {};
         items[index][field.key] = item;
-      });
+      };
+
+      const areValuesArray = Array.isArray(foundValues);
+      if (testRun) {
+        if (areValuesArray) setItemsValue((foundValues ?? [])[0], 0);
+        else setItemsValue(foundValues, 0);
+      } else {
+        if (areValuesArray) (foundValues ?? [])?.forEach(setItemsValue);
+        else setItemsValue(foundValues, 0);
+      }
 
       if (!isComposable) continue;
 
