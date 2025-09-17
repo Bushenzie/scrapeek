@@ -13,9 +13,10 @@ export const useBlueprintDetail = ({
     queryKey: ["blueprint", blueprintId],
     queryFn: async () => {
       try {
-        const response = await axiosClient.get<{ data: Blueprint }>(
-          `/blueprints/${blueprintId}`
-        );
+        const response = await axiosClient<{ data: Blueprint }>({
+          method: "get",
+          url: `/blueprints/${blueprintId}`,
+        });
         const blueprints = await response.data.data;
         return blueprints;
       } catch {

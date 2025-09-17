@@ -147,17 +147,17 @@ export const dynamicBlueprintSchema = fullBaseBlueprintSchema.extend(
   dynamicConfigBlueprintSchema.shape
 );
 
-export const apiEditableBlueprintSchema = baseBlueprintSchema.extend(
-  apiConfigBlueprintSchema.shape
-);
+export const apiEditableBlueprintSchema = baseBlueprintSchema
+  .omit({ result: true })
+  .extend(apiConfigBlueprintSchema.shape);
 
-export const staticEditableBlueprintSchema = baseBlueprintSchema.extend(
-  staticConfigBlueprintSchema.shape
-);
+export const staticEditableBlueprintSchema = baseBlueprintSchema
+  .omit({ result: true })
+  .extend(staticConfigBlueprintSchema.shape);
 
-export const dynamicEditableBlueprintSchema = baseBlueprintSchema.extend(
-  dynamicConfigBlueprintSchema.shape
-);
+export const dynamicEditableBlueprintSchema = baseBlueprintSchema
+  .omit({ result: true })
+  .extend(dynamicConfigBlueprintSchema.shape);
 
 export const blueprintSchema = z.discriminatedUnion("type", [
   apiBlueprintSchema,

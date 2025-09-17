@@ -28,9 +28,15 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
   const [showPagination, setShowPagination] = useState(
     blueprint && blueprint?.config.pagination ? true : false
   );
+
   const addBlueprint = useAddBlueprint();
   const editBlueprint = useEditBlueprint();
   const router = useRouter();
+
+  if (blueprint?.result) {
+    const { result, ...formattedBlueprint } = blueprint;
+    blueprint = formattedBlueprint;
+  }
 
   const defaultOptions = formOptions({
     defaultValues:

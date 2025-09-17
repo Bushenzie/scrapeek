@@ -28,7 +28,14 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
   const [showPagination, setShowPagination] = useState(
     blueprint && blueprint?.config.pagination ? true : false
   );
+  const addBlueprint = useAddBlueprint();
+  const editBlueprint = useEditBlueprint();
   const router = useRouter();
+
+  if (blueprint?.result) {
+    const { result, ...formattedBlueprint } = blueprint;
+    blueprint = formattedBlueprint;
+  }
 
   const defaultOptions = formOptions({
     defaultValues:
@@ -49,8 +56,6 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
       } as EditableAPIBlueprint),
   });
 
-  const addBlueprint = useAddBlueprint();
-  const editBlueprint = useEditBlueprint();
   const form = useAppForm({
     ...defaultOptions,
     validators: {
