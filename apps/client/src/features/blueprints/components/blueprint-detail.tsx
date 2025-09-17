@@ -14,7 +14,11 @@ type BlueprintDetailProps = {
 
 export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
   const { data: blueprint } = useBlueprintDetail({ blueprintId });
-  const { data, mutate: runScraper } = useRunBlueprint({
+  const {
+    data,
+    isPending,
+    mutate: runScraper,
+  } = useRunBlueprint({
     blueprintIds: [blueprintId],
   });
 
@@ -92,10 +96,16 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
         </div>
       </div>
       <div className="flex justify-end gap-2 pb-6 pr-6 ">
-        <Button variant={"outline"} onClick={handleTestRunScraper}>
+        <Button
+          variant={"outline"}
+          onClick={handleTestRunScraper}
+          loading={isPending}
+        >
           Test run
         </Button>
-        <Button onClick={handleRunScraper}>Run scraper</Button>
+        <Button onClick={handleRunScraper} loading={isPending}>
+          Run scraper
+        </Button>
       </div>
     </div>
   );
