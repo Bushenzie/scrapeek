@@ -1,4 +1,5 @@
 import { saveAs } from "file-saver";
+import { Copy, Download } from "lucide-react";
 import { type FC, useMemo } from "react";
 import { Button } from "@/components/ui/button/button";
 import { CodeBlock } from "@/components/ui/code-block/code-block";
@@ -17,26 +18,23 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
     blueprintIds: [blueprintId],
   });
 
-  const getLastScrapedData = () => {
+  const lastScrapedData = useMemo(() => {
     const source =
       (data && Array.isArray(data) ? data[0] : data) ?? blueprint?.result?.data;
 
     const lastScrapedData = source ?? {};
 
     return JSON.stringify(lastScrapedData, null, 4);
-  };
-
-  const lastScrapedData = useMemo(
-    () => getLastScrapedData(),
-    [blueprint, data]
-  );
+  }, [blueprint, data]);
 
   const handleDownload = () => {
-    const lastScrapedData = getLastScrapedData();
-
     const dataBlob = new Blob([lastScrapedData], { type: "application/json" });
 
     saveAs(dataBlob, `${blueprint.name}_data.json`);
+  };
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(lastScrapedData);
   };
 
   const handleRunScraper = () => {
@@ -66,13 +64,24 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <Label>Last scraper run result</Label>
-              <Button
-                variant={"link"}
-                className="m-0 p-0 h-max"
-                onClick={handleDownload}
-              >
-                Download
-              </Button>
+              <div className="flex gap-4">
+                <Button
+                  variant={"link"}
+                  size={"icon"}
+                  className="m-0 p-0 h-max w-fit"
+                  onClick={handleDownload}
+                >
+                  <Download />
+                </Button>
+                <Button
+                  variant={"link"}
+                  size={"icon"}
+                  className="m-0 p-0 h-max w-fit"
+                  onClick={handleCopy}
+                >
+                  <Copy />
+                </Button>
+              </div>
             </div>
             <CodeBlock
               code={lastScrapedData}
