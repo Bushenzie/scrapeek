@@ -8,11 +8,18 @@ import { errorHandler } from "@/middlewares/error-handler.ts";
 import blueprintRoutes from "@/routes/blueprints/blueprints.routes.ts";
 import runnerRoutes from "@/routes/runners/runners.routes.ts";
 
-const app = new Hono();
+const app = new Hono()
+  .use(logger())
+  .onError(errorHandler)
+  .use("/api/*", cors())
+  .basePath("/api")
+  .route("/blueprints", blueprintRoutes)
+  .route("/runners", runnerRoutes);
 
-app.use("/api/*", cors());
-app.use(logger());
-app.onError(errorHandler);
+// app.use(logger());
+// app.onError(errorHandler);
+
+// app.use("/api/*", cors());
 // app.use(
 //   "/api/auth/*",
 //   cors({
@@ -26,17 +33,22 @@ app.onError(errorHandler);
 // );
 // app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
 
-app
-	.basePath("/api")
-	.route("/blueprints", blueprintRoutes)
-	.route("/runners", runnerRoutes);
+// app.use("/api/*", cors()).basePath("/api");
+
+// const router = app
+//   .route("/blueprints", blueprintRoutes)
+//   .route("/runners", runnerRoutes);
 
 serve(
-	{
-		fetch: app.fetch,
-		port: Number(env.PORT ?? 3001),
-	},
-	(info) => {
-		console.log(`Server running | Port: ${info.port}`);
-	},
+  {
+    fetch: app.fetch,
+    port: Number(env.PORT ?? 3001),
+  },
+  (info) => {
+    console.log(`Server running | Port: ${info.port}`);
+  }
 );
+
+export default app;
+
+export type AppType = typeof app;

@@ -1,9 +1,9 @@
 {
-  "name": "api",
+  "name": "@scrapeek/api",
   "version": "0.1.0",
   "private": true,
   "description": "",
-  "main": "index.js",
+  "types": "./src/server.ts",
   "type": "module",
   "scripts": {
     "db:generate": "pnpm exec drizzle-kit generate",
@@ -13,7 +13,7 @@
     "format": "pnpm exec biome format --write",
     "lint": "pnpm exec biome lint --write",
     "check": "pnpm exec biome check --write",
-    "dev": "tsx watch server.ts",
+    "dev": "tsx watch ./src/server.ts",
     "build": "tsc"
   },
   "keywords": [],
@@ -30,7 +30,7 @@
     "cheerio": "^1.1.0",
     "dotenv": "^17.2.0",
     "drizzle-orm": "^0.44.4",
-    "hono": "^4.8.5",
+    "hono": "^4.9.4",
     "playwright": "^1.53.2",
     "zod": "^4.0.16"
   },

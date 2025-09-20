@@ -45,7 +45,7 @@ importers:
         specifier: ^0.44.4
         version: 0.44.5(@neondatabase/serverless@1.0.1)(@types/pg@8.15.5)(kysely@0.28.5)
       hono:
-        specifier: ^4.8.5
+        specifier: ^4.9.4
         version: 4.9.4
       playwright:
         specifier: ^1.53.2
@@ -96,6 +96,9 @@ importers:
       '@radix-ui/react-tabs':
         specifier: ^1.1.13
         version: 1.1.13(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@scrapeek/api':
+        specifier: workspace:*
+        version: link:../api
       '@scrapeek/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -147,6 +150,9 @@ importers:
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
+      hono:
+        specifier: ^4.9.4
+        version: 4.9.4
       lucide-react:
         specifier: ^0.542.0
         version: 0.542.0(react@19.1.1)
