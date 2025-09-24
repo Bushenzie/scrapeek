@@ -1,5 +1,5 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
-import playwright from "playwright";
+import playwright, { type ElementHandle } from "playwright";
 
 export const dynamicSiteScraper = async (
   blueprint: Blueprint,
@@ -78,7 +78,7 @@ export const dynamicSiteScraper = async (
     const locator = await page.locator(selector);
 
     if (variant === "button") {
-      await locator.evaluate((item) => (item as HTMLButtonElement).click());
+      await locator.evaluate((item) => (item as ElementHandle).click());
     }
 
     const paginationLink = await locator.evaluate(

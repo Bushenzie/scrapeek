@@ -1,4 +1,4 @@
-import { saveAs } from "file-saver";
+import fileSaver from "file-saver";
 import { Copy, Download } from "lucide-react";
 import { type FC, useMemo } from "react";
 import { Button } from "@/components/ui/button/button";
@@ -34,7 +34,7 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
   const handleDownload = () => {
     const dataBlob = new Blob([lastScrapedData], { type: "application/json" });
 
-    saveAs(dataBlob, `${blueprint.name}_data.json`);
+    fileSaver.saveAs(dataBlob, `${blueprint.name}_data.json`);
   };
 
   const handleCopy = async () => {

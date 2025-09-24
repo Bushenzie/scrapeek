@@ -16,29 +16,6 @@ const app = new Hono()
   .route("/blueprints", blueprintRoutes)
   .route("/runners", runnerRoutes);
 
-// app.use(logger());
-// app.onError(errorHandler);
-
-// app.use("/api/*", cors());
-// app.use(
-//   "/api/auth/*",
-//   cors({
-//     origin: "http://localhost:3001",
-//     allowHeaders: ["Content-Type", "Authorization"],
-//     allowMethods: ["POST", "GET", "OPTIONS"],
-//     exposeHeaders: ["Content-Length"],
-//     maxAge: 600,
-//     credentials: true,
-//   })
-// );
-// app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
-
-// app.use("/api/*", cors()).basePath("/api");
-
-// const router = app
-//   .route("/blueprints", blueprintRoutes)
-//   .route("/runners", runnerRoutes);
-
 serve(
   {
     fetch: app.fetch,

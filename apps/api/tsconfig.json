@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "NodeNext",
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "useDefineForClassFields": true,
+    "moduleResolution": "Bundler",
     "strict": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,

@@ -1,4 +1,7 @@
-import { editableBlueprintSchema } from "@scrapeek/shared/blueprint";
+import {
+  type Blueprint,
+  editableBlueprintSchema,
+} from "@scrapeek/shared/blueprint";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { db } from "@/db/db.ts";
@@ -8,7 +11,7 @@ import { searchableBlueprint } from "./blueprints.schemas.ts";
 
 const app = new Hono()
   .get("/", async (c) => {
-    const blueprints = await db.query.blueprintTable.findMany({
+    const blueprints = (await db.query.blueprintTable.findMany({
       with: {
         result: {
           columns: {
@@ -16,19 +19,19 @@ const app = new Hono()
           },
         },
       },
-    });
+    })) as Blueprint[];
 
     return c.json({ data: blueprints });
   })
   .get("/:id", zodValidator("param", searchableBlueprint), async (c) => {
     const { id } = c.req.valid("param");
 
-    const searchedBlueprint = await db.query.blueprintTable.findFirst({
+    const searchedBlueprint = (await db.query.blueprintTable.findFirst({
       where: (blueprints, { eq }) => eq(blueprints.id, id),
       with: {
         result: true,
       },
-    });
+    })) as Blueprint;
 
     if (!searchedBlueprint) {
       c.status(404);

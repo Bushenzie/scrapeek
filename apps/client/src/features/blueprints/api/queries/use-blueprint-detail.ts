@@ -2,6 +2,8 @@ import type { Blueprint } from "@scrapeek/shared/blueprint";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/api/axios";
 
+// import { client } from "@/lib/api/hc";
+
 type GetBlueprintDetailProps = {
   blueprintId: string;
 };
@@ -17,8 +19,15 @@ export const useBlueprintDetail = ({
           method: "get",
           url: `/blueprints/${blueprintId}`,
         });
-        const blueprints = await response.data.data;
-        return blueprints;
+        const blueprint = await response.data.data;
+        // const response = await client.api.blueprints[":id"].$get({
+        //   param: {
+        //     id: blueprintId,
+        //   },
+        // });
+        // const data = await response.json();
+        // const blueprint = await data.data;
+        return blueprint;
       } catch {
         throw new Error("Failed to fetch blueprint");
       }
