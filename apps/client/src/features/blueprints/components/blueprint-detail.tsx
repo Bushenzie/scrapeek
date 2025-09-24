@@ -22,6 +22,11 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
     blueprintIds: [blueprintId],
   });
 
+  const resultURL = useMemo(() => {
+    if (!blueprint.result) return undefined;
+    return `http://localhost:3001/api/result/${blueprint.result?.id}`;
+  }, [blueprint, data]);
+
   const lastScrapedData = useMemo(() => {
     const source =
       (data && Array.isArray(data) ? data[0] : data) ?? blueprint?.result?.data;
@@ -64,7 +69,7 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
             </div>
           </div>
         </div>
-        <div className="col-span-1">
+        <div className="col-span-1 space-y-4">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <Label>Last scraper run result</Label>
@@ -92,6 +97,10 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
               lang="json"
               theme="github-dark-dimmed"
             />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label>Result URL</Label>
+            <Input value={resultURL} readOnly />
           </div>
         </div>
       </div>
