@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { openAPI } from "better-auth/plugins";
 import { db } from "@/db/db.ts";
 import { env } from "./env.ts";
 
@@ -19,4 +20,5 @@ export const auth = betterAuth({
       clientSecret: env.GITHUB_CLIENT_SECRET,
     },
   },
+  plugins: [openAPI()],
 });
