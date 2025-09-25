@@ -7,6 +7,12 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: true, // TODO: delete after setting subdomain/proxy
+    },
+  },
+  trustedOrigins: [env.CLIENT_URL],
   socialProviders: {
     github: {
       clientId: env.GITHUB_CLIENT_ID,
