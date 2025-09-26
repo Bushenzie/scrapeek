@@ -7,7 +7,7 @@ import { DynamicBlueprintForm } from "@/features/blueprints/components/forms/dyn
 import { StaticBlueprintForm } from "@/features/blueprints/components/forms/static-blueprint-form";
 import { blueprintTypeSelectSchema } from "@/features/blueprints/schemas/blueprint-type";
 
-export const Route = createFileRoute("/blueprints/add")({
+export const Route = createFileRoute("/_authenticated/blueprints/add")({
   validateSearch: blueprintTypeSelectSchema,
   onError: () => {
     throw redirect({ to: "/blueprints" });
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/blueprints/add")({
 });
 
 function AddBlueprintPage() {
-  const { type } = useSearch({ from: "/blueprints/add" });
+  const { type } = useSearch({ from: "/_authenticated/blueprints/add" });
   return (
     <div>
       <GoBackButton fallbackTo=".." />

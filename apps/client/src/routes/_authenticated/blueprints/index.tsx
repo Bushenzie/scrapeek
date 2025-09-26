@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator/separator";
 import { BlueprintList } from "@/features/blueprints/components/blueprint-list";
 import { AddBlueprintDialog } from "@/features/blueprints/components/modals/add-blueprint-modal";
 
-export const Route = createFileRoute("/blueprints/")({
+export const Route = createFileRoute("/_authenticated/blueprints/")({
   component: BlueprintsPage,
 });
 

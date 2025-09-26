@@ -21,6 +21,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown/dropdown";
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import {
@@ -116,6 +124,20 @@ function Homepage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button>Open dropdown</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Billing</DropdownMenuItem>
+            <DropdownMenuItem>Team</DropdownMenuItem>
+            <DropdownMenuItem>Subscription</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </Box>
 
       <Card className="w-full max-w-sm">

@@ -7,28 +7,28 @@ import { routeTree } from "./routeTree.gen";
 
 // Create a new router instance
 export const createRouter = () => {
-	const queryClient = new QueryClient();
+  const queryClient = new QueryClient();
 
-	return routerWithQueryClient(
-		createTanstackRouter({
-			routeTree,
-			context: { queryClient },
-			defaultPreload: "intent",
-			Wrap: (props: { children: React.ReactNode }) => {
-				return (
-					<QueryClientProvider client={queryClient}>
-						{props.children}
-					</QueryClientProvider>
-				);
-			},
-		}),
-		queryClient,
-	);
+  return routerWithQueryClient(
+    createTanstackRouter({
+      routeTree,
+      context: { queryClient },
+      defaultPreload: "intent",
+      Wrap: (props: { children: React.ReactNode }) => {
+        return (
+          <QueryClientProvider client={queryClient}>
+            {props.children}
+          </QueryClientProvider>
+        );
+      },
+    }),
+    queryClient
+  );
 };
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
-	interface Register {
-		router: ReturnType<typeof createRouter>;
-	}
+  interface Register {
+    router: ReturnType<typeof createRouter>;
+  }
 }

@@ -4,6 +4,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { Navbar } from "@/components/navbar";
 import css from "../styles.css?url";
 
 interface MyRouterContext {
@@ -41,10 +42,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="bg-blueprint-900 font-mono text-blueprint-100">
-        <div className="w-full max-w-[1280px] mx-auto px-4 py-8">
+        <div className="w-full max-w-[1280px] space-y-4 h-full mx-auto px-4 py-8">
+          <Navbar />
           {children}
         </div>
-        <div className="absolute -z-10 inset-0 h-full w-full bg-[linear-gradient(to_right,var(--color-blueprint-700)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-blueprint-700)_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
+        <div className="absolute -z-10 inset-0 min-h-full w-full bg-[linear-gradient(to_right,var(--color-blueprint-700)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-blueprint-700)_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]" />
         <Scripts />
       </body>
     </html>

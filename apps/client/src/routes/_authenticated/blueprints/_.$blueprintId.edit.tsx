@@ -6,7 +6,7 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner"
 import { Separator } from "@/components/ui/separator/separator";
 import { EditBlueprint } from "@/features/blueprints/components/edit-blueprint";
 
-export const Route = createFileRoute("/blueprints/_/$blueprintId/edit")({
+export const Route = createFileRoute("/_authenticated/blueprints/_/$blueprintId/edit")({
   component: ViewBlueprintPage,
 });
 

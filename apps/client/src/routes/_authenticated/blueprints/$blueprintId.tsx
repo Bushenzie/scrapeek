@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator/separator";
 import { BlueprintDetail } from "@/features/blueprints/components/blueprint-detail";
 import { RemoveBlueprintModal } from "@/features/blueprints/components/modals/remove-blueprint-modal";
 
-export const Route = createFileRoute("/blueprints/$blueprintId")({
+export const Route = createFileRoute("/_authenticated/blueprints/$blueprintId")({
   component: ViewBlueprintPage,
 });
 
