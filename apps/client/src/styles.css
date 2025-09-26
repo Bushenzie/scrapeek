@@ -5,8 +5,12 @@
 
 @theme {
   --color-blueprint-900: #0b1c3a;
+  --color-blueprint-800: #0c2040;
   --color-blueprint-700: #0c2446;
+  --color-blueprint-600: #0f3782;
+  --color-blueprint-500: #1349be;
   --color-blueprint-400: #165cfa;
+  --color-blueprint-300: #4782ed;
   --color-blueprint-200: #78a8e1;
   --color-blueprint-100: #daeaff;
 }
