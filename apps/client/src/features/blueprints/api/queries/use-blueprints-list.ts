@@ -1,6 +1,6 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { axiosClient } from "@/lib/api/axios";
+import { axiosClient } from "@/lib/clients/axios";
 // import { client } from "@/lib/api/hc";
 
 export const useBlueprintsList = () => {

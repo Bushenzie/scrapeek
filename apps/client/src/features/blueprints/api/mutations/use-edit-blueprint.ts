@@ -1,6 +1,6 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosClient } from "@/lib/api/axios";
+import { axiosClient } from "@/lib/clients/axios";
 
 export const useEditBlueprint = () => {
   const queryClient = useQueryClient();

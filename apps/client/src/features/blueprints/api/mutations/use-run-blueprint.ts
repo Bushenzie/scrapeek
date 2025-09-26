@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { axiosClient } from "@/lib/api/axios";
+import { axiosClient } from "@/lib/clients/axios";
 
 type RunBlueprintProps = {
   blueprintIds: string[];
