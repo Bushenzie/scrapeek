@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedBlueprintsIndexRouteImport } from './routes/_authenticated/blueprints/index'
 import { Route as AuthenticatedBlueprintsAddRouteImport } from './routes/_authenticated/blueprints/add'
 import { Route as AuthenticatedBlueprintsBlueprintIdRouteImport } from './routes/_authenticated/blueprints/$blueprintId'
@@ -30,6 +31,11 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedBlueprintsIndexRoute =
   AuthenticatedBlueprintsIndexRouteImport.update({
@@ -58,6 +64,7 @@ const AuthenticatedBlueprintsBlueprintIdEditRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/auth/login': typeof AuthLoginRoute
   '/blueprints/$blueprintId': typeof AuthenticatedBlueprintsBlueprintIdRoute
   '/blueprints/add': typeof AuthenticatedBlueprintsAddRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/auth/login': typeof AuthLoginRoute
   '/blueprints/$blueprintId': typeof AuthenticatedBlueprintsBlueprintIdRoute
   '/blueprints/add': typeof AuthenticatedBlueprintsAddRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/auth/login': typeof AuthLoginRoute
   '/_authenticated/blueprints/$blueprintId': typeof AuthenticatedBlueprintsBlueprintIdRoute
   '/_authenticated/blueprints/add': typeof AuthenticatedBlueprintsAddRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/profile'
     | '/auth/login'
     | '/blueprints/$blueprintId'
     | '/blueprints/add'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/profile'
     | '/auth/login'
     | '/blueprints/$blueprintId'
     | '/blueprints/add'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/_authenticated/profile'
     | '/auth/login'
     | '/_authenticated/blueprints/$blueprintId'
     | '/_authenticated/blueprints/add'
@@ -139,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/blueprints/': {
       id: '/_authenticated/blueprints/'
       path: '/blueprints'
@@ -171,6 +190,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedBlueprintsBlueprintIdRoute: typeof AuthenticatedBlueprintsBlueprintIdRoute
   AuthenticatedBlueprintsAddRoute: typeof AuthenticatedBlueprintsAddRoute
   AuthenticatedBlueprintsIndexRoute: typeof AuthenticatedBlueprintsIndexRoute
@@ -178,6 +198,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedBlueprintsBlueprintIdRoute:
     AuthenticatedBlueprintsBlueprintIdRoute,
   AuthenticatedBlueprintsAddRoute: AuthenticatedBlueprintsAddRoute,

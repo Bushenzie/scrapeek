@@ -4,7 +4,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/ui/navbar/navbar";
 import css from "../styles.css?url";
 
 interface MyRouterContext {

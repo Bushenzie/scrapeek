@@ -8,6 +8,11 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
+  user: {
+    deleteUser: {
+      enabled: true,
+    },
+  },
   advanced: {
     crossSubDomainCookies: {
       enabled: true, // TODO: delete after setting subdomain/proxy
@@ -20,5 +25,6 @@ export const auth = betterAuth({
       clientSecret: env.GITHUB_CLIENT_SECRET,
     },
   },
+
   plugins: [openAPI()],
 });

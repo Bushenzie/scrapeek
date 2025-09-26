@@ -5,15 +5,15 @@ import { type ComponentProps, type FC } from "react";
 import { useSession } from "@/features/auth/hooks/use-session";
 import { authClient } from "@/lib/clients/auth";
 import { cn } from "@/lib/utils/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar/avatar";
-import { Box } from "./ui/box/box";
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar/avatar";
+import { Box } from "../box/box";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown/dropdown";
-import { LinkButton } from "./ui/link-button/link-button";
+} from "../dropdown/dropdown";
+import { LinkButton } from "../link-button/link-button";
 
 type NavbarProps = ComponentProps<"div">;
 
@@ -51,7 +51,7 @@ export const Navbar: FC<NavbarProps> = ({ className }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>
-              <Link to="/">Profile</Link>
+              <Link to="/profile">Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={handleSignOut}
