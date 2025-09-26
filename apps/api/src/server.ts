@@ -19,7 +19,7 @@ const app = new Hono<{
   .use(logger())
   .onError(errorHandler)
   .use(
-    "/auth/*",
+    "*",
     cors({
       origin: env.CLIENT_URL,
       allowHeaders: ["Content-Type", "Authorization"],
