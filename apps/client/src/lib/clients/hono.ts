@@ -2,4 +2,4 @@
 import type { AppType } from "@scrapeek/api/src/server";
 import { hc } from "hono/client";
 
-export const client = hc<AppType>("http://localhost:3001");
+export const honoClient = hc<AppType>("http://localhost:3001");
