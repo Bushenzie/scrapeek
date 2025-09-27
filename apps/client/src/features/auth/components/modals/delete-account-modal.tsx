@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog/dialog";
 import { authClient } from "@/lib/clients/auth";
-// import { useSession } from "../hooks/use-session";
 
 export const DeleteAccountModal = () => {
   const router = useRouter();
