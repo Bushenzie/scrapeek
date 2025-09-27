@@ -1,3 +1,3 @@
 export const ProfileSettingsTab = () => {
-  return <div>profile-settings-tab</div>;
+  return <p>Here you will find a settings around profile</p>;
 };
