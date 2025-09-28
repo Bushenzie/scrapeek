@@ -3,10 +3,12 @@ import {
   jsonb,
   pgEnum,
   pgTable,
+  text,
   timestamp,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { user } from "./auth.ts";
 import { resultTable } from "./result.ts";
 
 export const configTypeEnum = pgEnum("type", ["api", "static", "dynamic"]);
@@ -14,6 +16,9 @@ export const configTypeEnum = pgEnum("type", ["api", "static", "dynamic"]);
 export const blueprintTable = pgTable("blueprint", {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
   type: configTypeEnum("type").notNull(),
+  userId: text("user_id")
+    .references(() => user.id)
+    .notNull(),
   url: varchar("url", { length: 255 }).notNull(),
   baseUrl: varchar("base_url", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),

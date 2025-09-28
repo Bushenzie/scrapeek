@@ -13,11 +13,11 @@ export const auth = betterAuth({
       enabled: true,
     },
   },
-  advanced: {
-    crossSubDomainCookies: {
-      enabled: true, // TODO: delete after setting subdomain/proxy
-    },
-  },
+  // advanced: {
+  //   crossSubDomainCookies: {
+  //     enabled: true, // TODO: delete after setting subdomain/proxy
+  //   },
+  // },
   trustedOrigins: [env.CLIENT_URL],
   socialProviders: {
     github: {
@@ -28,3 +28,8 @@ export const auth = betterAuth({
 
   plugins: [openAPI()],
 });
+
+export type AuthType = {
+  user: typeof auth.$Infer.Session.user | null;
+  session: typeof auth.$Infer.Session.session | null;
+};

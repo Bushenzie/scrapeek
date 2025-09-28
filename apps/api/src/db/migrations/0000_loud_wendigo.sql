@@ -50,6 +50,7 @@ CREATE TABLE "verification" (
 CREATE TABLE "blueprint" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"type" "type" NOT NULL,
+	"user_id" text NOT NULL,
 	"url" varchar(255) NOT NULL,
 	"base_url" varchar(255) NOT NULL,
 	"name" varchar(255) NOT NULL,
@@ -68,4 +69,5 @@ CREATE TABLE "result" (
 --> statement-breakpoint
 ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "blueprint" ADD CONSTRAINT "blueprint_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "result" ADD CONSTRAINT "result_blueprint_id_blueprint_id_fk" FOREIGN KEY ("blueprint_id") REFERENCES "public"."blueprint"("id") ON DELETE no action ON UPDATE no action;

@@ -7,8 +7,8 @@ export const BlueprintList = () => {
 
   return (
     <div className="flex flex-col">
-      {blueprints.length > 0 &&
-        blueprints.map((blueprint) => (
+      {blueprints?.length > 0 &&
+        blueprints?.map((blueprint) => (
           <Link
             to="/blueprints/$blueprintId"
             params={{
