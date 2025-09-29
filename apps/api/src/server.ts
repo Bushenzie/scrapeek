@@ -10,8 +10,6 @@ import resultRoutes from "@/routes/result/result.routes.ts";
 import runnerRoutes from "@/routes/runners/runners.routes.ts";
 import type { AuthType } from "./lib/auth";
 
-import { authMiddleware } from "./middlewares/auth-middleware";
-
 const app = new Hono<{
   Variables: AuthType;
 }>({ strict: false })
@@ -29,7 +27,6 @@ const app = new Hono<{
       credentials: true,
     })
   )
-  .use(authMiddleware)
   .route("/auth", authRoutes)
   .route("/blueprints", blueprintRoutes)
   .route("/runners", runnerRoutes)

@@ -8,10 +8,10 @@ import {
 import { authClient } from "@/lib/clients/auth";
 
 export const LoginCard = () => {
-  const handleSignIn = () => {
+  const handleSignIn = (provider: "github" | "gitlab" | "google") => {
     authClient.signIn.social({
-      provider: "github",
       callbackURL: "http://localhost:3000/blueprints",
+      provider,
     });
   };
 
@@ -21,7 +21,17 @@ export const LoginCard = () => {
         <CardTitle>Login</CardTitle>
       </CardHeader>
       <CardContent>
-        <Button onClick={handleSignIn}>Sign in with github</Button>
+        <div className="flex flex-col gap-2 w-full">
+          <Button size={"lg"} onClick={() => handleSignIn("github")}>
+            Sign in with Github
+          </Button>
+          <Button size={"lg"} onClick={() => handleSignIn("gitlab")}>
+            Sign in with Gitlab
+          </Button>
+          <Button size={"lg"} onClick={() => handleSignIn("google")}>
+            Sign in with Google
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

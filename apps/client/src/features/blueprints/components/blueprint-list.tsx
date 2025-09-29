@@ -7,6 +7,11 @@ export const BlueprintList = () => {
 
   return (
     <div className="flex flex-col">
+      {blueprints.length === 0 && (
+        <span className="text-blueprint-200 text-center my-4">
+          No blueprints found
+        </span>
+      )}
       {blueprints?.length > 0 &&
         blueprints?.map((blueprint) => (
           <Link
