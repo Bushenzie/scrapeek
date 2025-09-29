@@ -9,6 +9,11 @@ const envSchema = z.object({
   BETTER_AUTH_SECRET: z.string(),
   GITHUB_CLIENT_ID: z.string(),
   GITHUB_CLIENT_SECRET: z.string(),
+  GOOGLE_CLIENT_ID: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string(),
+  GITLAB_CLIENT_ID: z.string(),
+  GITLAB_CLIENT_SECRET: z.string(),
+  GITLAB_ISSUER: z.string(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
