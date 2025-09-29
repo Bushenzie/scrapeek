@@ -6,8 +6,6 @@ export const authMiddleware = createMiddleware<{ Variables: AuthType }>(
   async (c, next) => {
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
-    console.log(c.req.raw.headers);
-
     if (!session) {
       throw new StatusError("Unauthorized", 401);
     }
