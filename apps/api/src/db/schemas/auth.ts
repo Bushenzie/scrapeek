@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { apiKeysTable } from "./api-keys";
 import { blueprintTable } from "./blueprint";
 
 export const user = pgTable("user", {
@@ -15,7 +16,11 @@ export const user = pgTable("user", {
     .notNull(),
 });
 
-export const userRelations = relations(user, ({ many }) => ({
+export const userRelations = relations(user, ({ one, many }) => ({
+  apiKey: one(apiKeysTable, {
+    fields: [user.id],
+    references: [apiKeysTable.userId],
+  }),
   blueprints: many(blueprintTable),
 }));
 
