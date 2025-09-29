@@ -105,7 +105,7 @@ const baseBlueprintSchema = z.object({
   url: z.url("Provided string must be URL").max(255),
   baseUrl: z.url("Provided string must be URL").max(255),
   name: z.string().min(3, "Minimum length of name is 3 chars"),
-  userId: z.uuid(),
+  userId: z.string().min(32).max(32),
   result: z
     .object({
       id: z.uuid(),
