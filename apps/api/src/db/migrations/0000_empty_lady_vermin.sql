@@ -2,7 +2,9 @@ CREATE TYPE "public"."type" AS ENUM('api', 'static', 'dynamic');--> statement-br
 CREATE TABLE "api_keys" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" text NOT NULL,
-	"key" varchar(64) NOT NULL,
+	"key" varchar(192) NOT NULL,
+	"active" boolean DEFAULT true NOT NULL,
+	"last_used_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );

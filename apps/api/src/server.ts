@@ -4,6 +4,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { env } from "@/lib/env.ts";
 import { errorHandler } from "@/middlewares/error-handler";
+import apiKeysRoutes from "@/routes/api-keys/api-keys.routes";
 import authRoutes from "@/routes/auth/auth.routes.ts";
 import blueprintRoutes from "@/routes/blueprints/blueprints.routes.ts";
 import resultRoutes from "@/routes/result/result.routes.ts";
@@ -30,7 +31,8 @@ const app = new Hono<{
   .route("/auth", authRoutes)
   .route("/blueprints", blueprintRoutes)
   .route("/runners", runnerRoutes)
-  .route("/result", resultRoutes);
+  .route("/result", resultRoutes)
+  .route("/api-keys", apiKeysRoutes);
 
 serve(
   {

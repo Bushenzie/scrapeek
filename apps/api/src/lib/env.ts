@@ -5,6 +5,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().int().positive(),
   DATABASE_URL: z.url(),
   CLIENT_URL: z.url(),
+  ENCRYPT_KEY: z.string(),
   BETTER_AUTH_URL: z.url(),
   BETTER_AUTH_SECRET: z.string(),
   GITHUB_CLIENT_ID: z.string(),

@@ -5,5 +5,5 @@ export const resultParamSchema = z.object({
 });
 
 export const resultHeaderSchema = z.object({
-  Authorization: z.templateLiteral(["Bearer scrapeek_", z.jwt()]),
+  Authorization: z.templateLiteral(["Bearer scrpk_", z.jwt()]),
 });
