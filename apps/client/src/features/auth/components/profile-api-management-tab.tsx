@@ -1,18 +1,46 @@
-import { Button } from "@/components/ui/button/button";
-import { Input } from "@/components/ui/input/input";
-import { useCreateAPIKey } from "../api/mutations/use-create-api-key";
-import { useApiKey } from "../api/queries/use-api-key";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table/table";
 import { useApiKeyList } from "../api/queries/use-api-key-list";
+import { DeleteApiKeyModal } from "./modals/delete-api-key-modal";
 
 export const ProfileAPIManagementTab = () => {
   const { data: apiKeys } = useApiKeyList();
 
   return (
     <div className="flex items-start">
-      <div className="flex items-center gap-2">
-        <Input value={""} readOnly />
-        {/* <Button onClick={handleApiKeyGeneration}>Generate</Button> */}
-      </div>
+      {!apiKeys ||
+        (apiKeys?.length === 0 && (
+          <span className="text-center text-sm">No API Keys found</span>
+        ))}
+      {apiKeys && apiKeys?.length > 0 && (
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[95%]">Name</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {apiKeys?.map((apiKey) => (
+              <TableRow>
+                <TableCell>{apiKey.name ?? "API Key"}</TableCell>
+                <TableCell className="text-center">
+                  <DeleteApiKeyModal
+                    name={apiKey?.name ?? "API Key"}
+                    id={apiKey.id}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   );
 };

@@ -18,7 +18,7 @@ export const useCreateAPIKey = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["api-key"] });
+      queryClient.invalidateQueries({ queryKey: ["api-key-list"] });
     },
   });
 };

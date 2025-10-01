@@ -16,7 +16,7 @@ export const useDeleteAPIKey = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["api-key"] });
+      queryClient.invalidateQueries({ queryKey: ["api-key-list"] });
     },
   });
 };

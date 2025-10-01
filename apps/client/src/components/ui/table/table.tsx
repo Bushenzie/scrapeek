@@ -30,7 +30,7 @@ export const TableHeader: FC<TableHeaderProps> = ({ className, ...props }) => {
   return (
     <thead
       data-slot="table-header"
-      className={cn("[&_tr]:border-b border-blueprint-400", className)}
+      className={cn("[&_tr]:border-b border-b-blueprint-400", className)}
       {...props}
     />
   );
@@ -64,7 +64,7 @@ export const TableRow: FC<TableRowProps> = ({ className, ...props }) => {
     <tr
       data-slot="table-row"
       className={cn(
-        "hover:bg-blueprint-900 data-[state=selected]:bg-muted border-b transition-colors",
+        "hover:bg-blueprint-900 data-[state=selected]:bg-muted border-b border-blueprint-200 transition-colors",
         className
       )}
       {...props}
