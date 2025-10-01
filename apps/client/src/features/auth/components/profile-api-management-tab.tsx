@@ -16,7 +16,9 @@ export const ProfileAPIManagementTab = () => {
     <div className="flex items-start">
       {!apiKeys ||
         (apiKeys?.length === 0 && (
-          <span className="text-center text-sm">No API Keys found</span>
+          <span className="text-blueprint-200 w-full text-center text-sm">
+            No API Keys found
+          </span>
         ))}
       {apiKeys && apiKeys?.length > 0 && (
         <Table className="w-full">
