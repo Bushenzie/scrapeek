@@ -1,3 +1,4 @@
+import { Copy } from "lucide-react";
 import { type Dispatch, type FC, type SetStateAction } from "react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button/button";
@@ -39,6 +40,11 @@ export const CreateApiKeyModal: FC<CreateApiKeyModalProps> = ({
       formApi.reset();
     },
   });
+
+  const handleCopy = async () => {
+    if (!data) return;
+    await navigator.clipboard.writeText(data);
+  };
 
   const handleClose = async () => {
     reset();
@@ -83,7 +89,12 @@ export const CreateApiKeyModal: FC<CreateApiKeyModalProps> = ({
             Copy your API Key as you will not be able to reveal it again upon
             losing it.
           </DialogDescription>
-          <Input value={data} readOnly />
+          <div className="flex h-full">
+            <Input value={data} className="rounded-r-none truncate" readOnly />
+            <Button className="rounded-l-none h-full" onClick={handleCopy}>
+              <Copy />
+            </Button>
+          </div>
           <DialogFooter className="mt-2">
             <DialogClose>
               <Button>Cancel</Button>
