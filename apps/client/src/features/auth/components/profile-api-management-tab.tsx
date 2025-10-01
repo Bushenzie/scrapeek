@@ -1,3 +1,4 @@
+import { format, formatDistanceToNow } from "date-fns";
 import {
   Table,
   TableBody,
@@ -24,7 +25,8 @@ export const ProfileAPIManagementTab = () => {
         <Table className="w-full">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[95%]">Name</TableHead>
+              <TableHead className="w-[40%]">Name</TableHead>
+              <TableHead className="w-[50%]">Created at</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -32,6 +34,10 @@ export const ProfileAPIManagementTab = () => {
             {apiKeys?.map((apiKey) => (
               <TableRow>
                 <TableCell>{apiKey.name ?? "API Key"}</TableCell>
+                <TableCell>
+                  {format(apiKey.createdAt, "dd.MM.yyyy / HH:mm")} (
+                  {formatDistanceToNow(apiKey.createdAt, { addSuffix: true })})
+                </TableCell>
                 <TableCell className="text-center">
                   <DeleteApiKeyModal
                     name={apiKey?.name ?? "API Key"}
