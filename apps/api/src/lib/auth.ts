@@ -1,23 +1,20 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { openAPI } from "better-auth/plugins";
+import { apiKey, openAPI } from "better-auth/plugins";
 import { db } from "@/db/db.ts";
+import * as authSchema from "@/db/schemas/auth";
 import { env } from "./env.ts";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
+    schema: authSchema,
   }),
   user: {
     deleteUser: {
       enabled: true,
     },
   },
-  // advanced: {
-  //   crossSubDomainCookies: {
-  //     enabled: true, // TODO: delete after setting subdomain/proxy
-  //   },
-  // },
   trustedOrigins: [env.CLIENT_URL],
   socialProviders: {
     github: {
@@ -34,7 +31,18 @@ export const auth = betterAuth({
     },
   },
 
-  plugins: [openAPI()],
+  plugins: [
+    openAPI(),
+    apiKey({
+      defaultPrefix: "scrpk_",
+      rateLimit: {
+        // TODO: tweak this
+        enabled: true,
+        maxRequests: 100,
+        timeWindow: 1000 * 60 * 60,
+      },
+    }),
+  ],
 });
 
 export type AuthType = {

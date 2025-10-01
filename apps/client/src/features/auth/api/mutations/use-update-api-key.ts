@@ -1,19 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosClient } from "@/lib/clients/axios";
+import { authClient } from "@/lib/clients/auth";
 
-export const useGenerateAPIKey = () => {
+export const useUpdateAPIKey = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["generate-api-key"],
-    mutationFn: async () => {
+    mutationKey: ["update-api-key"],
+    mutationFn: async ({ id, name }: { id: string; name: string }) => {
       try {
-        const response = await axiosClient<{ key: string }>({
-          method: "post",
-          url: `/api-keys`,
+        await authClient.apiKey.update({
+          keyId: id,
+          name,
         });
-        const apiKey = await response.data.key;
-        return apiKey;
       } catch {
         throw new Error("Something went wrong during generating API key");
       }

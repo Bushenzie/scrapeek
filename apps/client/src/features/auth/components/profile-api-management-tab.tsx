@@ -1,21 +1,17 @@
 import { Button } from "@/components/ui/button/button";
 import { Input } from "@/components/ui/input/input";
-import { useGenerateAPIKey } from "../api/mutations/use-generate-api-key";
+import { useCreateAPIKey } from "../api/mutations/use-create-api-key";
 import { useApiKey } from "../api/queries/use-api-key";
+import { useApiKeyList } from "../api/queries/use-api-key-list";
 
 export const ProfileAPIManagementTab = () => {
-  const { data: apiKey } = useApiKey();
-  const generateApiKey = useGenerateAPIKey();
-
-  const handleApiKeyGeneration = () => {
-    generateApiKey.mutate();
-  };
+  const { data: apiKeys } = useApiKeyList();
 
   return (
     <div className="flex items-start">
       <div className="flex items-center gap-2">
-        <Input value={apiKey} readOnly />
-        <Button onClick={handleApiKeyGeneration}>Generate</Button>
+        <Input value={""} readOnly />
+        {/* <Button onClick={handleApiKeyGeneration}>Generate</Button> */}
       </div>
     </div>
   );

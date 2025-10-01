@@ -1,17 +1,20 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { axiosClient } from "@/lib/clients/axios";
+import { authClient } from "@/lib/clients/auth";
 
-export const useApiKey = () => {
+type GetApiKeyProps = {
+  id: string;
+};
+
+export const useApiKey = ({ id }: GetApiKeyProps) => {
   return useSuspenseQuery({
-    queryKey: ["api-key"],
+    queryKey: ["api-key", id],
     queryFn: async () => {
       try {
-        const response = await axiosClient<{ key: string }>({
-          method: "get",
-          url: "/api-keys",
+        const { data: apiKey } = await authClient.apiKey.get({
+          query: {
+            id,
+          },
         });
-
-        const apiKey = await response.data.key;
 
         return apiKey;
       } catch {

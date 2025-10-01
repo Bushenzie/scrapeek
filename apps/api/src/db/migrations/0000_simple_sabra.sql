@@ -1,14 +1,4 @@
 CREATE TYPE "public"."type" AS ENUM('api', 'static', 'dynamic');--> statement-breakpoint
-CREATE TABLE "api_keys" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"user_id" text NOT NULL,
-	"key" varchar(192) NOT NULL,
-	"active" boolean DEFAULT true NOT NULL,
-	"last_used_at" timestamp,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE "account" (
 	"id" text PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
@@ -23,6 +13,30 @@ CREATE TABLE "account" (
 	"password" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "apikey" (
+	"id" text PRIMARY KEY NOT NULL,
+	"name" text,
+	"start" text,
+	"prefix" text,
+	"key" text NOT NULL,
+	"user_id" text NOT NULL,
+	"refill_interval" integer,
+	"refill_amount" integer,
+	"last_refill_at" timestamp,
+	"enabled" boolean DEFAULT true,
+	"rate_limit_enabled" boolean DEFAULT true,
+	"rate_limit_time_window" integer DEFAULT 3600000,
+	"rate_limit_max" integer DEFAULT 100,
+	"request_count" integer DEFAULT 0,
+	"remaining" integer,
+	"last_request" timestamp,
+	"expires_at" timestamp,
+	"created_at" timestamp NOT NULL,
+	"updated_at" timestamp NOT NULL,
+	"permissions" text,
+	"metadata" text
 );
 --> statement-breakpoint
 CREATE TABLE "session" (
@@ -77,8 +91,8 @@ CREATE TABLE "result" (
 	"data" jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 --> statement-breakpoint
-ALTER TABLE "api_keys" ADD CONSTRAINT "api_keys_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "apikey" ADD CONSTRAINT "apikey_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "blueprint" ADD CONSTRAINT "blueprint_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "result" ADD CONSTRAINT "result_blueprint_id_blueprint_id_fk" FOREIGN KEY ("blueprint_id") REFERENCES "public"."blueprint"("id") ON DELETE no action ON UPDATE no action;
