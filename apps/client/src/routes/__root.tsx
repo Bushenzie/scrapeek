@@ -5,6 +5,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { Navbar } from "@/components/ui/navbar/navbar";
+import { getSession } from "@/features/auth/utils/get-session";
 import css from "../styles.css?url";
 
 interface MyRouterContext {
@@ -12,6 +13,10 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  beforeLoad: async () => {
+    const session = await getSession();
+    return session;
+  },
   head: () => ({
     meta: [
       {

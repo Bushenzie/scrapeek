@@ -1,12 +1,12 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { LoginCard } from "@/features/auth/components/login-card";
-import { isLogged } from "@/features/auth/utils/is-logged";
 
 export const Route = createFileRoute("/auth/login")({
   component: LoginPagePage,
-  beforeLoad: async () => {
-    const isLoggedIn = await isLogged();
-    if (isLoggedIn) throw redirect({ to: "/" });
+  beforeLoad: async ({ context }) => {
+    if (context.session) {
+      throw redirect({ to: "/" });
+    }
   },
 });
 

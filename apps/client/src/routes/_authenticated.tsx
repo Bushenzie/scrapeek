@@ -1,7 +1,10 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { authenticatedLoad } from "@/features/auth/utils/authenticated-load";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated")({
   component: () => <Outlet />,
-  beforeLoad: () => authenticatedLoad({ to: "/auth/login" }),
+  beforeLoad: ({ context }) => {
+    if (!context.session) {
+      throw redirect({ to: "/auth/login" });
+    }
+  },
 });

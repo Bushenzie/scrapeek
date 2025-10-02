@@ -2,7 +2,6 @@
 
 import { Link, useRouter } from "@tanstack/react-router";
 import { type ComponentProps, type FC } from "react";
-import { useSession } from "@/features/auth/hooks/use-session";
 import { authClient } from "@/lib/clients/auth";
 import { cn } from "@/lib/utils/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar/avatar";
@@ -19,13 +18,17 @@ type NavbarProps = ComponentProps<"div">;
 
 export const Navbar: FC<NavbarProps> = ({ className }) => {
   const router = useRouter();
-  const { isLogged, setIsLogged, user } = useSession();
+  const { data: session, isPending } = authClient.useSession();
 
   const handleSignOut = async () => {
     await authClient.signOut();
-    setIsLogged(false);
+
     return router.navigate({ to: "/" });
   };
+
+  if (isPending) {
+    return null;
+  }
 
   return (
     <Box className={cn("flex justify-between items-center p-4", className)}>
@@ -33,20 +36,20 @@ export const Navbar: FC<NavbarProps> = ({ className }) => {
         <LinkButton variant={"link"} size={"sm"} to="/">
           Home
         </LinkButton>
-        {isLogged && (
+        {session && (
           <LinkButton variant={"link"} size={"sm"} to="/blueprints">
             Blueprints
           </LinkButton>
         )}
       </div>
-      {!isLogged ? (
+      {!session ? (
         <LinkButton to="/auth/login">Login</LinkButton>
       ) : (
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar className="cursor-pointer">
-              <AvatarImage src={user?.image ?? undefined} />
-              <AvatarFallback>{user?.name.slice(0, 2)}</AvatarFallback>
+              <AvatarImage src={session?.user?.image ?? undefined} />
+              <AvatarFallback>{session?.user?.name.slice(0, 2)}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
