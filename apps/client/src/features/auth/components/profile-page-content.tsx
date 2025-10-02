@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Box } from "@/components/ui/box/box";
+import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner";
 import { Separator } from "@/components/ui/separator/separator";
 import {
   Tabs,
@@ -37,29 +38,31 @@ export const ProfilePageContent = () => {
           </TabsTrigger>
         </TabsList>
       </Box>
-      <Box className="col-span-3">
-        <div className="flex justify-between items-center p-6">
-          <h1 className="text-2xl">
-            Profile | {tab.toUpperCase().split("-").join(" ")}
-          </h1>
-          {tab === "api-management" && (
-            <CreateApiKeyModal
-              isOpen={createModalOpen}
-              setIsOpen={setCreateModalOpen}
-            />
-          )}
-        </div>
-        <Separator />
-        <TabsContent value="settings" className="p-4">
-          <ProfileSettingsTab />
-        </TabsContent>
-        <TabsContent value="api-management" className="p-4">
-          <ProfileAPIManagementTab />
-        </TabsContent>
-        <TabsContent value="advanced" className="p-4">
-          <ProfileAdvancedTab />
-        </TabsContent>
-      </Box>
+      <Suspense fallback={<LoadingSpinner />}>
+        <Box className="col-span-3">
+          <div className="flex justify-between items-center p-6">
+            <h1 className="text-2xl">
+              Profile | {tab.toUpperCase().split("-").join(" ")}
+            </h1>
+            {tab === "api-management" && (
+              <CreateApiKeyModal
+                isOpen={createModalOpen}
+                setIsOpen={setCreateModalOpen}
+              />
+            )}
+          </div>
+          <Separator />
+          <TabsContent value="settings" className="p-4">
+            <ProfileSettingsTab />
+          </TabsContent>
+          <TabsContent value="api-management" className="p-4">
+            <ProfileAPIManagementTab />
+          </TabsContent>
+          <TabsContent value="advanced" className="p-4">
+            <ProfileAdvancedTab />
+          </TabsContent>
+        </Box>
+      </Suspense>
     </Tabs>
   );
 };
