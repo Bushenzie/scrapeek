@@ -12,9 +12,13 @@ export const apiScraper = async (
 
   try {
     const response = await axiosClient.get(blueprint.url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
       params: config.query,
     });
-    const data = JSON.parse(response.data);
+
+    const { data } = response;
 
     let items: any[] = [];
 
