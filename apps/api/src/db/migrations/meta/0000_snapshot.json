@@ -1,5 +1,5 @@
 {
-  "id": "ac43c97a-97d3-4468-95de-bb8513d2715e",
+  "id": "ba86731d-b402-4620-ad11-6a05862e4e2c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -510,6 +510,13 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "respect_robots_txt": {
+          "name": "respect_robots_txt",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
         },
         "config": {
           "name": "config",

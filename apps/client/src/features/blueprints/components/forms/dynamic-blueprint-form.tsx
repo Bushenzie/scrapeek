@@ -14,8 +14,8 @@ import { Checkbox } from "@/components/ui/checkbox/checkbox";
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import { Textarea } from "@/components/ui/textarea/textarea";
-import { useSession } from "@/features/auth/hooks/use-session";
 import { useAppForm } from "@/hooks/use-app-form";
+import { authClient } from "@/lib/clients/auth";
 import { useAddBlueprint } from "../../api/mutations/use-add-blueprint";
 import { useEditBlueprint } from "../../api/mutations/use-edit-blueprint";
 
@@ -32,7 +32,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
   const addBlueprint = useAddBlueprint();
   const editBlueprint = useEditBlueprint();
   const router = useRouter();
-  const { user } = useSession();
+  const { data: session } = authClient.useSession();
 
   if (blueprint?.result) {
     const { result, ...formattedBlueprint } = blueprint;
@@ -47,7 +47,8 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
         name: "",
         url: "",
         baseUrl: "",
-        userId: user?.id,
+        userId: session?.user?.id,
+        respectRobotsTxt: true,
         config: {
           elements: [{ key: "", selector: "", attribute: undefined }],
           pagination: {},

@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
+  boolean,
   jsonb,
   pgEnum,
   pgTable,
@@ -22,6 +23,7 @@ export const blueprintTable = pgTable("blueprint", {
   url: varchar("url", { length: 255 }).notNull(),
   baseUrl: varchar("base_url", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
+  respectRobotsTxt: boolean("respect_robots_txt").default(true).notNull(),
   config: jsonb("config").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
