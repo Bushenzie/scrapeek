@@ -1,5 +1,6 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
 import playwright, { type ElementHandle } from "playwright";
+import { parseURL } from "../url";
 
 export const dynamicSiteScraper = async (
   blueprint: Blueprint,
@@ -9,6 +10,7 @@ export const dynamicSiteScraper = async (
   if (blueprint.type !== "dynamic") return;
   console.log(`DYNAMIC Scrape | ${blueprint.name}`);
   const { config } = blueprint;
+  const parsedUrl = parseURL(blueprint.url);
 
   const browser = await playwright.chromium.launch({
     headless: true,
@@ -91,7 +93,7 @@ export const dynamicSiteScraper = async (
       return items;
     }
 
-    const nextPageLink = `${blueprint.baseUrl}${paginationLink}`;
+    const nextPageLink = `${parsedUrl.protocol}://${parsedUrl.domain}${paginationLink}`;
 
     if (blueprint.url === nextPageLink) {
       await browser.close();

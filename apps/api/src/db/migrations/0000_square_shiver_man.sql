@@ -76,7 +76,6 @@ CREATE TABLE "blueprint" (
 	"type" "type" NOT NULL,
 	"user_id" text NOT NULL,
 	"url" varchar(255) NOT NULL,
-	"base_url" varchar(255) NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"respect_robots_txt" boolean DEFAULT true NOT NULL,
 	"config" jsonb NOT NULL,

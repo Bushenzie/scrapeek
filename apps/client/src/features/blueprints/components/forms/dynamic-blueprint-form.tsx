@@ -46,7 +46,6 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
         type: BlueprintType.DYNAMIC,
         name: "",
         url: "",
-        baseUrl: "",
         userId: session?.user?.id,
         respectRobotsTxt: true,
         config: {
@@ -103,10 +102,6 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
             <form.AppField
               name="url"
               children={(field) => <field.TextField label="URL" />}
-            />
-            <form.AppField
-              name="baseUrl"
-              children={(field) => <field.TextField label="Base URL" />}
             />
             <form.AppField
               name="config.waitSelectorElement"

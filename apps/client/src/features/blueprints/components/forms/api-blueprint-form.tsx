@@ -46,11 +46,9 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
         type: BlueprintType.API,
         name: "",
         url: "",
-        baseUrl: "",
         userId: session?.user?.id,
         respectRobotsTxt: true,
         config: {
-          apiBaseUrl: "",
           fields: [{ key: "", selector: "" }],
           headers: {},
           method: "GET",
@@ -166,14 +164,6 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
             <form.AppField
               name="url"
               children={(field) => <field.TextField label="URL" />}
-            />
-            <form.AppField
-              name="baseUrl"
-              children={(field) => <field.TextField label="Base URL" />}
-            />
-            <form.AppField
-              name="config.apiBaseUrl"
-              children={(field) => <field.TextField label="API Base URL" />}
             />
             <div className="flex flex-col gap-2">
               <Label>Elements</Label>

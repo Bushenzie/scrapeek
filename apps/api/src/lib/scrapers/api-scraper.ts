@@ -1,4 +1,5 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
+import { parseURL } from "../url.ts";
 import { axiosClient, getValueFromFlatPath } from "../utils.ts";
 
 export const apiScraper = async (
@@ -9,6 +10,7 @@ export const apiScraper = async (
   if (blueprint.type !== "api") return;
   console.log(`API Scrape | ${blueprint.name}`);
   const { config } = blueprint;
+  const parsedUrl = parseURL(blueprint.url);
 
   try {
     const response = await axiosClient.get(blueprint.url, {
@@ -120,7 +122,7 @@ export const apiScraper = async (
           const nextPageValue = getValueFromFlatPath(data, nextPagePath);
           if (!nextPageValue) return items;
 
-          const nextPageUrl = `${config.apiBaseUrl}${nextPageValue}`;
+          const nextPageUrl = `${parsedUrl.protocol}://${parsedUrl.hostname}${nextPageValue}`;
           let nextPageData = await apiScraper(
             {
               ...blueprint,

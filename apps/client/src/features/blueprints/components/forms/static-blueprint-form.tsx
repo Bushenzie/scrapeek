@@ -47,7 +47,6 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
         type: BlueprintType.STATIC,
         name: "",
         url: "",
-        baseUrl: "",
         respectRobotsTxt: true,
         userId: session?.user?.id,
         config: {
@@ -102,10 +101,6 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
             <form.AppField
               name="url"
               children={(field) => <field.TextField label="URL" />}
-            />
-            <form.AppField
-              name="baseUrl"
-              children={(field) => <field.TextField label="Base URL" />}
             />
             <div className="flex flex-col gap-2">
               <Label>Elements</Label>

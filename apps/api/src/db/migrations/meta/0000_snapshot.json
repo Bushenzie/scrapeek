@@ -1,5 +1,5 @@
 {
-  "id": "ba86731d-b402-4620-ad11-6a05862e4e2c",
+  "id": "0f966503-a8fb-424a-ac9e-56f6bd49f082",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -495,12 +495,6 @@
         },
         "url": {
           "name": "url",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "base_url": {
-          "name": "base_url",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true

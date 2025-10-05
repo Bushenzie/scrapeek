@@ -21,7 +21,6 @@ export const blueprintTable = pgTable("blueprint", {
     .references(() => user.id)
     .notNull(),
   url: varchar("url", { length: 255 }).notNull(),
-  baseUrl: varchar("base_url", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   respectRobotsTxt: boolean("respect_robots_txt").default(true).notNull(),
   config: jsonb("config").notNull(),

@@ -1,5 +1,6 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
 import * as cheerio from "cheerio";
+import { parseURL } from "../url.ts";
 import { axiosClient } from "../utils.ts";
 
 export const staticSiteScraper = async (
@@ -10,6 +11,7 @@ export const staticSiteScraper = async (
   if (blueprint.type !== "static") return;
   console.log(`STATIC Scrape | ${blueprint.name}`);
   const { config } = blueprint;
+  const parsedUrl = parseURL(blueprint.url);
 
   try {
     const response = await axiosClient.get(blueprint.url);
@@ -52,13 +54,13 @@ export const staticSiteScraper = async (
       const paginationLink = $(selector).attr(attribute) ?? null;
 
       if (paginationLink === null) return items;
-      const nextPageLink = `${blueprint.baseUrl}${paginationLink}`;
+      const nextPageLink = `${parsedUrl.protocol}://${parsedUrl.domain}${paginationLink}`;
 
       if (nextPageLink === blueprint.url) return items;
 
       const newPageUrl = paginationLink.startsWith("http")
         ? paginationLink
-        : `${blueprint.baseUrl}${paginationLink}`;
+        : `${parsedUrl.protocol}://${parsedUrl.domain}${paginationLink}`;
       let nextPageItems = await staticSiteScraper(
         {
           ...blueprint,
