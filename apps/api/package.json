@@ -33,6 +33,9 @@
     "drizzle-orm": "^0.44.5",
     "hono": "^4.9.9",
     "playwright": "^1.55.1",
+    "query-string": "^9.3.1",
+    "robots-parser": "^3.0.1",
+    "tldts": "^7.0.16",
     "zod": "^4.1.11"
   },
   "devDependencies": {
