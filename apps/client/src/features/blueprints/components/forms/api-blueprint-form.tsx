@@ -244,6 +244,12 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
               />
               <Label htmlFor="pagination">Include pagination</Label>
             </div>
+            <form.AppField
+              name="respectRobotsTxt"
+              children={(field) => (
+                <field.CheckboxField label="Respect robots.txt" />
+              )}
+            />
             {showPagination && (
               <>
                 <div className="flex gap-2">

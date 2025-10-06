@@ -2,19 +2,19 @@ import { useMutation } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/clients/axios";
 
 type RunBlueprintProps = {
-  blueprintIds: string[];
+  blueprintId: string;
 };
 
-export const useRunBlueprint = ({ blueprintIds }: RunBlueprintProps) => {
+export const useRunBlueprint = ({ blueprintId }: RunBlueprintProps) => {
   return useMutation({
-    mutationKey: ["blueprint", "run", blueprintIds],
+    mutationKey: ["blueprint", "run", blueprintId],
     mutationFn: async (mode?: "normal" | "test") => {
       try {
         const response = await axiosClient<[any[]]>({
           method: "post",
           url: `/runners`,
           data: {
-            blueprintIds,
+            blueprintId,
             mode,
           },
         });

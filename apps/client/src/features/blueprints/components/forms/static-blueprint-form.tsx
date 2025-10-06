@@ -196,6 +196,12 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
               />
               <Label htmlFor="pagination">Include pagination</Label>
             </div>
+            <form.AppField
+              name="respectRobotsTxt"
+              children={(field) => (
+                <field.CheckboxField label="Respect robots.txt" />
+              )}
+            />
             {showPagination && (
               <>
                 <form.AppField

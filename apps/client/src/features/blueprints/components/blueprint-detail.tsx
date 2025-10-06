@@ -19,7 +19,7 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
     isPending,
     mutate: runScraper,
   } = useRunBlueprint({
-    blueprintIds: [blueprintId],
+    blueprintId,
   });
 
   const resultURL = useMemo(() => {
