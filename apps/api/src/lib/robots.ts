@@ -20,7 +20,9 @@ export const canScrape = async (url: string) => {
 
     const parsedRobots = robotsParser(robotsTxtUrl, robotsTxt);
 
-    return parsedRobots.isAllowed(url);
+    const isAllowed = parsedRobots.isAllowed(url, "Scrapeekbot");
+
+    return isAllowed === undefined ? true : isAllowed;
   } catch (err) {
     throw new Error((err as Error).message);
   }
