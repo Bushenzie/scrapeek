@@ -30,9 +30,9 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
     blueprint && blueprint?.config.pagination ? true : false
   );
 
-  const addBlueprint = useAddBlueprint();
-  const editBlueprint = useEditBlueprint();
   const router = useRouter();
+  const { mutateAsync: addBlueprint } = useAddBlueprint();
+  const { mutateAsync: editBlueprint } = useEditBlueprint();
   const { data: session } = authClient.useSession();
 
   if (blueprint?.result) {
@@ -60,13 +60,25 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
     validators: {
       onChange: staticEditableBlueprintSchema,
     },
-    onSubmit: ({ value }) => {
+    onSubmit: async ({ value }) => {
+      let blueprintId: string | null = null;
+
       if (blueprint) {
-        editBlueprint.mutate(value);
+        const { data } = await editBlueprint(value);
+        blueprintId = data.id;
       } else {
-        addBlueprint.mutate(value);
+        const { data } = await addBlueprint(value);
+        blueprintId = data.id;
       }
-      router.navigate({ to: "/blueprints" });
+
+      if (!blueprint) return;
+
+      await router.navigate({
+        to: "/blueprints/$blueprintId",
+        params: {
+          blueprintId: blueprintId,
+        },
+      });
     },
   });
 

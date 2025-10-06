@@ -61,7 +61,7 @@ const app = new Hono<{ Variables: AuthType }>()
       })
       .returning();
 
-    return c.json({ data: createdBlueprint });
+    return c.json({ data: createdBlueprint[0] });
   })
   .delete("/:id", zodValidator("param", searchableBlueprint), async (c) => {
     const { id } = c.req.param();
@@ -101,7 +101,7 @@ const app = new Hono<{ Variables: AuthType }>()
       .where(eq(blueprintTable.id, id))
       .returning();
 
-    return c.json({ data: updatedBlueprint });
+    return c.json({ data: updatedBlueprint[0] });
   });
 
 export default app;

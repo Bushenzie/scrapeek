@@ -9,12 +9,13 @@ export const useAddBlueprint = () => {
     mutationKey: ["add-blueprint"],
     mutationFn: async (blueprint: EditableBlueprint) => {
       try {
-        const response = await axiosClient<Blueprint>({
+        const response = await axiosClient<{ data: Blueprint }>({
           method: "post",
           url: "/blueprints",
           data: blueprint,
         });
         const data = await response.data;
+
         return data;
       } catch {
         throw new Error("Something went wrong during addition of blueprint");

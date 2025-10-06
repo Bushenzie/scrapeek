@@ -9,7 +9,7 @@ export const useEditBlueprint = () => {
     mutationKey: ["edit-blueprint"],
     mutationFn: async (blueprint: Partial<Blueprint>) => {
       try {
-        const response = await axiosClient<Blueprint>({
+        const response = await axiosClient<{ data: Blueprint }>({
           method: "patch",
           url: `/blueprints/${blueprint.id}`,
           data: blueprint,
@@ -20,8 +20,11 @@ export const useEditBlueprint = () => {
         throw new Error("Something went wrong during edit of blueprint");
       }
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["all-blueprints"] });
+      queryClient.invalidateQueries({
+        queryKey: ["blueprint", response.data.id],
+      });
     },
   });
 };
