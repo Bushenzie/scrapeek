@@ -26,7 +26,7 @@ export const Navbar: FC<NavbarProps> = ({ className }) => {
     return router.navigate({ to: "/" });
   };
 
-  if (isPending) {
+  if (isPending || !session) {
     return null;
   }
 
@@ -34,37 +34,31 @@ export const Navbar: FC<NavbarProps> = ({ className }) => {
     <Box className={cn("flex justify-between items-center p-4", className)}>
       <div className="flex items-center gap-2">
         <LinkButton variant={"link"} size={"sm"} to="/">
-          Home
+          Dashboard
         </LinkButton>
-        {session && (
-          <LinkButton variant={"link"} size={"sm"} to="/blueprints">
-            Blueprints
-          </LinkButton>
-        )}
+        <LinkButton variant={"link"} size={"sm"} to="/blueprints">
+          Blueprints
+        </LinkButton>
+        <LinkButton variant={"link"} size={"sm"} to="/blueprints/browse">
+          Browse
+        </LinkButton>
       </div>
-      {!session ? (
-        <LinkButton to="/auth/login">Login</LinkButton>
-      ) : (
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Avatar className="cursor-pointer">
-              <AvatarImage src={session?.user?.image ?? undefined} />
-              <AvatarFallback>{session?.user?.name.slice(0, 2)}</AvatarFallback>
-            </Avatar>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
-              <Link to="/profile">Profile</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={handleSignOut}
-              className="cursor-pointer"
-            >
-              Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Avatar className="cursor-pointer">
+            <AvatarImage src={session?.user?.image ?? undefined} />
+            <AvatarFallback>{session?.user?.name.slice(0, 2)}</AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>
+            <Link to="/profile">Profile</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
+            Logout
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </Box>
   );
 };

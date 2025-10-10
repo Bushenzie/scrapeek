@@ -59,11 +59,11 @@ import {
 } from "@/components/ui/tabs/tabs";
 import { Textarea } from "@/components/ui/textarea/textarea";
 
-export const Route = createFileRoute("/")({
-  component: Homepage,
+export const Route = createFileRoute("/_authenticated/")({
+  component: DashboardPage,
 });
 
-function Homepage() {
+function DashboardPage() {
   return (
     <div>
       <Box className="flex flex-col p-6 items-start gap-4">
