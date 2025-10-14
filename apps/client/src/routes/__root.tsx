@@ -5,6 +5,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { Navbar } from "@/components/ui/navbar/navbar";
+import { Toaster } from "@/components/ui/toasts/toasts";
 import { getSession } from "@/features/auth/utils/get-session";
 import css from "../styles.css?url";
 
@@ -47,6 +48,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="bg-blueprint-900 font-mono text-blueprint-100">
+        <Toaster />
         <div className="w-full max-w-[1280px] space-y-4 h-full mx-auto px-4 py-8">
           <Navbar />
           {children}

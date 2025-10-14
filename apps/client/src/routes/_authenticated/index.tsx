@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Pencil } from "lucide-react";
+import { useEffect } from "react";
 import { Box } from "@/components/ui/box/box";
 import { Button } from "@/components/ui/button/button";
 import {
@@ -58,15 +60,43 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs/tabs";
 import { Textarea } from "@/components/ui/textarea/textarea";
+import { toast } from "@/components/ui/toasts/toast";
+// import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/")({
   component: DashboardPage,
 });
 
 function DashboardPage() {
+  useEffect(() => {
+    toast({
+      title: "Default toast",
+      description: "this toast serves only for testing",
+    });
+    toast({
+      title: "Action toast",
+      description:
+        "this toast serves only for testing actions,this toast serves only for testing actionsthis toast serves only for testing actions,m",
+      action: {
+        btnText: "Undo",
+        onClick: () => {
+          alert("Undo!");
+        },
+      },
+    });
+  }, []);
+
+  const createToast = () => {
+    toast({
+      title: "Created testing toast",
+      description: "Wow these toast are toasty",
+    });
+  };
+
   return (
     <div>
       <Box className="flex flex-col p-6 items-start gap-4">
+        <Button onClick={createToast}>Summon toast</Button>
         <Input placeholder="test" />
         <RadioGroup defaultValue="2">
           <div className="flex items-center gap-2">
