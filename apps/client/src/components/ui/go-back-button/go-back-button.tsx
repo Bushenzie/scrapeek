@@ -1,7 +1,7 @@
 import { useCanGoBack, useRouter } from "@tanstack/react-router";
 import { Undo2 } from "lucide-react";
 import { type FC } from "react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/class";
 import { Button } from "../button/button";
 import type { GoBackButtonProps } from "./go-back-button.types";
 

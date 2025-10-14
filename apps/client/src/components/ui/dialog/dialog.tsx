@@ -2,7 +2,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
 import type { FC } from "react";
 
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/class";
 import type {
   DialogCloseProps,
   DialogContentProps,

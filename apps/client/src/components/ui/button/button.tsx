@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import type { FC } from "react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/class";
 import { LoadingSpinner } from "../loading-spinner/loading-spinner";
 import type { ButtonProps } from "./button.types";
 import { buttonVariants } from "./button.variants";

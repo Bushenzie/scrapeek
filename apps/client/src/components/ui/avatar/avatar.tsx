@@ -1,7 +1,7 @@
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import type { FC } from "react";
 
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/class";
 import type {
   AvatarFallbackProps,
   AvatarImageProps,

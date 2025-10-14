@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/class";
 import type { BoxProps } from "./box.types";
 
 export const Box: FC<BoxProps> = ({ children, className }) => {

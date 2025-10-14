@@ -1,7 +1,7 @@
 import type { VariantProps } from "class-variance-authority";
 import { LoaderCircle } from "lucide-react";
 import type { ComponentProps, FC } from "react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/class";
 import { loadingSpinnerVariants } from "./loading-spinner.variants";
 
 type LoadingSpinnerProps = ComponentProps<"svg"> &

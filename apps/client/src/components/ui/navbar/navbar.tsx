@@ -2,8 +2,8 @@
 
 import { Link, useRouter } from "@tanstack/react-router";
 import { type ComponentProps, type FC } from "react";
+import { cn } from "@/lib/class";
 import { authClient } from "@/lib/clients/auth";
-import { cn } from "@/lib/utils/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar/avatar";
 import { Box } from "../box/box";
 import {
