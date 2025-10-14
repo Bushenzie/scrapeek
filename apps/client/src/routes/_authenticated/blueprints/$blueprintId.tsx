@@ -8,11 +8,13 @@ import { LinkButton } from "@/components/ui/link-button/link-button";
 import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner";
 import { Separator } from "@/components/ui/separator/separator";
 import { BlueprintDetail } from "@/features/blueprints/components/blueprint-detail";
-import { RemoveBlueprintModal } from "@/features/blueprints/components/modals/remove-blueprint-modal";
+import { DeleteBlueprintModal } from "@/features/blueprints/components/modals/delete-blueprint-modal";
 
-export const Route = createFileRoute("/_authenticated/blueprints/$blueprintId")({
-  component: ViewBlueprintPage,
-});
+export const Route = createFileRoute("/_authenticated/blueprints/$blueprintId")(
+  {
+    component: ViewBlueprintPage,
+  }
+);
 
 function ViewBlueprintPage() {
   const { blueprintId } = Route.useParams();
@@ -30,7 +32,7 @@ function ViewBlueprintPage() {
             >
               <PenBoxIcon className="w-6 h-6 text-blueprint-100" />
             </LinkButton>
-            <RemoveBlueprintModal blueprintId={blueprintId} />
+            <DeleteBlueprintModal blueprintId={blueprintId} />
           </div>
         </div>
         <Separator />
