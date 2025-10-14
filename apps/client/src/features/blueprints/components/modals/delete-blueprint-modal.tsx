@@ -10,19 +10,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog/dialog";
-import { useRemoveBlueprint } from "../../api/mutations/use-remove-blueprint";
+import { toast } from "@/components/ui/toasts/toast";
+import { useDeleteBlueprint } from "../../api/mutations/use-delete-blueprint";
 
-type RemoveBlueprintModalProps = {
+type DeleteBlueprintModalProps = {
   blueprintId: string;
 };
 
-export const RemoveBlueprintModal: FC<RemoveBlueprintModalProps> = ({
+export const DeleteBlueprintModal: FC<DeleteBlueprintModalProps> = ({
   blueprintId,
 }) => {
-  const removeBlueprint = useRemoveBlueprint();
+  const deleteBlueprint = useDeleteBlueprint();
 
-  const handleSubmit = () => {
-    removeBlueprint.mutate(blueprintId);
+  const handleSubmit = async () => {
+    const { name } = await deleteBlueprint.mutateAsync(blueprintId);
+    toast({
+      title: "Success",
+      description: `Blueprint "${name}" was successfully deleted`,
+    });
   };
 
   return (
@@ -33,9 +38,9 @@ export const RemoveBlueprintModal: FC<RemoveBlueprintModalProps> = ({
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>Remove blueprint</DialogTitle>
+        <DialogTitle>Delete blueprint</DialogTitle>
         <DialogDescription>
-          Are you sure you want to remove this blueprint?
+          Are you sure you want to delete this blueprint?
         </DialogDescription>
         <DialogFooter>
           <DialogClose>
