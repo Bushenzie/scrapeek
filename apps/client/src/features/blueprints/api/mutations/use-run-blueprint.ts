@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "@/components/ui/toasts/toast";
 import { axiosClient } from "@/lib/clients/axios";
 
 type RunBlueprintProps = {
@@ -23,6 +24,20 @@ export const useRunBlueprint = ({ blueprintId }: RunBlueprintProps) => {
       } catch {
         throw new Error("Failed to fetch blueprint");
       }
+    },
+    onMutate: (mode) => {
+      toast({
+        title: `Running blueprint (${mode})`,
+      });
+    },
+    onSuccess: (_, mode) => {
+      toast({
+        title: `Blueprint run (${mode}) success`,
+        description:
+          mode === "test"
+            ? "You will see more than 2 result items, if the pagination is working correctly"
+            : undefined,
+      });
     },
   });
 };

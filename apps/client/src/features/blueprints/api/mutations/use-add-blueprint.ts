@@ -1,5 +1,6 @@
 import type { Blueprint, EditableBlueprint } from "@scrapeek/shared/blueprint";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/components/ui/toasts/toast";
 import { axiosClient } from "@/lib/clients/axios";
 
 export const useAddBlueprint = () => {
@@ -21,8 +22,12 @@ export const useAddBlueprint = () => {
         throw new Error("Something went wrong during addition of blueprint");
       }
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["all-blueprints"] });
+      toast({
+        title: "Success",
+        description: `Successfully added ${response.data.type} blueprint "${response.data.name}"`,
+      });
     },
   });
 };

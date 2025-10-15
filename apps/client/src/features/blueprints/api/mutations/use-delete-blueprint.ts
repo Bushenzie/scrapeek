@@ -1,6 +1,7 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
+import { toast } from "@/components/ui/toasts/toast";
 import { axiosClient } from "@/lib/clients/axios";
 
 export const useDeleteBlueprint = () => {
@@ -21,8 +22,12 @@ export const useDeleteBlueprint = () => {
         throw new Error("Something went wrong during delete of blueprint");
       }
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["all-blueprints"] });
+      toast({
+        title: "Success",
+        description: `Blueprint "${response.name}" was successfully deleted`,
+      });
       router.navigate({ to: "/blueprints" });
     },
   });

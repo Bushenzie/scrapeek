@@ -1,6 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Pencil } from "lucide-react";
-import { useEffect } from "react";
 import { Box } from "@/components/ui/box/box";
 import { Button } from "@/components/ui/button/button";
 import {
@@ -68,35 +66,42 @@ export const Route = createFileRoute("/_authenticated/")({
 });
 
 function DashboardPage() {
-  useEffect(() => {
-    toast({
-      title: "Default toast",
-      description: "this toast serves only for testing",
-    });
-    toast({
-      title: "Action toast",
-      description:
-        "this toast serves only for testing actions,this toast serves only for testing actionsthis toast serves only for testing actions,m",
-      action: {
-        btnText: "Undo",
-        onClick: () => {
-          alert("Undo!");
-        },
-      },
-    });
-  }, []);
-
-  const createToast = () => {
-    toast({
-      title: "Created testing toast",
-      description: "Wow these toast are toasty",
-    });
-  };
-
   return (
     <div>
       <Box className="flex flex-col p-6 items-start gap-4">
-        <Button onClick={createToast}>Summon toast</Button>
+        <Button
+          onClick={() =>
+            toast({
+              title: "Created normal toast",
+              description: "Wow these toast are toasty",
+            })
+          }
+        >
+          Summon normal toast
+        </Button>
+        <Button
+          onClick={() =>
+            toast({
+              title: "Created action toast",
+              description: "Wow these toast are toasty, but with action",
+              action: {
+                btnText: "click",
+                onClick: () => alert("Hi!"),
+              },
+            })
+          }
+        >
+          Summon action toast
+        </Button>
+        <Button
+          onClick={() =>
+            toast({
+              title: "Created testing toast",
+            })
+          }
+        >
+          Summon promise toast
+        </Button>
         <Input placeholder="test" />
         <RadioGroup defaultValue="2">
           <div className="flex items-center gap-2">

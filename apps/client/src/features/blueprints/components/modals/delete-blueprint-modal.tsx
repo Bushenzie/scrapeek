@@ -10,7 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog/dialog";
-import { toast } from "@/components/ui/toasts/toast";
 import { useDeleteBlueprint } from "../../api/mutations/use-delete-blueprint";
 
 type DeleteBlueprintModalProps = {
@@ -23,11 +22,7 @@ export const DeleteBlueprintModal: FC<DeleteBlueprintModalProps> = ({
   const deleteBlueprint = useDeleteBlueprint();
 
   const handleSubmit = async () => {
-    const { name } = await deleteBlueprint.mutateAsync(blueprintId);
-    toast({
-      title: "Success",
-      description: `Blueprint "${name}" was successfully deleted`,
-    });
+    await deleteBlueprint.mutateAsync(blueprintId);
   };
 
   return (

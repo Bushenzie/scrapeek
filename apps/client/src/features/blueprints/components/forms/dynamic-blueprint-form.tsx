@@ -14,7 +14,6 @@ import { Checkbox } from "@/components/ui/checkbox/checkbox";
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import { Textarea } from "@/components/ui/textarea/textarea";
-import { toast } from "@/components/ui/toasts/toast";
 import { useAppForm } from "@/hooks/use-app-form";
 import { authClient } from "@/lib/clients/auth";
 import { useAddBlueprint } from "../../api/mutations/use-add-blueprint";
@@ -68,17 +67,9 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
       if (blueprint) {
         const { data } = await editBlueprint(value);
         blueprintId = data.id;
-        toast({
-          title: "Success",
-          description: `Successfully edited blueprint "${data.name}"`,
-        });
       } else {
         const { data } = await addBlueprint(value);
         blueprintId = data.id;
-        toast({
-          title: "Success",
-          description: `Successfully added ${data.type} blueprint "${data.name}"`,
-        });
       }
 
       if (!blueprint) return;

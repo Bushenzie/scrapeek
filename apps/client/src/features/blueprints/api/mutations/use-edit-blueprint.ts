@@ -1,5 +1,6 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/components/ui/toasts/toast";
 import { axiosClient } from "@/lib/clients/axios";
 
 export const useEditBlueprint = () => {
@@ -24,6 +25,10 @@ export const useEditBlueprint = () => {
       queryClient.invalidateQueries({ queryKey: ["all-blueprints"] });
       queryClient.invalidateQueries({
         queryKey: ["blueprint", response.data.id],
+      });
+      toast({
+        title: "Success",
+        description: `Successfully edited blueprint "${response.data.name}"`,
       });
     },
   });
