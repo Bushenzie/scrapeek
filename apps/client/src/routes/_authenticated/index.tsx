@@ -33,6 +33,15 @@ import {
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination/pagination";
+import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group/radio-group";
@@ -100,6 +109,30 @@ function DashboardPage() {
           <Badge variant={"outline"}>outline</Badge>
           <Badge variant={"secondary"}>secondary</Badge>
         </div>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious href="#" />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">1</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#" isActive>
+                2
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">3</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext href="#" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
         <Input placeholder="test" />
         <RadioGroup defaultValue="2">
           <div className="flex items-center gap-2">
