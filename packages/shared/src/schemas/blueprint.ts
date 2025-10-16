@@ -102,8 +102,11 @@ const databaseFieldsSchema = z.object({
 
 const baseBlueprintSchema = z.object({
   url: z.url("Provided string must be URL").max(255),
-  name: z.string().min(3, "Minimum length of name is 3 chars"),
+  name: z.string().min(3, "Minimum length of name is 3 chars").max(255),
+  description: z.string().max(255).optional(),
   respectRobotsTxt: z.boolean(),
+  public: z.boolean(),
+  likes: z.number().int().min(0).optional(),
   userId: z.string().min(32).max(32),
   result: z
     .object({
@@ -112,6 +115,12 @@ const baseBlueprintSchema = z.object({
       updatedAt: z.date(),
       data: z.json(),
       blueprintId: z.uuid(),
+    })
+    .optional(),
+  user: z
+    .object({
+      name: z.string(),
+      image: z.url(),
     })
     .optional(),
 });

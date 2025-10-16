@@ -2,7 +2,7 @@ import {
   type Blueprint,
   editableBlueprintSchema,
 } from "@scrapeek/shared/blueprint";
-import { eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { db } from "@/db/db.ts";
 import { blueprintTable } from "@/db/schemas/blueprint.ts";
@@ -10,12 +10,44 @@ import type { AuthType } from "@/lib/auth.ts";
 import { StatusError } from "@/lib/error.ts";
 import { authMiddleware } from "@/middlewares/auth-middleware.ts";
 import { zodValidator } from "@/middlewares/custom-zod-validator.ts";
-import { searchableBlueprint } from "./blueprints.schemas.ts";
+import {
+  paginatedBlueprint,
+  searchableBlueprint,
+} from "./blueprints.schemas.ts";
+
+const paginationLimit = 10;
 
 const app = new Hono<{ Variables: AuthType }>()
   .use(authMiddleware)
-  .get("/", async (c) => {
+  .get("/public", zodValidator("query", paginatedBlueprint), async (c) => {
     const user = c.get("user");
+    const { page = 1 } = c.req.valid("query");
+
+    if (!user) {
+      throw new StatusError("No user found", 401);
+    }
+
+    const blueprints = (await db.query.blueprintTable.findMany({
+      limit: paginationLimit,
+      offset: paginationLimit * page - paginationLimit,
+      with: {
+        user: {
+          columns: {
+            name: true,
+            image: true,
+          },
+        },
+      },
+      where: (blueprintTable, { eq }) => eq(blueprintTable.public, true),
+    })) as Blueprint[];
+
+    const totalCount = await db.select({ count: count() }).from(blueprintTable);
+
+    return c.json({ data: blueprints, totalCount, page });
+  })
+  .get("/", zodValidator("query", paginatedBlueprint), async (c) => {
+    const user = c.get("user");
+    const { page = 1 } = c.req.valid("query");
 
     if (!user) {
       throw new StatusError("No user found", 401);
@@ -29,6 +61,7 @@ const app = new Hono<{ Variables: AuthType }>()
           },
         },
       },
+
       where: (blueprintTable, { eq }) => eq(blueprintTable.userId, user.id),
     })) as Blueprint[];
 

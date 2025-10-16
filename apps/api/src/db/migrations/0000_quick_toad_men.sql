@@ -77,8 +77,11 @@ CREATE TABLE "blueprint" (
 	"user_id" text NOT NULL,
 	"url" varchar(255) NOT NULL,
 	"name" varchar(255) NOT NULL,
+	"description" varchar(255),
 	"respect_robots_txt" boolean DEFAULT true NOT NULL,
 	"config" jsonb NOT NULL,
+	"public" boolean DEFAULT false NOT NULL,
+	"likes" integer DEFAULT 0 NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );

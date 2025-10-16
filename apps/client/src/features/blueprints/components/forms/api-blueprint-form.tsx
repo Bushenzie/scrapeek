@@ -45,9 +45,11 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
       ({
         type: BlueprintType.API,
         name: "",
+        description: "",
         url: "",
         userId: session?.user?.id,
         respectRobotsTxt: true,
+        public: false,
         config: {
           fields: [{ key: "", selector: "" }],
           headers: {},
@@ -174,6 +176,12 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
               children={(field) => <field.TextField label="Blueprint name" />}
             />
             <form.AppField
+              name="description"
+              children={(field) => (
+                <field.TextareaField label="Blueprint description" />
+              )}
+            />
+            <form.AppField
               name="url"
               children={(field) => <field.TextField label="URL" />}
             />
@@ -249,6 +257,10 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
               children={(field) => (
                 <field.CheckboxField label="Respect robots.txt" />
               )}
+            />
+            <form.AppField
+              name="public"
+              children={(field) => <field.CheckboxField label="Public" />}
             />
             {showPagination && (
               <>

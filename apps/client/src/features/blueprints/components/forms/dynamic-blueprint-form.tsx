@@ -45,9 +45,11 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
       ({
         type: BlueprintType.DYNAMIC,
         name: "",
+        description: "",
         url: "",
         userId: session?.user?.id,
         respectRobotsTxt: true,
+        public: false,
         config: {
           elements: [{ key: "", selector: "", attribute: undefined }],
           pagination: {},
@@ -110,7 +112,12 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
               name="name"
               children={(field) => <field.TextField label="Blueprint name" />}
             />
-
+            <form.AppField
+              name="description"
+              children={(field) => (
+                <field.TextareaField label="Blueprint description" />
+              )}
+            />
             <form.AppField
               name="url"
               children={(field) => <field.TextField label="URL" />}
@@ -208,6 +215,10 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
               children={(field) => (
                 <field.CheckboxField label="Respect robots.txt" />
               )}
+            />
+            <form.AppField
+              name="public"
+              children={(field) => <field.CheckboxField label="Public" />}
             />
             {showPagination && (
               <>

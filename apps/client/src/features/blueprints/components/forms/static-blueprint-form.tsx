@@ -46,8 +46,10 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
       ({
         type: BlueprintType.STATIC,
         name: "",
+        description: "",
         url: "",
         respectRobotsTxt: true,
+        public: false,
         userId: session?.user?.id,
         config: {
           elements: [{ key: "", selector: "", attribute: undefined }],
@@ -109,7 +111,12 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
               name="name"
               children={(field) => <field.TextField label="Blueprint name" />}
             />
-
+            <form.AppField
+              name="description"
+              children={(field) => (
+                <field.TextareaField label="Blueprint description" />
+              )}
+            />
             <form.AppField
               name="url"
               children={(field) => <field.TextField label="URL" />}
@@ -202,6 +209,10 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
                 <field.CheckboxField label="Respect robots.txt" />
               )}
             />
+            <form.AppField
+              name="public"
+              children={(field) => <field.CheckboxField label="Public" />}
+            />
             {showPagination && (
               <>
                 <form.AppField
@@ -255,6 +266,12 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
                 readOnly
               />
             </div>
+          )}
+        />
+        <form.Subscribe
+          selector={(state) => state.errorMap}
+          children={(state) => (
+            <div className="flex flex-col gap-2">{JSON.stringify(state)}</div>
           )}
         />
       </div>

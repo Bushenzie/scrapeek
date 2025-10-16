@@ -1,5 +1,5 @@
 {
-  "id": "0f966503-a8fb-424a-ac9e-56f6bd49f082",
+  "id": "2325201a-185e-48b9-8701-c675fe1efa1d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -505,6 +505,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "respect_robots_txt": {
           "name": "respect_robots_txt",
           "type": "boolean",
@@ -517,6 +523,20 @@
           "type": "jsonb",
           "primaryKey": false,
           "notNull": true
+        },
+        "public": {
+          "name": "public",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "likes": {
+          "name": "likes",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
         },
         "created_at": {
           "name": "created_at",
