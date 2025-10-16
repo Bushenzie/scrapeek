@@ -33,13 +33,43 @@ export const Navbar: FC<NavbarProps> = ({ className }) => {
   return (
     <Box className={cn("flex justify-between items-center p-4", className)}>
       <div className="flex items-center gap-2">
-        <LinkButton variant={"link"} size={"sm"} to="/">
+        <LinkButton
+          variant={"link"}
+          size={"sm"}
+          to="/"
+          activeOptions={{
+            exact: true,
+          }}
+          activeProps={{
+            className: "underline",
+          }}
+        >
           Dashboard
         </LinkButton>
-        <LinkButton variant={"link"} size={"sm"} to="/blueprints">
+        <LinkButton
+          variant={"link"}
+          size={"sm"}
+          to="/blueprints"
+          activeOptions={{
+            exact: true,
+          }}
+          activeProps={{
+            className: "underline",
+          }}
+        >
           Blueprints
         </LinkButton>
-        <LinkButton variant={"link"} size={"sm"} to="/blueprints/browse">
+        <LinkButton
+          variant={"link"}
+          size={"sm"}
+          to="/blueprints/browse"
+          activeOptions={{
+            exact: true,
+          }}
+          activeProps={{
+            className: "underline",
+          }}
+        >
           Browse
         </LinkButton>
       </div>
