@@ -5,6 +5,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar/avatar";
+import { Badge } from "@/components/ui/badge/badge";
 import { Box } from "@/components/ui/box/box";
 import { Button } from "@/components/ui/button/button";
 import { useUpvoteBlueprint } from "../api/mutations/use-upvote-blueprint";
@@ -50,22 +51,25 @@ export const PublicBlueprintsList = () => {
                 {blueprint.description}
               </span>
             </div>
-            <div className="flex mt-6 gap-2 justify-end">
-              <Button
-                variant={"outline"}
-                size={"sm"}
-                onClick={async () => {
-                  await upvoteBlueprint(blueprint.id);
-                }}
-                className="flex items-center justify-center"
-              >
-                <ThumbsUp className="size-4" />
-                <span className="text-md">{blueprint.upvotes}</span>
-              </Button>
-              <Button variant={"outline"} size={"sm"}>
-                <Plus className="size-4" />
-                <span className="text-md">Add to library</span>
-              </Button>
+            <div className="flex mt-6 items-center justify-between">
+              <Badge>{blueprint.type.toUpperCase()}</Badge>
+              <div className="flex items-center gap-2 justify-end">
+                <Button
+                  variant={"outline"}
+                  size={"sm"}
+                  onClick={async () => {
+                    await upvoteBlueprint(blueprint.id);
+                  }}
+                  className="flex items-center justify-center"
+                >
+                  <ThumbsUp className="size-4" />
+                  <span className="text-md">{blueprint.upvotes}</span>
+                </Button>
+                <Button variant={"outline"} size={"sm"} disabled>
+                  <Plus className="size-4" />
+                  <span className="text-md">Add to library</span>
+                </Button>
+              </div>
             </div>
           </Box>
           // </Link>
