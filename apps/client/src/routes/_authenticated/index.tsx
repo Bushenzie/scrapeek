@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Badge } from "@/components/ui/badge/badge";
 import { Box } from "@/components/ui/box/box";
 import { Button } from "@/components/ui/button/button";
 import {
@@ -93,15 +94,12 @@ function DashboardPage() {
         >
           Summon action toast
         </Button>
-        <Button
-          onClick={() =>
-            toast({
-              title: "Created testing toast",
-            })
-          }
-        >
-          Summon promise toast
-        </Button>
+        <div className="flex gap-2">
+          <Badge variant={"primary"}>primary</Badge>
+          <Badge variant={"destructive"}>destructive</Badge>
+          <Badge variant={"outline"}>outline</Badge>
+          <Badge variant={"secondary"}>secondary</Badge>
+        </div>
         <Input placeholder="test" />
         <RadioGroup defaultValue="2">
           <div className="flex items-center gap-2">
