@@ -7,6 +7,7 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 import { blueprintTable } from "./blueprint";
+import { upvoteTable } from "./upvote";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -23,6 +24,7 @@ export const user = pgTable("user", {
 
 export const userRelations = relations(user, ({ many }) => ({
   blueprints: many(blueprintTable),
+  upvotes: many(upvoteTable),
 }));
 
 export const session = pgTable("session", {

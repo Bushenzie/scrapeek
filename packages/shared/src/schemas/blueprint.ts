@@ -106,7 +106,6 @@ const baseBlueprintSchema = z.object({
   description: z.string().max(255).optional(),
   respectRobotsTxt: z.boolean(),
   public: z.boolean(),
-  likes: z.number().int().min(0).optional(),
   userId: z.string().min(32).max(32),
   result: z
     .object({
@@ -123,6 +122,7 @@ const baseBlueprintSchema = z.object({
       image: z.url(),
     })
     .optional(),
+  upvotes: z.number().optional(),
 });
 
 const fullBaseBlueprintSchema = baseBlueprintSchema.extend(

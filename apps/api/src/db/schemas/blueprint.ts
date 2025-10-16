@@ -12,6 +12,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { user } from "./auth.ts";
 import { resultTable } from "./result.ts";
+import { upvoteTable } from "./upvote.ts";
 
 export const configTypeEnum = pgEnum("type", ["api", "static", "dynamic"]);
 
@@ -27,18 +28,21 @@ export const blueprintTable = pgTable("blueprint", {
   respectRobotsTxt: boolean("respect_robots_txt").default(true).notNull(),
   config: jsonb("config").notNull(),
   public: boolean("public").notNull().default(false),
-  likes: integer("likes").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const blueprintRelations = relations(blueprintTable, ({ one }) => ({
-  result: one(resultTable, {
-    fields: [blueprintTable.id],
-    references: [resultTable.blueprintId],
-  }),
-  user: one(user, {
-    fields: [blueprintTable.userId],
-    references: [user.id],
-  }),
-}));
+export const blueprintRelations = relations(
+  blueprintTable,
+  ({ one, many }) => ({
+    result: one(resultTable, {
+      fields: [blueprintTable.id],
+      references: [resultTable.blueprintId],
+    }),
+    user: one(user, {
+      fields: [blueprintTable.userId],
+      references: [user.id],
+    }),
+    upvotes: many(upvoteTable),
+  })
+);
