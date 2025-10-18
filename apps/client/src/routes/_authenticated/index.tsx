@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge/badge";
 import { Box } from "@/components/ui/box/box";
 import { Button } from "@/components/ui/button/button";
@@ -32,15 +33,7 @@ import {
 } from "@/components/ui/dropdown/dropdown";
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination/pagination";
+import { Pagination } from "@/components/ui/pagination/pagination";
 import {
   RadioGroup,
   RadioGroupItem,
@@ -76,6 +69,8 @@ export const Route = createFileRoute("/_authenticated/")({
 });
 
 function DashboardPage() {
+  const [page, setPage] = useState(1);
+
   return (
     <div>
       <Box className="flex flex-col p-6 items-start gap-4">
@@ -109,30 +104,13 @@ function DashboardPage() {
           <Badge variant={"outline"}>outline</Badge>
           <Badge variant={"secondary"}>secondary</Badge>
         </div>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        Current page: {page}
+        <Pagination
+          currentPage={page}
+          setCurrentPage={setPage}
+          itemsPerPage={10}
+          itemsTotal={89}
+        />
         <Input placeholder="test" />
         <RadioGroup defaultValue="2">
           <div className="flex items-center gap-2">
@@ -168,7 +146,6 @@ function DashboardPage() {
           <Checkbox id="checkbox" />
           <Label htmlFor="checkbox">Click this to enable checkbox</Label>
         </div>
-
         <div className="flex gap-2">
           <Button variant={"primary"}>Primary</Button>
           <Button variant={"destructive"}>Destructive</Button>
@@ -177,7 +154,6 @@ function DashboardPage() {
           <Button variant={"outline"}>Outline</Button>
           <Button variant={"secondary"}>Secondary</Button>
         </div>
-
         <Table>
           <TableCaption>A list of your recent invoices.</TableCaption>
           <TableHeader>
@@ -197,7 +173,6 @@ function DashboardPage() {
             </TableRow>
           </TableBody>
         </Table>
-
         <Dialog>
           <DialogTrigger>
             <Button variant={"outline"}>Open dialog</Button>
@@ -219,7 +194,6 @@ function DashboardPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button>Open dropdown</Button>
