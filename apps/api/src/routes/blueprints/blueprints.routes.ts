@@ -2,7 +2,7 @@ import {
   type Blueprint,
   editableBlueprintSchema,
 } from "@scrapeek/shared/blueprint";
-import { count, desc, eq, getTableColumns, sql } from "drizzle-orm";
+import { count, desc, eq, getTableColumns } from "drizzle-orm";
 import { Hono } from "hono";
 import { db } from "@/db/db.ts";
 import { user as userTable } from "@/db/schemas/auth.ts";
@@ -17,7 +17,7 @@ import {
   searchableBlueprint,
 } from "./blueprints.schemas.ts";
 
-const paginationLimit = 10;
+const paginationLimit = 12;
 
 const app = new Hono<{ Variables: AuthType }>()
   .use(authMiddleware)
@@ -50,7 +50,7 @@ const app = new Hono<{ Variables: AuthType }>()
 
     const totalCount = await db.select({ count: count() }).from(blueprintTable);
 
-    return c.json({ data: blueprints, totalCount, page });
+    return c.json({ data: blueprints, totalCount: totalCount[0].count, page });
   })
   .get("/", zodValidator("query", paginatedBlueprint), async (c) => {
     const user = c.get("user");
@@ -74,11 +74,16 @@ const app = new Hono<{ Variables: AuthType }>()
     return c.json({ data: blueprints });
   })
   .get("/:id", zodValidator("param", searchableBlueprint), async (c) => {
+    const user = c.get("user");
     const { id } = c.req.valid("param");
 
-    // TODO: Check userId
+    if (!user) {
+      throw new StatusError("No user found", 401);
+    }
+
     const searchedBlueprint = (await db.query.blueprintTable.findFirst({
-      where: (blueprints, { eq }) => eq(blueprints.id, id),
+      where: (blueprints, { eq, and }) =>
+        and(eq(blueprints.id, id), eq(blueprints.userId, user.id)),
       with: {
         result: true,
       },
@@ -90,29 +95,6 @@ const app = new Hono<{ Variables: AuthType }>()
     }
 
     return c.json({ data: searchedBlueprint });
-  })
-  .put("/:id/upvote", zodValidator("param", searchableBlueprint), async (c) => {
-    const { id } = c.req.valid("param");
-    const user = c.get("user");
-
-    if (!user) {
-      throw new StatusError("No user found", 401);
-    }
-
-    const existingUpvote = await db.query.upvoteTable.findFirst({
-      where: (upvotes, { eq, and }) =>
-        and(eq(upvotes.blueprintId, id), eq(upvotes.userId, user.id)),
-    });
-
-    console.log(existingUpvote);
-
-    if (existingUpvote) {
-      await db.delete(upvoteTable).where(eq(upvoteTable.id, existingUpvote.id));
-    } else {
-      await db.insert(upvoteTable).values({ blueprintId: id, userId: user.id });
-    }
-
-    return c.json({});
   })
   .post("/", zodValidator("json", editableBlueprintSchema), async (c) => {
     const body = await c.req.valid("json");

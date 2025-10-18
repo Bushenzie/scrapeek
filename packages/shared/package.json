@@ -10,6 +10,10 @@
         "./blueprint": {
             "types": "./dist/blueprint.d.ts",
             "default": "./dist/blueprint.js"
+        },
+        "./upvote": {
+            "types": "./dist/upvote.d.ts",
+            "default": "./dist/upvote.js"
         }
     },
     "devDependencies": {

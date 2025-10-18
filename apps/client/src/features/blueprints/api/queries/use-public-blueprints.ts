@@ -22,8 +22,7 @@ export const usePublicBlueprints = ({ page }: GetPublicBlueprintsProps) => {
             page,
           },
         });
-        const blueprints = await response.data.data;
-        return blueprints;
+        return response.data;
       } catch {
         throw new Error("Failed to fetch blueprints");
       }

@@ -9,15 +9,22 @@ export const useUpvoteBlueprint = () => {
     mutationFn: async (blueprintId: string) => {
       try {
         await axiosClient({
-          method: "put",
-          url: `/blueprints/${blueprintId}/upvote`,
+          method: "post",
+          url: `/upvotes/`,
+          data: {
+            blueprintId,
+          },
         });
       } catch {
         throw new Error("Something went wrong during upvoting of blueprint");
       }
     },
-    onSuccess: () => {
+    onSuccess: (_, blueprintId) => {
+      // TODO: optimistic update
       queryClient.invalidateQueries({ queryKey: ["public-blueprints"] });
+      queryClient.invalidateQueries({
+        queryKey: ["get-blueprint-upvotes", blueprintId],
+      });
     },
   });
 };
