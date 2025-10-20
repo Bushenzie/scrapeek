@@ -134,8 +134,6 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
         blueprintId = data.id;
       }
 
-      if (!blueprint) return;
-
       await router.navigate({
         to: "/blueprints/$blueprintId",
         params: {

@@ -74,8 +74,6 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
         blueprintId = data.id;
       }
 
-      if (!blueprint) return;
-
       await router.navigate({
         to: "/blueprints/$blueprintId",
         params: {

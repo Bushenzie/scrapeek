@@ -73,8 +73,6 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({
         blueprintId = data.id;
       }
 
-      if (!blueprint) return;
-
       await router.navigate({
         to: "/blueprints/$blueprintId",
         params: {
