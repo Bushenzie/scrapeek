@@ -17,7 +17,7 @@ export const apiScraper = async (
   if (blueprint.respectRobotsTxt) {
     const isScrappable = await canScrape(blueprint.url);
     if (!isScrappable)
-      throw Error(
+      throw new Error(
         "Site is forbidden from being scraped due to restriction inside robots.txt"
       );
   }
