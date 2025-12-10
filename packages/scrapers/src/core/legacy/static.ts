@@ -1,7 +1,8 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
 import * as cheerio from "cheerio";
-import { parseURL } from "../url.ts";
-import { axiosClient } from "../utils.ts";
+import { axiosClient } from "@/utils/axios";
+import { canScrape } from "@/utils/robots";
+import { parseURL } from "@/utils/url.ts";
 
 export const staticSiteScraper = async (
   blueprint: Blueprint,
@@ -12,6 +13,14 @@ export const staticSiteScraper = async (
   console.log(`STATIC Scrape | ${blueprint.name}`);
   const { config } = blueprint;
   const parsedUrl = parseURL(blueprint.url);
+
+  if (blueprint.respectRobotsTxt) {
+    const isScrappable = await canScrape(blueprint.url);
+    if (!isScrappable)
+      throw Error(
+        "Site is forbidden from being scraped due to restriction inside robots.txt"
+      );
+  }
 
   try {
     const response = await axiosClient.get(blueprint.url);
@@ -61,6 +70,7 @@ export const staticSiteScraper = async (
       const newPageUrl = paginationLink.startsWith("http")
         ? paginationLink
         : `${parsedUrl.protocol}://${parsedUrl.domain}${paginationLink}`;
+
       let nextPageItems = await staticSiteScraper(
         {
           ...blueprint,

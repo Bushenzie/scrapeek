@@ -4,9 +4,7 @@ import { Hono } from "hono";
 import { db } from "@/db/db.ts";
 import { blueprintTable } from "@/db/schemas/blueprint.ts";
 import { resultTable } from "@/db/schemas/result.ts";
-import { StatusError } from "@/lib/error.ts";
-import { canScrape } from "@/lib/robots.ts";
-import { scrapeData } from "@/lib/scrapers/index.ts";
+import { scrapeData } from "@/lib/scrape.ts";
 import { zodValidator } from "@/middlewares/custom-zod-validator.ts";
 import { runnerSchema } from "./runners.schemas.ts";
 
@@ -27,15 +25,6 @@ const app = new Hono().post(
     const isTestRun = mode === "test";
 
     const data = await scrapeData([blueprint], isTestRun);
-
-    if (blueprint.respectRobotsTxt) {
-      const isScrappable = await canScrape(blueprint.url);
-      if (!isScrappable)
-        throw new StatusError(
-          "This page could not be scraped as it is disallowed inside robots.txt",
-          401
-        );
-    }
 
     if (!isTestRun) {
       const existingResult = await db.query.resultTable.findFirst({

@@ -1,6 +1,8 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
-import { parseURL } from "../url.ts";
-import { axiosClient, getValueFromFlatPath } from "../utils.ts";
+import { axiosClient } from "@/utils/axios";
+import { getValueFromFlatPath } from "@/utils/path";
+import { canScrape } from "@/utils/robots";
+import { parseURL } from "@/utils/url.ts";
 
 export const apiScraper = async (
   blueprint: Blueprint,
@@ -11,6 +13,14 @@ export const apiScraper = async (
   console.log(`API Scrape | ${blueprint.name}`);
   const { config } = blueprint;
   const parsedUrl = parseURL(blueprint.url);
+
+  if (blueprint.respectRobotsTxt) {
+    const isScrappable = await canScrape(blueprint.url);
+    if (!isScrappable)
+      throw Error(
+        "Site is forbidden from being scraped due to restriction inside robots.txt"
+      );
+  }
 
   try {
     const response = await axiosClient.get(blueprint.url, {

@@ -1,8 +1,8 @@
+import { apiScraper } from "@scrapeek/scrapers/api";
+import { dynamicSiteScraper } from "@scrapeek/scrapers/dynamic";
+import { staticSiteScraper } from "@scrapeek/scrapers/static";
 import type { Blueprint } from "@scrapeek/shared/blueprint";
-import { StatusError } from "../error.ts";
-import { apiScraper } from "./api-scraper.ts";
-import { dynamicSiteScraper } from "./dynamic-scraper.ts";
-import { staticSiteScraper } from "./static-scraper.ts";
+import { StatusError } from "@/lib/error.ts";
 
 export const scrapeData = async (blueprints: Blueprint[], testRun = false) => {
   const scrapersToRun = blueprints.map((blueprint) => {

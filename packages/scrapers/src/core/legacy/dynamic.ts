@@ -1,6 +1,7 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
 import playwright, { type ElementHandle } from "playwright";
-import { parseURL } from "../url";
+import { canScrape } from "@/utils/robots";
+import { parseURL } from "@/utils/url.ts";
 
 export const dynamicSiteScraper = async (
   blueprint: Blueprint,
@@ -11,6 +12,14 @@ export const dynamicSiteScraper = async (
   console.log(`DYNAMIC Scrape | ${blueprint.name}`);
   const { config } = blueprint;
   const parsedUrl = parseURL(blueprint.url);
+
+  if (blueprint.respectRobotsTxt) {
+    const isScrappable = await canScrape(blueprint.url);
+    if (!isScrappable)
+      throw Error(
+        "Site is forbidden from being scraped due to restriction inside robots.txt"
+      );
+  }
 
   const browser = await playwright.chromium.launch({
     headless: true,
@@ -80,7 +89,9 @@ export const dynamicSiteScraper = async (
     const locator = await page.locator(selector);
 
     if (variant === "button") {
-      await locator.evaluate((item) => (item as ElementHandle).click());
+      await locator.evaluate((item) =>
+        (item as unknown as ElementHandle).click()
+      );
     }
 
     const paginationLink = await locator.evaluate(

@@ -1,0 +1,45 @@
+{
+  "name": "@scrapeek/scrapers",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "build": "tsup"
+  },
+  "exports": {
+    "./static": {
+      "types": "./dist/static.d.ts",
+      "default": "./dist/static.js"
+    },
+    "./dynamic": {
+      "types": "./dist/dynamic.d.ts",
+      "default": "./dist/dynamic.js"
+    },
+    "./api": {
+      "types": "./dist/api.d.ts",
+      "default": "./dist/api.js"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.9.0",
+  "dependencies": {
+    "@scrapeek/shared": "workspace:*",
+    "axios": "^1.12.2",
+    "cheerio": "^1.1.2",
+    "node-html-parser": "^7.0.1",
+    "playwright": "^1.55.1",
+    "query-string": "^9.3.1",
+    "robots-parser": "^3.0.1",
+    "tldts": "^7.0.16",
+    "undici": "^7.16.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.15"
+  }
+}
