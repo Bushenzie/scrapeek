@@ -131,6 +131,10 @@
   }
 }
 
+::selection {
+  @apply bg-blueprint-400;
+}
+
 pre.shiki {
   @apply !rounded-md !bg-blueprint-900 !border !border-blueprint-400 !p-3;
 }
