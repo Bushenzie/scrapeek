@@ -8,17 +8,29 @@
     "build": "tsup"
   },
   "exports": {
-    "./static": {
-      "types": "./dist/static.d.ts",
-      "default": "./dist/static.js"
+    "./legacy/static": {
+      "types": "./dist/legacy/static.d.ts",
+      "default": "./dist/legacy/static.js"
     },
-    "./dynamic": {
-      "types": "./dist/dynamic.d.ts",
-      "default": "./dist/dynamic.js"
+    "./legacy/dynamic": {
+      "types": "./dist/legacy/dynamic.d.ts",
+      "default": "./dist/legacy/dynamic.js"
     },
-    "./api": {
-      "types": "./dist/api.d.ts",
-      "default": "./dist/api.js"
+    "./legacy/api": {
+      "types": "./dist/legacy/api.d.ts",
+      "default": "./dist/legacy/api.js"
+    },
+    "./new/static": {
+      "types": "./dist/new/static.d.ts",
+      "default": "./dist/new/static.js"
+    },
+    "./new/dynamic": {
+      "types": "./dist/new/dynamic.d.ts",
+      "default": "./dist/new/dynamic.js"
+    },
+    "./new/api": {
+      "types": "./dist/new/api.d.ts",
+      "default": "./dist/new/api.js"
     }
   },
   "keywords": [],
