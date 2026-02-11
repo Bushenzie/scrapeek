@@ -28,8 +28,7 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
   }, [blueprint, data]);
 
   const lastScrapedData = useMemo(() => {
-    const source =
-      (data && Array.isArray(data) ? data[0] : data) ?? blueprint?.result?.data;
+    const source = (data && Array.isArray(data) ? data[0] : data) ?? blueprint?.result?.data;
 
     const lastScrapedData = source ?? {};
 
@@ -72,31 +71,20 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
         <div className="col-span-1 space-y-4">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
-              <Label>Last scraper run result</Label>
+              <div className="flex flex-col">
+                <h2 className="text-sm">Last scraper run result</h2>
+                <span className="text-xs">{JSON.parse(lastScrapedData).length} results</span>
+              </div>
               <div className="flex gap-4">
-                <Button
-                  variant={"link"}
-                  size={"icon"}
-                  className="m-0 p-0 h-max w-fit"
-                  onClick={handleDownload}
-                >
+                <Button variant={"link"} size={"icon"} className="m-0 p-0 h-max w-fit" onClick={handleDownload}>
                   <Download />
                 </Button>
-                <Button
-                  variant={"link"}
-                  size={"icon"}
-                  className="m-0 p-0 h-max w-fit"
-                  onClick={handleCopy}
-                >
+                <Button variant={"link"} size={"icon"} className="m-0 p-0 h-max w-fit" onClick={handleCopy}>
                   <Copy />
                 </Button>
               </div>
             </div>
-            <CodeBlock
-              code={lastScrapedData}
-              lang="json"
-              theme="github-dark-dimmed"
-            />
+            <CodeBlock code={lastScrapedData} lang="json" theme="github-dark-dimmed" />
           </div>
           <div className="flex flex-col gap-2">
             <Label>Result URL</Label>
@@ -105,11 +93,7 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
         </div>
       </div>
       <div className="flex justify-end gap-2 pb-6 pr-6 ">
-        <Button
-          variant={"outline"}
-          onClick={handleTestRunScraper}
-          loading={isPending}
-        >
+        <Button variant={"outline"} onClick={handleTestRunScraper} loading={isPending}>
           Test run
         </Button>
         <Button onClick={handleRunScraper} loading={isPending}>
