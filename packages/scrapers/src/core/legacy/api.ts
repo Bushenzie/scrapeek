@@ -4,11 +4,7 @@ import { getValueFromFlatPath } from "@/utils/path";
 import { canScrape } from "@/utils/robots";
 import { parseURL } from "@/utils/url.ts";
 
-export const apiScraper = async (
-  blueprint: Blueprint,
-  testRun?: boolean,
-  ignorePagination: boolean = false
-) => {
+export const apiScraper = async (blueprint: Blueprint, testRun?: boolean, ignorePagination: boolean = false) => {
   if (blueprint.type !== "api") return;
   console.log(`API Scrape | ${blueprint.name}`);
   const { config } = blueprint;
@@ -16,10 +12,7 @@ export const apiScraper = async (
 
   if (blueprint.respectRobotsTxt) {
     const isScrappable = await canScrape(blueprint.url);
-    if (!isScrappable)
-      throw new Error(
-        "Site is forbidden from being scraped due to restriction inside robots.txt"
-      );
+    if (!isScrappable) throw new Error("Site is forbidden from being scraped due to restriction inside robots.txt");
   }
 
   try {
@@ -35,8 +28,7 @@ export const apiScraper = async (
     let items: any[] = [];
 
     for (const field of config.fields) {
-      const isComposable =
-        field.selector.startsWith("$") && field.selector.endsWith("$");
+      const isComposable = field.selector.startsWith("$") && field.selector.endsWith("$");
       const foundValues = getValueFromFlatPath(data, field.selector);
 
       const setItemsValue = (item: any, index: number) => {
@@ -68,21 +60,14 @@ export const apiScraper = async (
         if (isPlainString) {
           for (let i = 0; i < items.length; i++) {
             if (!items[i][field.key]) items[i][field.key] = cleanedComposable;
-            const formatted = items[i][field.key].replaceAll(
-              `{${match}}`,
-              matchValues
-            );
+            const formatted = items[i][field.key].replaceAll(`{${match}}`, matchValues);
             items[i][field.key] = formatted;
           }
           return;
         }
         matchValues.forEach((item: any, index: number) => {
-          if (!items[index][field.key])
-            items[index][field.key] = cleanedComposable;
-          const formatted = items[index][field.key].replaceAll(
-            `{${match}}`,
-            item
-          );
+          if (!items[index][field.key]) items[index][field.key] = cleanedComposable;
+          const formatted = items[index][field.key].replaceAll(`{${match}}`, item);
           items[index][field.key] = formatted;
         });
       });
@@ -93,10 +78,8 @@ export const apiScraper = async (
 
       const checkValue = getValueFromFlatPath(data, toCheck);
 
-      const isCheckValueEmptyString =
-        typeof checkValue === "string" && !checkValue;
-      const isCheckValueEmptyArray =
-        Array.isArray(checkValue) && checkValue.length === 0;
+      const isCheckValueEmptyString = typeof checkValue === "string" && !checkValue;
+      const isCheckValueEmptyArray = Array.isArray(checkValue) && checkValue.length === 0;
 
       if (isCheckValueEmptyString || isCheckValueEmptyArray) return items;
 
@@ -118,7 +101,7 @@ export const apiScraper = async (
               },
             },
             testRun,
-            testRun
+            testRun,
           );
 
           if (!cursorData) cursorData = [];
@@ -139,7 +122,7 @@ export const apiScraper = async (
               url: nextPageUrl,
             },
             testRun,
-            testRun
+            testRun,
           );
 
           if (!nextPageData) nextPageData = [];
@@ -148,10 +131,8 @@ export const apiScraper = async (
           break;
         }
         case "offsetLimit": {
-          const { queryKey: offsetQueryKey, value: offsetNumber } =
-            config.pagination.offset;
-          const { queryKey: limitQueryKey, value: limitNumber } =
-            config.pagination.limit;
+          const { queryKey: offsetQueryKey, value: offsetNumber } = config.pagination.offset;
+          const { queryKey: limitQueryKey, value: limitNumber } = config.pagination.limit;
 
           const newOffsetValue = offsetNumber + limitNumber;
 
@@ -171,7 +152,7 @@ export const apiScraper = async (
               },
             },
             testRun,
-            testRun
+            testRun,
           );
 
           if (!nextOffsetData) nextOffsetData = [];
@@ -181,10 +162,8 @@ export const apiScraper = async (
           break;
         }
         case "pageSize": {
-          const { queryKey: pageQueryKey, value: pageNumber } =
-            config.pagination.page;
-          const { queryKey: sizeQueryKey, value: sizeNumber } =
-            config.pagination.size;
+          const { queryKey: pageQueryKey, value: pageNumber } = config.pagination.page;
+          const { queryKey: sizeQueryKey, value: sizeNumber } = config.pagination.size;
 
           const newPageNumber = pageNumber + 1;
 
@@ -208,7 +187,7 @@ export const apiScraper = async (
               },
             },
             testRun,
-            testRun
+            testRun,
           );
 
           if (!nextPageIncrementedData) nextPageIncrementedData = [];

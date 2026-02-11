@@ -1,4 +1,5 @@
 import type { IScraper, ScraperOptions } from "@/types";
+import { canScrape } from "@/utils/robots";
 import { parseURL } from "@/utils/url";
 import type { StaticBlueprint } from "@scrapeek/shared/blueprint";
 import { parse } from "node-html-parser";
@@ -21,6 +22,11 @@ export class StaticScraper implements IScraper {
       const { config } = this.blueprint;
       const { elements, pagination } = config;
       const parsedURL = parseURL(this.blueprint.url);
+
+      if (this.blueprint.respectRobotsTxt) {
+        const isScrappable = await canScrape(parsedURL.originalUrl);
+        if (!isScrappable) throw new Error("Site is forbidden from being scraped due to restriction inside robots.txt");
+      }
 
       const { body } = await request(parsedURL.originalUrl, { method: "GET" });
       const data = await body.text();
@@ -46,12 +52,11 @@ export class StaticScraper implements IScraper {
         });
       }
 
-      if (pagination !== undefined) {
-        const { attribute, selector } = pagination;
-        const nextPageElement = root.querySelector(selector);
-        if (!nextPageElement) return scrapedData;
+      const shouldPaginate = pagination !== undefined && !this.options?.ignorePagination;
 
-        const nextPageLink = nextPageElement.getAttribute(attribute);
+      if (shouldPaginate) {
+        const { attribute, selector } = pagination;
+        const nextPageLink = root.querySelector(selector)?.getAttribute(attribute);
         if (!nextPageLink) return scrapedData;
 
         if (nextPageLink === this.blueprint.url) return scrapedData;
@@ -60,11 +65,9 @@ export class StaticScraper implements IScraper {
           ? nextPageLink
           : `${parsedURL.protocol}://${parsedURL.domain}${nextPageLink}`;
 
-        this.blueprint = { ...this.blueprint, url: newPageUrl };
+        this.blueprint.url = newPageUrl;
 
-        let newlyScrapedData = await this.scrape();
-
-        if (!newlyScrapedData) newlyScrapedData = [];
+        const newlyScrapedData = (await this.scrape()) ?? [];
 
         scrapedData = [...scrapedData, ...newlyScrapedData];
       }
