@@ -6,7 +6,7 @@ import { parseURL } from "@/utils/url.ts";
 export const dynamicSiteScraper = async (
   blueprint: Blueprint,
   testRun?: boolean,
-  ignorePagination: boolean = false
+  ignorePagination: boolean = false,
 ) => {
   if (blueprint.type !== "dynamic") return;
   console.log(`DYNAMIC Scrape | ${blueprint.name}`);
@@ -15,10 +15,7 @@ export const dynamicSiteScraper = async (
 
   if (blueprint.respectRobotsTxt) {
     const isScrappable = await canScrape(blueprint.url);
-    if (!isScrappable)
-      throw new Error(
-        "Site is forbidden from being scraped due to restriction inside robots.txt"
-      );
+    if (!isScrappable) throw new Error("Site is forbidden from being scraped due to restriction inside robots.txt");
   }
 
   const browser = await playwright.chromium.launch({
@@ -47,7 +44,7 @@ export const dynamicSiteScraper = async (
         {
           key: element.key,
           attribute: element.attribute,
-        }
+        },
       );
 
       if (!items[0]) items[0] = {};
@@ -67,7 +64,7 @@ export const dynamicSiteScraper = async (
         items,
         key: element.key,
         attribute: element.attribute,
-      }
+      },
     );
 
     resultItems.forEach((item, index) => {
@@ -89,15 +86,12 @@ export const dynamicSiteScraper = async (
     const locator = await page.locator(selector);
 
     if (variant === "button") {
-      await locator.evaluate((item) =>
-        (item as unknown as ElementHandle).click()
-      );
+      await locator.evaluate((item) => (item as unknown as ElementHandle).click());
     }
 
-    const paginationLink = await locator.evaluate(
-      (item, { attribute }) => item.getAttribute(attribute) ?? null,
-      { attribute }
-    );
+    const paginationLink = await locator.evaluate((item, { attribute }) => item.getAttribute(attribute) ?? null, {
+      attribute,
+    });
 
     if ((await paginationLink) === null) {
       await browser.close();
@@ -118,7 +112,7 @@ export const dynamicSiteScraper = async (
         url: nextPageLink,
       },
       testRun,
-      testRun
+      testRun,
     );
 
     if (!nextPageItems) nextPageItems = [];

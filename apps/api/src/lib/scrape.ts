@@ -22,7 +22,6 @@ export const scrapeData = async (blueprints: Blueprint[], testRun = false) => {
     if (blueprint.type === "dynamic") {
       const dynamicScraper = new DynamicScraper(blueprint, { isTestRun: testRun });
       return dynamicScraper.scrape();
-      // return dynamicSiteScraper(blueprint, testRun)
     }
     return staticSiteScraper(blueprint, testRun);
   });
