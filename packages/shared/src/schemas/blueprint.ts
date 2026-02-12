@@ -6,6 +6,8 @@ export enum BlueprintType {
   DYNAMIC = "dynamic",
 }
 
+export const BlueprintHTTPMethods = ["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"];
+
 const elementParamSelectorSchema = z.object({
   selector: z.string(),
   attribute: z.string(), // TODO optional?
@@ -65,7 +67,7 @@ const apiPaginationSchema = z.discriminatedUnion("type", [
 
 const apiConfigSchema = z.object({
   fields: z.array(z.object({ key: z.string(), selector: z.string() })),
-  method: z.enum(["GET", "POST"]).optional(),
+  method: z.enum(BlueprintHTTPMethods),
   headers: z.record(z.string(), z.string()).optional(),
   query: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
   pagination: apiPaginationSchema.optional(),
@@ -77,7 +79,7 @@ const staticConfigSchema = z.object({
       key: z.string(),
       selector: z.string(),
       attribute: z.string().optional(),
-    })
+    }),
   ),
   pagination: staticAndDynamicPaginationSchema.optional(),
 });
@@ -88,7 +90,7 @@ const dynamicConfigSchema = z.object({
       key: z.string(),
       selector: z.string(),
       attribute: z.string().optional(),
-    })
+    }),
   ),
   waitSelectorElement: z.string(),
   pagination: staticAndDynamicPaginationSchema.optional(),
@@ -125,9 +127,7 @@ const baseBlueprintSchema = z.object({
   upvotes: z.number().optional(),
 });
 
-const fullBaseBlueprintSchema = baseBlueprintSchema.extend(
-  databaseFieldsSchema.shape
-);
+const fullBaseBlueprintSchema = baseBlueprintSchema.extend(databaseFieldsSchema.shape);
 
 const apiConfigBlueprintSchema = z.object({
   type: z.literal(BlueprintType.API),
@@ -144,17 +144,11 @@ const dynamicConfigBlueprintSchema = z.object({
   config: dynamicConfigSchema,
 });
 
-export const apiBlueprintSchema = fullBaseBlueprintSchema.extend(
-  apiConfigBlueprintSchema.shape
-);
+export const apiBlueprintSchema = fullBaseBlueprintSchema.extend(apiConfigBlueprintSchema.shape);
 
-export const staticBlueprintSchema = fullBaseBlueprintSchema.extend(
-  staticConfigBlueprintSchema.shape
-);
+export const staticBlueprintSchema = fullBaseBlueprintSchema.extend(staticConfigBlueprintSchema.shape);
 
-export const dynamicBlueprintSchema = fullBaseBlueprintSchema.extend(
-  dynamicConfigBlueprintSchema.shape
-);
+export const dynamicBlueprintSchema = fullBaseBlueprintSchema.extend(dynamicConfigBlueprintSchema.shape);
 
 export const apiEditableBlueprintSchema = baseBlueprintSchema
   .omit({ result: true })
@@ -183,13 +177,9 @@ export const editableBlueprintSchema = z.discriminatedUnion("type", [
 export type APIBlueprint = z.infer<typeof apiBlueprintSchema>;
 export type EditableAPIBlueprint = z.infer<typeof apiEditableBlueprintSchema>;
 export type StaticBlueprint = z.infer<typeof staticBlueprintSchema>;
-export type EditableStaticBlueprint = z.infer<
-  typeof staticEditableBlueprintSchema
->;
+export type EditableStaticBlueprint = z.infer<typeof staticEditableBlueprintSchema>;
 export type DynamicBlueprint = z.infer<typeof dynamicBlueprintSchema>;
-export type EditableDynamicBlueprint = z.infer<
-  typeof dynamicEditableBlueprintSchema
->;
+export type EditableDynamicBlueprint = z.infer<typeof dynamicEditableBlueprintSchema>;
 
 export type Blueprint = z.infer<typeof blueprintSchema>;
 export type EditableBlueprint = z.infer<typeof editableBlueprintSchema>;

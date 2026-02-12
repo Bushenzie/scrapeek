@@ -2,6 +2,7 @@ import type { CheckedState } from "@radix-ui/react-checkbox";
 import {
   type APIBlueprint,
   apiEditableBlueprintSchema,
+  BlueprintHTTPMethods,
   BlueprintType,
   type EditableAPIBlueprint,
 } from "@scrapeek/shared/blueprint";
@@ -26,9 +27,7 @@ type APIBlueprintFormProps = {
 };
 
 export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
-  const [showPagination, setShowPagination] = useState(
-    blueprint && blueprint?.config.pagination ? true : false
-  );
+  const [showPagination, setShowPagination] = useState(blueprint && blueprint?.config.pagination ? true : false);
   const router = useRouter();
   const { mutateAsync: addBlueprint } = useAddBlueprint();
   const { mutateAsync: editBlueprint } = useEditBlueprint();
@@ -67,13 +66,10 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
     },
     listeners: {
       onChange: ({ formApi, fieldApi }) => {
-        if (!(fieldApi.getInfo().instance?.name === "config.pagination.type"))
-          return null;
+        if (!(fieldApi.getInfo().instance?.name === "config.pagination.type")) return null;
 
         const paginationType = formApi.getFieldValue("config.pagination.type");
-        const fieldToCheck = formApi.getFieldValue(
-          "config.pagination.fieldToCheck"
-        );
+        const fieldToCheck = formApi.getFieldValue("config.pagination.fieldToCheck");
         switch (paginationType) {
           case "cursor":
             formApi.setFieldValue("config.pagination", {
@@ -169,20 +165,22 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
       <div className="grid grid-cols-2 gap-2">
         <div>
           <form onSubmit={handleSubmit} className="space-y-4 col-span-1">
-            <form.AppField
-              name="name"
-              children={(field) => <field.TextField label="Blueprint name" />}
-            />
+            <form.AppField name="name" children={(field) => <field.TextField label="Blueprint name" />} />
             <form.AppField
               name="description"
-              children={(field) => (
-                <field.TextareaField label="Blueprint description" />
-              )}
+              children={(field) => <field.TextareaField label="Blueprint description" />}
             />
             <form.AppField
-              name="url"
-              children={(field) => <field.TextField label="URL" />}
+              name="config.method"
+              children={(field) => (
+                <field.SelectField
+                  options={BlueprintHTTPMethods.map((method) => ({ label: method, value: method }))}
+                  triggerLabel={field.form.getFieldValue("config.method") ?? "Select value"}
+                  label="HTTP Method"
+                />
+              )}
             />
+            <form.AppField name="url" children={(field) => <field.TextField label="URL" />} />
             <div className="flex flex-col gap-2">
               <Label>Elements</Label>
               <form.AppField
@@ -198,9 +196,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                             children={(field) => (
                               <Input
                                 value={field.state.value}
-                                onChange={(e) =>
-                                  field.handleChange(e.target.value)
-                                }
+                                onChange={(e) => field.handleChange(e.target.value)}
                                 className="col-span-2"
                                 placeholder="Key"
                               />
@@ -211,9 +207,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                             children={(field) => (
                               <Input
                                 value={field.state.value}
-                                onChange={(e) =>
-                                  field.handleChange(e.target.value)
-                                }
+                                onChange={(e) => field.handleChange(e.target.value)}
                                 className="col-span-3"
                                 placeholder="Selector"
                               />
@@ -243,23 +237,14 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
             </div>
 
             <div className="flex gap-2">
-              <Checkbox
-                id="pagination"
-                checked={showPagination}
-                onCheckedChange={handlePaginationChange}
-              />
+              <Checkbox id="pagination" checked={showPagination} onCheckedChange={handlePaginationChange} />
               <Label htmlFor="pagination">Include pagination</Label>
             </div>
             <form.AppField
               name="respectRobotsTxt"
-              children={(field) => (
-                <field.CheckboxField label="Respect robots.txt" />
-              )}
+              children={(field) => <field.CheckboxField label="Respect robots.txt" />}
             />
-            <form.AppField
-              name="public"
-              children={(field) => <field.CheckboxField label="Public" />}
-            />
+            <form.AppField name="public" children={(field) => <field.CheckboxField label="Public" />} />
             {showPagination && (
               <>
                 <div className="flex gap-2">
@@ -280,9 +265,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                   />
                   <form.AppField
                     name="config.pagination.fieldToCheck"
-                    children={(field) => (
-                      <field.TextField label="Field to check" />
-                    )}
+                    children={(field) => <field.TextField label="Field to check" />}
                   />
                 </div>
                 <form.Subscribe
@@ -293,24 +276,18 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                         <div className="flex gap-2">
                           <form.AppField
                             name="config.pagination.path.queryKey"
-                            children={(field) => (
-                              <field.TextField label="Cursor query key" />
-                            )}
+                            children={(field) => <field.TextField label="Cursor query key" />}
                           />
                           <form.AppField
                             name="config.pagination.path.path"
-                            children={(field) => (
-                              <field.TextField label="Cursor path" />
-                            )}
+                            children={(field) => <field.TextField label="Cursor path" />}
                           />
                         </div>
                       )}
                       {paginationType === "nextPage" && (
                         <form.AppField
                           name="config.pagination.path"
-                          children={(field) => (
-                            <field.TextField label="Page path" />
-                          )}
+                          children={(field) => <field.TextField label="Page path" />}
                         />
                       )}
                       {paginationType === "pageSize" && (
@@ -318,29 +295,21 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                           <div className="flex gap-2 w-full">
                             <form.AppField
                               name="config.pagination.page.queryKey"
-                              children={(field) => (
-                                <field.TextField label="Page query key" />
-                              )}
+                              children={(field) => <field.TextField label="Page query key" />}
                             />
                             <form.AppField
                               name="config.pagination.page.value"
-                              children={(field) => (
-                                <field.NumberField label="Page number" />
-                              )}
+                              children={(field) => <field.NumberField label="Page number" />}
                             />
                           </div>
                           <div className="flex gap-2 w-full">
                             <form.AppField
                               name="config.pagination.size.queryKey"
-                              children={(field) => (
-                                <field.TextField label="Size query key" />
-                              )}
+                              children={(field) => <field.TextField label="Size query key" />}
                             />
                             <form.AppField
                               name="config.pagination.size.value"
-                              children={(field) => (
-                                <field.NumberField label="Size number" />
-                              )}
+                              children={(field) => <field.NumberField label="Size number" />}
                             />
                           </div>
                         </div>
@@ -350,29 +319,21 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                           <div className="flex gap-2">
                             <form.AppField
                               name="config.pagination.offset.queryKey"
-                              children={(field) => (
-                                <field.TextField label="Offset query key" />
-                              )}
+                              children={(field) => <field.TextField label="Offset query key" />}
                             />
                             <form.AppField
                               name="config.pagination.offset.value"
-                              children={(field) => (
-                                <field.NumberField label="Offset number" />
-                              )}
+                              children={(field) => <field.NumberField label="Offset number" />}
                             />
                           </div>
                           <div className="flex gap-2">
                             <form.AppField
                               name="config.pagination.limit.queryKey"
-                              children={(field) => (
-                                <field.TextField label="Limit query key" />
-                              )}
+                              children={(field) => <field.TextField label="Limit query key" />}
                             />
                             <form.AppField
                               name="config.pagination.limit.value"
-                              children={(field) => (
-                                <field.NumberField label="Limit number" />
-                              )}
+                              children={(field) => <field.NumberField label="Limit number" />}
                             />
                           </div>
                         </div>
@@ -389,20 +350,14 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
           children={(state) => (
             <div className="flex flex-col gap-2">
               <Label>Config (JSON)</Label>
-              <Textarea
-                className="h-full"
-                value={JSON.stringify(state, null, 4)}
-                readOnly
-              />
+              <Textarea className="h-full" value={JSON.stringify(state, null, 4)} readOnly />
             </div>
           )}
         />
       </div>
       <div className="flex my-2 justify-end">
         <form.AppForm>
-          <form.SubmitButton
-            btnText={blueprint ? "Edit blueprint" : "Add blueprint"}
-          />
+          <form.SubmitButton btnText={blueprint ? "Edit blueprint" : "Add blueprint"} />
         </form.AppForm>
       </div>
     </>

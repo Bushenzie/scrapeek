@@ -58,7 +58,6 @@ export class DynamicScraper implements IScraper {
           },
         );
 
-
         foundItems.forEach((item, index) => {
           if (!scrapedData[index]) scrapedData[index] = {};
           scrapedData[index][key] = item;

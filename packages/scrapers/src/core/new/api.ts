@@ -21,7 +21,7 @@ export class APIScraper implements IScraper {
   async scrape() {
     try {
       const { config } = this.blueprint;
-      const { fields, pagination } = config;
+      const { fields, pagination, method = "GET" } = config;
       const parsedURL = parseURL(this.blueprint.url);
 
       if (this.blueprint.respectRobotsTxt) {
@@ -29,7 +29,13 @@ export class APIScraper implements IScraper {
         if (!isScrappable) throw new Error("Site is forbidden from being scraped due to restriction inside robots.txt");
       }
 
-      const { body } = await request(parsedURL.originalUrl, { method: "GET" });
+      const { body } = await request(parsedURL.originalUrl, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Post": "application/json",
+        },
+      });
       const data = await body.json();
 
       let scrapedData: Record<string, string>[] = [];
