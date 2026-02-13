@@ -6,7 +6,7 @@ export const resultTable = pgTable("result", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   blueprintId: uuid("blueprint_id")
-    .references(() => blueprintTable.id)
+    .references(() => blueprintTable.id, { onDelete: "cascade" })
     .notNull(),
   data: jsonb("data").notNull().default({}),
 });
