@@ -1,0 +1,1 @@
+ALTER TABLE "blueprint" ADD COLUMN "timeout" integer DEFAULT 0 NOT NULL;

@@ -77,13 +77,13 @@ const AuthenticatedBlueprintsBlueprintIdEditRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof AuthenticatedIndexRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/auth/login': typeof AuthLoginRoute
-  '/': typeof AuthenticatedIndexRoute
   '/blueprints/$blueprintId': typeof AuthenticatedBlueprintsBlueprintIdRoute
   '/blueprints/add': typeof AuthenticatedBlueprintsAddRoute
   '/blueprints/browse': typeof AuthenticatedBlueprintsBrowseRoute
-  '/blueprints': typeof AuthenticatedBlueprintsIndexRoute
+  '/blueprints/': typeof AuthenticatedBlueprintsIndexRoute
   '/blueprints/$blueprintId/edit': typeof AuthenticatedBlueprintsBlueprintIdEditRoute
   '/blueprints/$blueprintId/preview': typeof AuthenticatedBlueprintsBlueprintIdPreviewRoute
 }
@@ -114,13 +114,13 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/profile'
     | '/auth/login'
-    | '/'
     | '/blueprints/$blueprintId'
     | '/blueprints/add'
     | '/blueprints/browse'
-    | '/blueprints'
+    | '/blueprints/'
     | '/blueprints/$blueprintId/edit'
     | '/blueprints/$blueprintId/preview'
   fileRoutesByTo: FileRoutesByTo
@@ -158,7 +158,7 @@ declare module '@tanstack/react-router' {
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -186,7 +186,7 @@ declare module '@tanstack/react-router' {
     '/_authenticated/blueprints/': {
       id: '/_authenticated/blueprints/'
       path: '/blueprints'
-      fullPath: '/blueprints'
+      fullPath: '/blueprints/'
       preLoaderRoute: typeof AuthenticatedBlueprintsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }

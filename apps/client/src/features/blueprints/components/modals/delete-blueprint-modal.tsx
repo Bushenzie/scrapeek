@@ -16,9 +16,7 @@ type DeleteBlueprintModalProps = {
   blueprintId: string;
 };
 
-export const DeleteBlueprintModal: FC<DeleteBlueprintModalProps> = ({
-  blueprintId,
-}) => {
+export const DeleteBlueprintModal: FC<DeleteBlueprintModalProps> = ({ blueprintId }) => {
   const deleteBlueprint = useDeleteBlueprint();
 
   const handleSubmit = async () => {
@@ -34,9 +32,7 @@ export const DeleteBlueprintModal: FC<DeleteBlueprintModalProps> = ({
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Delete blueprint</DialogTitle>
-        <DialogDescription>
-          Are you sure you want to delete this blueprint?
-        </DialogDescription>
+        <DialogDescription>Are you sure you want to delete this blueprint?</DialogDescription>
         <DialogFooter>
           <DialogClose>
             <Button variant="outline">Cancel</Button>

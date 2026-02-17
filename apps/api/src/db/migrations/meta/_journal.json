@@ -15,6 +15,20 @@
       "when": 1771005704633,
       "tag": "0001_funny_spyke",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771008106344,
+      "tag": "0002_condemned_ben_grimm",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1771021963261,
+      "tag": "0003_tiny_impossible_man",
+      "breakpoints": true
     }
   ]
 }

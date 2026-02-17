@@ -1,5 +1,6 @@
 import type { IScraper, ScraperOptions } from "@/types";
 import { canScrape } from "@/utils/robots";
+import { sleep } from "@/utils/sleep";
 import { parseURL } from "@/utils/url";
 import type { StaticBlueprint } from "@scrapeek/shared/blueprint";
 import { parse } from "node-html-parser";
@@ -20,7 +21,7 @@ export class StaticScraper implements IScraper {
   async scrape() {
     try {
       const { config } = this.blueprint;
-      const { elements, pagination } = config;
+      const { elements, pagination, timeout } = config;
       const parsedURL = parseURL(this.blueprint.url);
 
       if (this.blueprint.respectRobotsTxt) {
@@ -57,6 +58,7 @@ export class StaticScraper implements IScraper {
       if (shouldPaginate) {
         const { attribute, selector } = pagination;
         const nextPageLink = root.querySelector(selector)?.getAttribute(attribute);
+
         if (!nextPageLink) return scrapedData;
 
         if (nextPageLink === this.blueprint.url) return scrapedData;
@@ -67,8 +69,11 @@ export class StaticScraper implements IScraper {
 
         this.blueprint.url = newPageUrl;
 
-        const newlyScrapedData = (await this.scrape()) ?? [];
+        if (timeout) await sleep(timeout);
 
+        let newlyScrapedData = await this.scrape();
+
+        if (!newlyScrapedData) newlyScrapedData = [];
         scrapedData = [...scrapedData, ...newlyScrapedData];
       }
 

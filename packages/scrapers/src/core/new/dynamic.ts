@@ -3,6 +3,7 @@ import type { IScraper, ScraperOptions } from "../../types";
 import { parseURL } from "@/utils/url";
 import { canScrape } from "@/utils/robots";
 import { chromium, type ElementHandle } from "patchright";
+import { sleep } from "@/utils/sleep";
 
 export class DynamicScraper implements IScraper {
   blueprint: DynamicBlueprint;
@@ -19,7 +20,7 @@ export class DynamicScraper implements IScraper {
   async scrape() {
     try {
       const { config } = this.blueprint;
-      const { elements, waitSelectorElement, pagination } = config;
+      const { elements, waitSelectorElement, pagination, timeout } = config;
       const parsedURL = parseURL(this.blueprint.url);
 
       if (this.blueprint.respectRobotsTxt) {
@@ -101,6 +102,8 @@ export class DynamicScraper implements IScraper {
         await browser.close();
 
         this.blueprint.url = nextPageLink;
+
+        if (timeout) await sleep(timeout);
 
         const newlyScrapedData = (await this.scrape()) ?? [];
 

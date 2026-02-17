@@ -67,6 +67,7 @@ const apiPaginationSchema = z.discriminatedUnion("type", [
 
 const apiConfigSchema = z.object({
   fields: z.array(z.object({ key: z.string(), selector: z.string() })),
+  timeout: z.number().min(0).max(5000).optional(),
   method: z.enum(BlueprintHTTPMethods),
   headers: z.record(z.string(), z.string()).optional(),
   query: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
@@ -81,6 +82,7 @@ const staticConfigSchema = z.object({
       attribute: z.string().optional(),
     }),
   ),
+  timeout: z.number().min(0).max(5000).optional(),
   pagination: staticAndDynamicPaginationSchema.optional(),
 });
 
@@ -92,6 +94,7 @@ const dynamicConfigSchema = z.object({
       attribute: z.string().optional(),
     }),
   ),
+  timeout: z.number().min(0).max(5000).optional(),
   waitSelectorElement: z.string(),
   pagination: staticAndDynamicPaginationSchema.optional(),
 });

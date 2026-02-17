@@ -1,15 +1,5 @@
 import { relations } from "drizzle-orm";
-import {
-  boolean,
-  integer,
-  jsonb,
-  pgEnum,
-  pgTable,
-  text,
-  timestamp,
-  uuid,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { boolean, jsonb, pgEnum, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { user } from "./auth.ts";
 import { resultTable } from "./result.ts";
 import { upvoteTable } from "./upvote.ts";
@@ -32,17 +22,14 @@ export const blueprintTable = pgTable("blueprint", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const blueprintRelations = relations(
-  blueprintTable,
-  ({ one, many }) => ({
-    result: one(resultTable, {
-      fields: [blueprintTable.id],
-      references: [resultTable.blueprintId],
-    }),
-    user: one(user, {
-      fields: [blueprintTable.userId],
-      references: [user.id],
-    }),
-    upvotes: many(upvoteTable),
-  })
-);
+export const blueprintRelations = relations(blueprintTable, ({ one, many }) => ({
+  result: one(resultTable, {
+    fields: [blueprintTable.id],
+    references: [resultTable.blueprintId],
+  }),
+  user: one(user, {
+    fields: [blueprintTable.userId],
+    references: [user.id],
+  }),
+  upvotes: many(upvoteTable),
+}));

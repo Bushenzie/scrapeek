@@ -1,0 +1,1 @@
+ALTER TABLE "blueprint" DROP COLUMN "timeout";

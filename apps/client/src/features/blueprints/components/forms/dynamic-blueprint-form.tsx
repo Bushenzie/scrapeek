@@ -23,12 +23,8 @@ type DynamicBlueprintFormProps = {
   blueprint?: DynamicBlueprint;
 };
 
-export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
-  blueprint,
-}) => {
-  const [showPagination, setShowPagination] = useState(
-    blueprint && blueprint?.config.pagination ? true : false
-  );
+export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint }) => {
+  const [showPagination, setShowPagination] = useState(blueprint && blueprint?.config.pagination ? true : false);
   const router = useRouter();
   const { mutateAsync: addBlueprint } = useAddBlueprint();
   const { mutateAsync: editBlueprint } = useEditBlueprint();
@@ -51,6 +47,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
         respectRobotsTxt: true,
         public: false,
         config: {
+          timeout: 0,
           elements: [{ key: "", selector: "", attribute: undefined }],
           pagination: {},
           waitSelectorElement: "",
@@ -106,25 +103,16 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
       <div className="grid grid-cols-2 gap-2">
         <div>
           <form onSubmit={handleSubmit} className="space-y-4 col-span-1">
-            <form.AppField
-              name="name"
-              children={(field) => <field.TextField label="Blueprint name" />}
-            />
+            <form.AppField name="name" children={(field) => <field.TextField label="Blueprint name" />} />
             <form.AppField
               name="description"
-              children={(field) => (
-                <field.TextareaField label="Blueprint description" />
-              )}
+              children={(field) => <field.TextareaField label="Blueprint description" />}
             />
-            <form.AppField
-              name="url"
-              children={(field) => <field.TextField label="URL" />}
-            />
+            <form.AppField name="config.timeout" children={(field) => <field.NumberField label="Timeout (ms)" />} />
+            <form.AppField name="url" children={(field) => <field.TextField label="URL" />} />
             <form.AppField
               name="config.waitSelectorElement"
-              children={(field) => (
-                <field.TextField label="Wait element selector" />
-              )}
+              children={(field) => <field.TextField label="Wait element selector" />}
             />
             <div className="flex flex-col gap-2">
               <Label>Elements</Label>
@@ -141,9 +129,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
                             children={(field) => (
                               <Input
                                 value={field.state.value}
-                                onChange={(e) =>
-                                  field.handleChange(e.target.value)
-                                }
+                                onChange={(e) => field.handleChange(e.target.value)}
                                 className="col-span-2"
                                 placeholder="Key"
                               />
@@ -154,9 +140,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
                             children={(field) => (
                               <Input
                                 value={field.state.value}
-                                onChange={(e) =>
-                                  field.handleChange(e.target.value)
-                                }
+                                onChange={(e) => field.handleChange(e.target.value)}
                                 className="col-span-3"
                                 placeholder="Selector"
                               />
@@ -167,11 +151,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
                             children={(field) => (
                               <Input
                                 value={field.state.value}
-                                onChange={(e) =>
-                                  field.handleChange(
-                                    e.target.value || undefined
-                                  )
-                                }
+                                onChange={(e) => field.handleChange(e.target.value || undefined)}
                                 className="col-span-2"
                                 placeholder="Attribute"
                               />
@@ -201,23 +181,14 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
             </div>
 
             <div className="flex gap-2">
-              <Checkbox
-                id="pagination"
-                checked={showPagination}
-                onCheckedChange={handlePaginationChange}
-              />
+              <Checkbox id="pagination" checked={showPagination} onCheckedChange={handlePaginationChange} />
               <Label htmlFor="pagination">Include pagination</Label>
             </div>
             <form.AppField
               name="respectRobotsTxt"
-              children={(field) => (
-                <field.CheckboxField label="Respect robots.txt" />
-              )}
+              children={(field) => <field.CheckboxField label="Respect robots.txt" />}
             />
-            <form.AppField
-              name="public"
-              children={(field) => <field.CheckboxField label="Public" />}
-            />
+            <form.AppField name="public" children={(field) => <field.CheckboxField label="Public" />} />
             {showPagination && (
               <>
                 <form.AppField
@@ -235,22 +206,16 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
                 />
                 <form.AppField
                   name="config.pagination.selector"
-                  children={(field) => (
-                    <field.TextField label="Pagination selector" />
-                  )}
+                  children={(field) => <field.TextField label="Pagination selector" />}
                 />
                 <form.Subscribe
-                  selector={(state) =>
-                    state.values.config.pagination?.variant === "link"
-                  }
+                  selector={(state) => state.values.config.pagination?.variant === "link"}
                   children={(showAttribute) => (
                     <>
                       {showAttribute && (
                         <form.AppField
                           name="config.pagination.attribute"
-                          children={(field) => (
-                            <field.TextField label={"Attribute"} />
-                          )}
+                          children={(field) => <field.TextField label={"Attribute"} />}
                         />
                       )}
                     </>
@@ -265,20 +230,14 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({
           children={(state) => (
             <div className="flex flex-col gap-2">
               <Label>Config (JSON)</Label>
-              <Textarea
-                className="h-full"
-                value={JSON.stringify(state, null, 4)}
-                readOnly
-              />
+              <Textarea className="h-full" value={JSON.stringify(state, null, 4)} readOnly />
             </div>
           )}
         />
       </div>
       <div className="flex my-2 justify-end">
         <form.AppForm>
-          <form.SubmitButton
-            btnText={blueprint ? "Edit blueprint" : "Add blueprint"}
-          />
+          <form.SubmitButton btnText={blueprint ? "Edit blueprint" : "Add blueprint"} />
         </form.AppForm>
       </div>
     </>

@@ -5,6 +5,7 @@ import { request } from "undici";
 import { getValueFromFlatPath } from "@/utils/path";
 import { formatVariables, hasVariables } from "@/utils/template";
 import { canScrape } from "@/utils/robots";
+import { sleep } from "@/utils/sleep";
 
 export class APIScraper implements IScraper {
   blueprint: APIBlueprint;
@@ -21,7 +22,7 @@ export class APIScraper implements IScraper {
   async scrape() {
     try {
       const { config } = this.blueprint;
-      const { fields, pagination, method = "GET" } = config;
+      const { fields, pagination, method = "GET", timeout } = config;
       const parsedURL = parseURL(this.blueprint.url);
 
       if (this.blueprint.respectRobotsTxt) {
@@ -68,6 +69,7 @@ export class APIScraper implements IScraper {
               [queryKey]: cursorValue as string,
             };
 
+            if (timeout) await sleep(timeout);
             const newlyScrapedData = (await this.scrape()) ?? [];
 
             scrapedData = [...scrapedData, ...newlyScrapedData];
@@ -83,6 +85,7 @@ export class APIScraper implements IScraper {
 
             this.blueprint.url = nextPageUrl;
 
+            if (timeout) await sleep(timeout);
             const newlyScrapedData = (await this.scrape()) ?? [];
 
             scrapedData = [...scrapedData, ...newlyScrapedData];
@@ -107,6 +110,7 @@ export class APIScraper implements IScraper {
               },
             };
 
+            if (timeout) await sleep(timeout);
             const newlyScrapedData = (await this.scrape()) ?? [];
 
             scrapedData = [...scrapedData, ...newlyScrapedData];
@@ -134,6 +138,7 @@ export class APIScraper implements IScraper {
               },
             };
 
+            if (timeout) await sleep(timeout);
             const newlyScrapedData = (await this.scrape()) ?? [];
 
             scrapedData = [...scrapedData, ...newlyScrapedData];

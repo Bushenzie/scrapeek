@@ -50,6 +50,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
         respectRobotsTxt: true,
         public: false,
         config: {
+          timeout: 0,
           fields: [{ key: "", selector: "" }],
           headers: {},
           method: "GET",
@@ -170,16 +171,19 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
               name="description"
               children={(field) => <field.TextareaField label="Blueprint description" />}
             />
-            <form.AppField
-              name="config.method"
-              children={(field) => (
-                <field.SelectField
-                  options={BlueprintHTTPMethods.map((method) => ({ label: method, value: method }))}
-                  triggerLabel={field.form.getFieldValue("config.method") ?? "Select value"}
-                  label="HTTP Method"
-                />
-              )}
-            />
+            <div className="flex gap-2">
+              <form.AppField
+                name="config.method"
+                children={(field) => (
+                  <field.SelectField
+                    options={BlueprintHTTPMethods.map((method) => ({ label: method, value: method }))}
+                    triggerLabel={field.form.getFieldValue("config.method") ?? "Select value"}
+                    label="HTTP Method"
+                  />
+                )}
+              />
+              <form.AppField name="config.timeout" children={(field) => <field.NumberField label="Timeout (ms)" />} />
+            </div>
             <form.AppField name="url" children={(field) => <field.TextField label="URL" />} />
             <div className="flex flex-col gap-2">
               <Label>Elements</Label>

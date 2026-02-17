@@ -24,6 +24,9 @@ export const useDeleteBlueprint = () => {
     },
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["all-blueprints"] });
+
+      console.log(response);
+
       toast({
         title: "Success",
         description: `Blueprint "${response.name}" was successfully deleted`,
