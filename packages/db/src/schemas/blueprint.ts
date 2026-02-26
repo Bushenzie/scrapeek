@@ -1,9 +1,9 @@
 import { relations } from "drizzle-orm";
 import { boolean, jsonb, pgEnum, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { user } from "./auth.ts";
-import { resultTable } from "./result.ts";
-import { upvoteTable } from "./upvote.ts";
-import { blueprintGroupTable } from "./blueprint-group.ts";
+import { user } from "./auth.js";
+import { resultTable } from "./result.js";
+import { upvoteTable } from "./upvote.js";
+import { blueprintGroupTable } from "./blueprint-group.js";
 
 export const configTypeEnum = pgEnum("type", ["api", "static", "dynamic"]);
 

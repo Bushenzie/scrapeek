@@ -1,5 +1,5 @@
 import { jsonb, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
-import { blueprintTable } from "./blueprint.ts";
+import { blueprintTable } from "./blueprint.js";
 
 export const resultTable = pgTable("result", {
   id: uuid("id").primaryKey().notNull().defaultRandom(),

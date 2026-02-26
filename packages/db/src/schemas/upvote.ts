@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { user } from "./auth.ts";
-import { blueprintTable } from "./blueprint";
+import { user } from "./auth.js";
+import { blueprintTable } from "./blueprint.js";
 
 export const upvoteTable = pgTable("upvote", {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
