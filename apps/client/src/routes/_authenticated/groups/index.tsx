@@ -3,26 +3,25 @@ import { Suspense } from "react";
 import { Box } from "@/components/ui/box/box";
 import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner";
 import { Separator } from "@/components/ui/separator/separator";
-import { BlueprintList } from "@/features/blueprints/components/blueprint-list";
-import { AddBlueprintDialog } from "@/features/blueprints/components/modals/add-blueprint-modal";
 import { EditCreateGroupModal } from "@/features/groups/components/modals/edit-create-group-modal";
+import { GroupList } from "@/features/groups/components/group-list";
 
-export const Route = createFileRoute("/_authenticated/blueprints/")({
-  component: BlueprintsPage,
+export const Route = createFileRoute("/_authenticated/groups/")({
+  component: GroupListPage,
 });
 
-function BlueprintsPage() {
+function GroupListPage() {
   return (
     <Box className="w-full">
       <div className="flex justify-between p-6">
-        <h1 className="text-2xl">Blueprints</h1>
+        <h1 className="text-2xl">Groups</h1>
         <div className="flex gap-2 items-center">
-          <AddBlueprintDialog />
+          <EditCreateGroupModal />
         </div>
       </div>
       <Separator />
       <Suspense fallback={<LoadingSpinner size="lg" className="mx-auto" />}>
-        <BlueprintList />
+        <GroupList />
       </Suspense>
     </Box>
   );

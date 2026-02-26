@@ -1,13 +1,8 @@
 import { relations } from "drizzle-orm";
-import {
-  boolean,
-  integer,
-  pgTable,
-  text,
-  timestamp,
-} from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { blueprintTable } from "./blueprint";
 import { upvoteTable } from "./upvote";
+import { groupTable } from "./group";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -25,6 +20,7 @@ export const user = pgTable("user", {
 export const userRelations = relations(user, ({ many }) => ({
   blueprints: many(blueprintTable),
   upvotes: many(upvoteTable),
+  groups: many(groupTable),
 }));
 
 export const session = pgTable("session", {

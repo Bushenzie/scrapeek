@@ -6,12 +6,7 @@ import { cn } from "@/lib/class";
 import { authClient } from "@/lib/clients/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar/avatar";
 import { Box } from "../box/box";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../dropdown/dropdown";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../dropdown/dropdown";
 import { LinkButton } from "../link-button/link-button";
 
 type NavbarProps = ComponentProps<"div">;
@@ -58,6 +53,19 @@ export const Navbar: FC<NavbarProps> = ({ className }) => {
           }}
         >
           Blueprints
+        </LinkButton>
+        <LinkButton
+          variant={"link"}
+          size={"sm"}
+          to="/groups"
+          activeOptions={{
+            exact: true,
+          }}
+          activeProps={{
+            className: "underline",
+          }}
+        >
+          Groups
         </LinkButton>
         <LinkButton
           variant={"link"}

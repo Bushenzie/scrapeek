@@ -13,6 +13,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedGroupsIndexRouteImport } from './routes/_authenticated/groups/index'
 import { Route as AuthenticatedBlueprintsIndexRouteImport } from './routes/_authenticated/blueprints/index'
 import { Route as AuthenticatedBlueprintsBrowseRouteImport } from './routes/_authenticated/blueprints/browse'
 import { Route as AuthenticatedBlueprintsAddRouteImport } from './routes/_authenticated/blueprints/add'
@@ -39,6 +40,12 @@ const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedGroupsIndexRoute =
+  AuthenticatedGroupsIndexRouteImport.update({
+    id: '/groups/',
+    path: '/groups/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedBlueprintsIndexRoute =
   AuthenticatedBlueprintsIndexRouteImport.update({
     id: '/blueprints/',
@@ -84,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/blueprints/add': typeof AuthenticatedBlueprintsAddRoute
   '/blueprints/browse': typeof AuthenticatedBlueprintsBrowseRoute
   '/blueprints/': typeof AuthenticatedBlueprintsIndexRoute
+  '/groups/': typeof AuthenticatedGroupsIndexRoute
   '/blueprints/$blueprintId/edit': typeof AuthenticatedBlueprintsBlueprintIdEditRoute
   '/blueprints/$blueprintId/preview': typeof AuthenticatedBlueprintsBlueprintIdPreviewRoute
 }
@@ -95,6 +103,7 @@ export interface FileRoutesByTo {
   '/blueprints/add': typeof AuthenticatedBlueprintsAddRoute
   '/blueprints/browse': typeof AuthenticatedBlueprintsBrowseRoute
   '/blueprints': typeof AuthenticatedBlueprintsIndexRoute
+  '/groups': typeof AuthenticatedGroupsIndexRoute
   '/blueprints/$blueprintId/edit': typeof AuthenticatedBlueprintsBlueprintIdEditRoute
   '/blueprints/$blueprintId/preview': typeof AuthenticatedBlueprintsBlueprintIdPreviewRoute
 }
@@ -108,6 +117,7 @@ export interface FileRoutesById {
   '/_authenticated/blueprints/add': typeof AuthenticatedBlueprintsAddRoute
   '/_authenticated/blueprints/browse': typeof AuthenticatedBlueprintsBrowseRoute
   '/_authenticated/blueprints/': typeof AuthenticatedBlueprintsIndexRoute
+  '/_authenticated/groups/': typeof AuthenticatedGroupsIndexRoute
   '/_authenticated/blueprints/_/$blueprintId/edit': typeof AuthenticatedBlueprintsBlueprintIdEditRoute
   '/_authenticated/blueprints/_/$blueprintId/preview': typeof AuthenticatedBlueprintsBlueprintIdPreviewRoute
 }
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/blueprints/add'
     | '/blueprints/browse'
     | '/blueprints/'
+    | '/groups/'
     | '/blueprints/$blueprintId/edit'
     | '/blueprints/$blueprintId/preview'
   fileRoutesByTo: FileRoutesByTo
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/blueprints/add'
     | '/blueprints/browse'
     | '/blueprints'
+    | '/groups'
     | '/blueprints/$blueprintId/edit'
     | '/blueprints/$blueprintId/preview'
   id:
@@ -144,6 +156,7 @@ export interface FileRouteTypes {
     | '/_authenticated/blueprints/add'
     | '/_authenticated/blueprints/browse'
     | '/_authenticated/blueprints/'
+    | '/_authenticated/groups/'
     | '/_authenticated/blueprints/_/$blueprintId/edit'
     | '/_authenticated/blueprints/_/$blueprintId/preview'
   fileRoutesById: FileRoutesById
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/groups/': {
+      id: '/_authenticated/groups/'
+      path: '/groups'
+      fullPath: '/groups/'
+      preLoaderRoute: typeof AuthenticatedGroupsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/blueprints/': {
@@ -235,6 +255,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedBlueprintsAddRoute: typeof AuthenticatedBlueprintsAddRoute
   AuthenticatedBlueprintsBrowseRoute: typeof AuthenticatedBlueprintsBrowseRoute
   AuthenticatedBlueprintsIndexRoute: typeof AuthenticatedBlueprintsIndexRoute
+  AuthenticatedGroupsIndexRoute: typeof AuthenticatedGroupsIndexRoute
   AuthenticatedBlueprintsBlueprintIdEditRoute: typeof AuthenticatedBlueprintsBlueprintIdEditRoute
   AuthenticatedBlueprintsBlueprintIdPreviewRoute: typeof AuthenticatedBlueprintsBlueprintIdPreviewRoute
 }
@@ -247,6 +268,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedBlueprintsAddRoute: AuthenticatedBlueprintsAddRoute,
   AuthenticatedBlueprintsBrowseRoute: AuthenticatedBlueprintsBrowseRoute,
   AuthenticatedBlueprintsIndexRoute: AuthenticatedBlueprintsIndexRoute,
+  AuthenticatedGroupsIndexRoute: AuthenticatedGroupsIndexRoute,
   AuthenticatedBlueprintsBlueprintIdEditRoute:
     AuthenticatedBlueprintsBlueprintIdEditRoute,
   AuthenticatedBlueprintsBlueprintIdPreviewRoute:

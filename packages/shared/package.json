@@ -1,26 +1,30 @@
 {
-    "name": "@scrapeek/shared",
-    "version": "0.1.0",
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "build": "tsup"
+  "name": "@scrapeek/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsup"
+  },
+  "exports": {
+    "./blueprint": {
+      "types": "./dist/blueprint.d.ts",
+      "default": "./dist/blueprint.js"
     },
-    "exports": {
-        "./blueprint": {
-            "types": "./dist/blueprint.d.ts",
-            "default": "./dist/blueprint.js"
-        },
-        "./upvote": {
-            "types": "./dist/upvote.d.ts",
-            "default": "./dist/upvote.js"
-        }
+    "./upvote": {
+      "types": "./dist/upvote.d.ts",
+      "default": "./dist/upvote.js"
     },
-    "devDependencies": {
-        "tsup": "^8.5.0",
-        "typescript": "^5.9.3"
-    },
-    "dependencies": {
-        "zod": "^4.1.11"
+    "./group": {
+      "types": "./dist/group.d.ts",
+      "default": "./dist/group.js"
     }
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "zod": "^4.1.11"
+  }
 }

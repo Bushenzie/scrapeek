@@ -9,6 +9,7 @@ import blueprintRoutes from "@/routes/blueprints/blueprints.routes.ts";
 import resultRoutes from "@/routes/result/result.routes.ts";
 import runnerRoutes from "@/routes/runners/runners.routes.ts";
 import upvoteRoutes from "@/routes/upvotes/upvotes.routes.ts";
+import groupRoutes from "@/routes/groups/groups.routes";
 import type { AuthType } from "./lib/auth";
 
 const app = new Hono<{
@@ -26,13 +27,14 @@ const app = new Hono<{
       exposeHeaders: ["Content-Length"],
       maxAge: 600,
       credentials: true,
-    })
+    }),
   )
   .route("/auth", authRoutes)
   .route("/blueprints", blueprintRoutes)
   .route("/runners", runnerRoutes)
   .route("/result", resultRoutes)
-  .route("/upvotes", upvoteRoutes);
+  .route("/upvotes", upvoteRoutes)
+  .route("/groups", groupRoutes);
 
 serve(
   {
@@ -41,7 +43,7 @@ serve(
   },
   (info) => {
     console.log(`Server running | Port: ${info.port}`);
-  }
+  },
 );
 
 export default app;

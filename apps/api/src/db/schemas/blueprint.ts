@@ -3,6 +3,7 @@ import { boolean, jsonb, pgEnum, pgTable, text, timestamp, uuid, varchar } from 
 import { user } from "./auth.ts";
 import { resultTable } from "./result.ts";
 import { upvoteTable } from "./upvote.ts";
+import { blueprintGroupTable } from "./blueprint-group.ts";
 
 export const configTypeEnum = pgEnum("type", ["api", "static", "dynamic"]);
 
@@ -31,5 +32,6 @@ export const blueprintRelations = relations(blueprintTable, ({ one, many }) => (
     fields: [blueprintTable.userId],
     references: [user.id],
   }),
+  groups: many(blueprintGroupTable),
   upvotes: many(upvoteTable),
 }));
