@@ -1,5 +1,5 @@
 import type { APIBlueprint } from "@scrapeek/shared/blueprint";
-import type { IScraper, ScraperOptions } from "../../types";
+import type { IScraper, ScraperOptions } from "@/types";
 import { parseURL } from "@/utils/url";
 import { request } from "undici";
 import { getValueFromFlatPath } from "@/utils/path";

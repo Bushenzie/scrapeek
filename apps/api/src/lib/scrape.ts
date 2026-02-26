@@ -1,8 +1,8 @@
 import type { Blueprint } from "@scrapeek/shared/blueprint";
 import { StatusError } from "@/lib/error.ts";
-import { StaticScraper } from "@scrapeek/scrapers/new/static";
-import { APIScraper } from "@scrapeek/scrapers/new/api";
-import { DynamicScraper } from "@scrapeek/scrapers/new/dynamic";
+import { StaticScraper } from "@scrapeek/scrapers/static";
+import { APIScraper } from "@scrapeek/scrapers/api";
+import { DynamicScraper } from "@scrapeek/scrapers/dynamic";
 
 export const scrapeData = async (blueprints: Blueprint[], testRun = false) => {
   const scrapersToRun = blueprints.map((blueprint) => {

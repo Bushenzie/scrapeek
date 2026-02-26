@@ -1,5 +1,5 @@
 import type { DynamicBlueprint } from "@scrapeek/shared/blueprint";
-import type { IScraper, ScraperOptions } from "../../types";
+import type { IScraper, ScraperOptions } from "@/types";
 import { parseURL } from "@/utils/url";
 import { canScrape } from "@/utils/robots";
 import { chromium, type ElementHandle } from "patchright";
