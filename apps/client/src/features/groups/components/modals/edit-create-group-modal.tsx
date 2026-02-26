@@ -20,9 +20,7 @@ type EditCreateGroupModalProps = {
 
 export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ groupId }) => {
   const { data: groups } = useGetGroups();
-  const { mutateAsync: createGroup } = useAddGroup({
-    
-  });
+  const { mutateAsync: createGroup } = useAddGroup();
 
   const form = useAppForm({
     defaultValues: {
