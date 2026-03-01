@@ -1,21 +1,13 @@
-import {
-  type Blueprint,
-  editableBlueprintSchema,
-} from "@scrapeek/shared/blueprint";
-import { count, desc, eq, getTableColumns } from "drizzle-orm";
+import { type Blueprint, editableBlueprintSchema } from "@scrapeek/shared/blueprint";
+import { count, desc, eq, getColumns } from "drizzle-orm";
 import { Hono } from "hono";
-import { db } from "@/db/db.ts";
-import { user as userTable } from "@/db/schemas/auth.ts";
-import { blueprintTable } from "@/db/schemas/blueprint.ts";
-import { upvoteTable } from "@/db/schemas/upvote.ts";
+import { db } from "@/lib/db.ts";
+import { schema } from "@scrapeek/db/schema";
 import type { AuthType } from "@/lib/auth.ts";
 import { StatusError } from "@/lib/error.ts";
 import { authMiddleware } from "@/middlewares/auth-middleware.ts";
 import { zodValidator } from "@/middlewares/custom-zod-validator.ts";
-import {
-  paginatedBlueprint,
-  searchableBlueprint,
-} from "./blueprints.schemas.ts";
+import { paginatedBlueprint, searchableBlueprint } from "./blueprints.schemas.ts";
 
 const paginationLimit = 12;
 
@@ -32,23 +24,23 @@ const app = new Hono<{ Variables: AuthType }>()
     // TODO: https://github.com/drizzle-team/drizzle-orm/discussions/2639
     const blueprints = await db
       .select({
-        ...getTableColumns(blueprintTable),
+        ...getColumns(schema.blueprint),
         user: {
-          name: userTable.name,
-          image: userTable.image,
+          name: schema.user.name,
+          image: schema.user.image,
         },
-        upvotes: count(upvoteTable.id).as("upvotes"),
+        upvotes: count(schema.upvote.id).as("upvotes"),
       })
-      .from(blueprintTable)
-      .leftJoin(userTable, eq(blueprintTable.userId, userTable.id))
-      .leftJoin(upvoteTable, eq(upvoteTable.blueprintId, blueprintTable.id))
-      .where(eq(blueprintTable.public, true))
-      .groupBy(blueprintTable.id, userTable.id, userTable.name, userTable.image)
-      .orderBy(desc(count(upvoteTable.id)))
+      .from(schema.blueprint)
+      .leftJoin(schema.user, eq(schema.blueprint.userId, user.id))
+      .leftJoin(schema.upvote, eq(schema.upvote.blueprintId, schema.blueprint.id))
+      .where(eq(schema.blueprint.public, true))
+      .groupBy(schema.blueprint.id, schema.user.id, schema.user.name, schema.user.image)
+      .orderBy(desc(count(schema.upvote.id)))
       .limit(paginationLimit)
       .offset(paginationLimit * page - paginationLimit);
 
-    const totalCount = await db.select({ count: count() }).from(blueprintTable);
+    const totalCount = await db.select({ count: count() }).from(schema.blueprint);
 
     return c.json({ data: blueprints, totalCount: totalCount[0].count, page });
   })
@@ -59,7 +51,7 @@ const app = new Hono<{ Variables: AuthType }>()
       throw new StatusError("No user found", 401);
     }
 
-    const blueprints = (await db.query.blueprintTable.findMany({
+    const blueprints = (await db.query.blueprint.findMany({
       with: {
         result: {
           columns: {
@@ -68,7 +60,8 @@ const app = new Hono<{ Variables: AuthType }>()
         },
       },
 
-      where: (blueprintTable, { eq }) => eq(blueprintTable.userId, user.id),
+      // where: (blueprint, { eq }) => eq(blueprint.userId, user.id),
+      where: { userId: user.id },
     })) as Blueprint[];
 
     return c.json({ data: blueprints });
@@ -81,9 +74,12 @@ const app = new Hono<{ Variables: AuthType }>()
       throw new StatusError("No user found", 401);
     }
 
-    const searchedBlueprint = (await db.query.blueprintTable.findFirst({
-      where: (blueprints, { eq, and }) =>
-        and(eq(blueprints.id, id), eq(blueprints.userId, user.id)),
+    const searchedBlueprint = (await db.query.blueprint.findFirst({
+      where: {
+        userId: user.id,
+        id,
+      },
+      // where: (blueprints, { eq, and }) => and(eq(blueprints.id, id), eq(blueprints.userId, user.id)),
       with: {
         result: true,
       },
@@ -99,7 +95,7 @@ const app = new Hono<{ Variables: AuthType }>()
   .post("/", zodValidator("json", editableBlueprintSchema), async (c) => {
     const body = await c.req.valid("json");
     const createdBlueprint = await db
-      .insert(blueprintTable)
+      .insert(schema.blueprint)
       .values({
         ...body,
       })
@@ -110,19 +106,18 @@ const app = new Hono<{ Variables: AuthType }>()
   .delete("/:id", zodValidator("param", searchableBlueprint), async (c) => {
     const { id } = c.req.param();
 
-    await db.query.blueprintTable
+    await db.query.blueprint
       .findFirst({
-        where: (blueprints, { eq }) => eq(blueprints.id, id),
+        where: {
+          id,
+        },
       })
       .catch(() => {
         c.status(404);
         throw new Error(`Item with id '${id}' was not found`);
       });
 
-    const removedBlueprint = await db
-      .delete(blueprintTable)
-      .where(eq(blueprintTable.id, id))
-      .returning();
+    const removedBlueprint = await db.delete(schema.blueprint).where(eq(schema.blueprint.id, id)).returning();
 
     return c.json({ data: removedBlueprint });
   })
@@ -130,9 +125,11 @@ const app = new Hono<{ Variables: AuthType }>()
     const { id } = c.req.param();
     const body = await c.req.valid("json");
 
-    await db.query.blueprintTable
+    await db.query.blueprint
       .findFirst({
-        where: (blueprints, { eq }) => eq(blueprints.id, id),
+        where: {
+          id,
+        },
       })
       .catch(() => {
         c.status(404);
@@ -140,9 +137,9 @@ const app = new Hono<{ Variables: AuthType }>()
       });
 
     const updatedBlueprint = await db
-      .update(blueprintTable)
+      .update(schema.blueprint)
       .set({ ...body })
-      .where(eq(blueprintTable.id, id))
+      .where(eq(schema.blueprint.id, id))
       .returning();
 
     return c.json({ data: updatedBlueprint[0] });

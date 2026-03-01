@@ -6,10 +6,6 @@
   "types": "./src/server.ts",
   "type": "module",
   "scripts": {
-    "db:generate": "pnpm exec drizzle-kit generate",
-    "db:migrate": "pnpm exec drizzle-kit migrate",
-    "db:rm": "pnpm exec drizzle-kit drop",
-    "db:studio": "pnpm exec drizzle-kit studio",
     "format": "pnpm exec biome format --write",
     "lint": "pnpm exec biome lint --write",
     "check": "pnpm exec biome check --write",
@@ -29,14 +25,13 @@
     "@scrapeek/shared": "workspace:*",
     "better-auth": "^1.4.18",
     "dotenv": "^17.3.1",
-    "drizzle-orm": "^0.45.1",
+    "drizzle-orm": "1.0.0-beta.15-859cf75",
     "hono": "^4.11.9",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.15",
     "@types/node": "^25.2.3",
-    "drizzle-kit": "^0.31.9",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

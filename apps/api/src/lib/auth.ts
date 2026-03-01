@@ -1,8 +1,8 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { apiKey, openAPI } from "better-auth/plugins";
-import { db } from "@/db/db.ts";
-import * as authSchema from "@/db/schemas/auth";
+import { db } from "@/lib/db.ts";
+import * as authSchema from "@scrapeek/db/auth-schema";
 import { env } from "./env.ts";
 
 export const auth = betterAuth({

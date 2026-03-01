@@ -1,12 +1,12 @@
 import { jsonb, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
-import { blueprintTable } from "./blueprint.js";
+import { blueprint } from "./blueprint";
 
-export const resultTable = pgTable("result", {
+export const result = pgTable("result", {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   blueprintId: uuid("blueprint_id")
-    .references(() => blueprintTable.id, { onDelete: "cascade" })
+    .references(() => blueprint.id, { onDelete: "cascade" })
     .notNull(),
   data: jsonb("data").notNull().default({}),
 });

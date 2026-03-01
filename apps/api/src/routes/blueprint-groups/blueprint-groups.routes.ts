@@ -1,11 +1,11 @@
-import { db } from "@/db/db";
+import { db } from "@/lib/db";
 import type { AuthType } from "@/lib/auth";
 import { StatusError } from "@/lib/error";
 import { authMiddleware } from "@/middlewares/auth-middleware";
 import { zodValidator } from "@/middlewares/custom-zod-validator";
 import { Hono } from "hono";
 import { editableGroup } from "./blueprint-groups.schemas";
-import { groupTable } from "@/db/schemas/group";
+import { schema } from "@scrapeek/db/schema";
 import { eq } from "drizzle-orm";
 
 const app = new Hono<{ Variables: AuthType }>()
@@ -17,7 +17,7 @@ const app = new Hono<{ Variables: AuthType }>()
       throw new StatusError("No user found", 401);
     }
 
-    const groups = await db.query.groupTable.findMany({
+    const groups = await db.query.group.findMany({
       with: {
         blueprints: true,
       },
@@ -34,8 +34,9 @@ const app = new Hono<{ Variables: AuthType }>()
     }
 
     const createdGroup = await db
-      .insert(groupTable)
+      .insert(schema.group)
       .values({
+        userId: user.id,
         name,
       })
       .returning();
@@ -51,9 +52,11 @@ const app = new Hono<{ Variables: AuthType }>()
       throw new StatusError("No user found", 401);
     }
 
-    await db.query.groupTable
+    await db.query.group
       .findFirst({
-        where: (table) => eq(table.id, id),
+        where: {
+          id,
+        },
       })
       .catch(() => {
         c.status(404);
@@ -61,11 +64,11 @@ const app = new Hono<{ Variables: AuthType }>()
       });
 
     const updatedGroup = await db
-      .update(groupTable)
+      .update(schema.group)
       .set({
         name,
       })
-      .where(eq(groupTable.id, id))
+      .where(eq(schema.group.id, id))
       .returning();
 
     return c.json({ data: updatedGroup });
@@ -78,16 +81,18 @@ const app = new Hono<{ Variables: AuthType }>()
       throw new StatusError("No user found", 401);
     }
 
-    await db.query.groupTable
+    await db.query.group
       .findFirst({
-        where: (table) => eq(table.id, id),
+        where: {
+          id,
+        },
       })
       .catch(() => {
         c.status(404);
         throw new Error(`Group with id '${id}' was not found`);
       });
 
-    const deletedGroup = await db.delete(groupTable).where(eq(groupTable.id, id)).returning();
+    const deletedGroup = await db.delete(schema.group).where(eq(schema.group.id, id)).returning();
 
     return c.json({ data: deletedGroup });
   });

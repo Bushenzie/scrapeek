@@ -7,8 +7,6 @@
     "build": "turbo build",
     "build:api": "turbo build --filter=@scrapeek/api",
     "build:client": "turbo build --filter=@scrapeek/client",
-    "build:shared": "turbo build --filter=@scrapeek/shared",
-    "build:scrapers": "turbo build --filter=@scrapeek/scrapers",
     "lint": "turbo lint",
     "format": "turbo format"
   },

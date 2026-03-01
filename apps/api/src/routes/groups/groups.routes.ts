@@ -1,12 +1,12 @@
-import { db } from "@/db/db";
+import { db } from "@/lib/db";
 import type { AuthType } from "@/lib/auth";
 import { StatusError } from "@/lib/error";
 import { authMiddleware } from "@/middlewares/auth-middleware";
 import { zodValidator } from "@/middlewares/custom-zod-validator";
 import { Hono } from "hono";
 import { editableGroup } from "./groups.schemas";
-import { groupTable } from "@/db/schemas/group";
-import { and, eq } from "drizzle-orm";
+import { schema } from "@scrapeek/db/schema";
+import { eq } from "drizzle-orm";
 
 const app = new Hono<{ Variables: AuthType }>()
   .use(authMiddleware)
@@ -17,8 +17,10 @@ const app = new Hono<{ Variables: AuthType }>()
       throw new StatusError("No user found", 401);
     }
 
-    const groups = await db.query.groupTable.findMany({
-      where: (table) => eq(table.userId, user.id),
+    const groups = await db.query.group.findMany({
+      where: {
+        userId: user.id,
+      },
       with: {
         blueprints: true,
       },
@@ -35,7 +37,7 @@ const app = new Hono<{ Variables: AuthType }>()
     }
 
     const createdGroup = await db
-      .insert(groupTable)
+      .insert(schema.group)
       .values({
         name,
         userId: user.id,
@@ -53,9 +55,12 @@ const app = new Hono<{ Variables: AuthType }>()
       throw new StatusError("No user found", 401);
     }
 
-    await db.query.groupTable
+    await db.query.group
       .findFirst({
-        where: (table) => and(eq(table.id, id), eq(table.userId, user.id)),
+        where: {
+          userId: user.id,
+          id,
+        },
       })
       .catch(() => {
         c.status(404);
@@ -63,11 +68,11 @@ const app = new Hono<{ Variables: AuthType }>()
       });
 
     const updatedGroup = await db
-      .update(groupTable)
+      .update(schema.group)
       .set({
         name,
       })
-      .where(eq(groupTable.id, id))
+      .where(eq(schema.group.id, id))
       .returning();
 
     return c.json({ data: updatedGroup });
@@ -80,16 +85,19 @@ const app = new Hono<{ Variables: AuthType }>()
       throw new StatusError("No user found", 401);
     }
 
-    await db.query.groupTable
+    await db.query.group
       .findFirst({
-        where: (table) => and(eq(table.id, id), eq(table.userId, user.id)),
+        where: {
+          userId: user.id,
+          id,
+        },
       })
       .catch(() => {
         c.status(404);
         throw new Error(`Group with id '${id}' was not found`);
       });
 
-    const deletedGroup = await db.delete(groupTable).where(eq(groupTable.id, id)).returning();
+    const deletedGroup = await db.delete(schema.group).where(eq(schema.group.id, id)).returning();
 
     return c.json({ data: deletedGroup });
   });

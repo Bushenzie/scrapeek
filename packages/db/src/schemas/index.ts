@@ -1,15 +1,26 @@
-import * as authSchema from "./auth.ts";
-import * as blueprintGroupSchema from "./blueprint-group.ts";
-import * as blueprintSchema from "./blueprint.ts";
-import * as groupSchema from "./group.ts";
-import * as resultSchema from "./result.ts";
-import * as upvoteSchema from "./upvote.ts";
+import { account, apikey, session, user, verification } from "./auth.ts";
+import { blueprintGroup } from "./blueprint-group.ts";
+import { blueprint } from "./blueprint.ts";
+import { group } from "./group.ts";
+import { result } from "./result.ts";
+import { upvote } from "./upvote.ts";
 
 export const schema = {
-  ...authSchema,
-  ...resultSchema,
-  ...blueprintSchema,
-  ...upvoteSchema,
-  ...groupSchema,
-  ...blueprintGroupSchema,
+  user,
+  account,
+  verification,
+  apikey,
+  session,
+  blueprint,
+  blueprintGroup,
+  group,
+  result,
+  upvote,
 };
+
+export * from "./auth.ts";
+export * from "./blueprint-group.ts";
+export * from "./blueprint.ts";
+export * from "./group.ts";
+export * from "./result.ts";
+export * from "./upvote.ts";

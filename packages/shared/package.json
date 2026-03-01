@@ -7,24 +7,18 @@
     "build": "tsup"
   },
   "exports": {
-    "./blueprint": {
-      "types": "./dist/blueprint.d.ts",
-      "default": "./dist/blueprint.js"
-    },
-    "./upvote": {
-      "types": "./dist/upvote.d.ts",
-      "default": "./dist/upvote.js"
-    },
-    "./group": {
-      "types": "./dist/group.d.ts",
-      "default": "./dist/group.js"
-    }
+    "./blueprint": "./src/schemas/blueprint.ts",
+    "./upvote": "./src/schemas/upvote.ts",
+    "./group": "./src/schemas/group.ts",
+    "./utils": "./src/utils/index.ts"
   },
   "devDependencies": {
-    "tsup": "^8.5.0",
+    "@types/node": "^25.2.3",
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "query-string": "^9.3.1",
+    "tldts": "^7.0.23",
     "zod": "^4.1.11"
   }
 }

@@ -1,9 +1,9 @@
 import type { DynamicBlueprint } from "@scrapeek/shared/blueprint";
 import type { IScraper, ScraperOptions } from "@/types";
-import { parseURL } from "@/utils/url";
-import { canScrape } from "@/utils/robots";
+import { parseURL } from "@scrapeek/shared/utils";
+import { canScrape } from "../utils/robots";
 import { chromium, type ElementHandle } from "patchright";
-import { sleep } from "@/utils/sleep";
+import { sleep } from "../utils/sleep";
 
 export class DynamicScraper implements IScraper {
   blueprint: DynamicBlueprint;

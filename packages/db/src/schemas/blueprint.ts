@@ -1,15 +1,11 @@
-import { relations } from "drizzle-orm";
 import { boolean, jsonb, pgEnum, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { user } from "./auth.js";
-import { resultTable } from "./result.js";
-import { upvoteTable } from "./upvote.js";
-import { blueprintGroupTable } from "./blueprint-group.js";
+import { user } from "./auth";
 
-export const configTypeEnum = pgEnum("type", ["api", "static", "dynamic"]);
+export const configType = pgEnum("blueprint_type", ["api", "static", "dynamic"]);
 
-export const blueprintTable = pgTable("blueprint", {
+export const blueprint = pgTable("blueprint", {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
-  type: configTypeEnum("type").notNull(),
+  type: configType("blueprint_type").notNull(),
   userId: text("user_id")
     .references(() => user.id)
     .notNull(),
@@ -22,16 +18,3 @@ export const blueprintTable = pgTable("blueprint", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
-
-export const blueprintRelations = relations(blueprintTable, ({ one, many }) => ({
-  result: one(resultTable, {
-    fields: [blueprintTable.id],
-    references: [resultTable.blueprintId],
-  }),
-  user: one(user, {
-    fields: [blueprintTable.userId],
-    references: [user.id],
-  }),
-  groups: many(blueprintGroupTable),
-  upvotes: many(upvoteTable),
-}));

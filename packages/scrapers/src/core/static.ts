@@ -1,7 +1,7 @@
 import type { IScraper, ScraperOptions } from "@/types";
-import { canScrape } from "@/utils/robots";
-import { sleep } from "@/utils/sleep";
-import { parseURL } from "@/utils/url";
+import { canScrape } from "../utils/robots";
+import { sleep } from "../utils/sleep";
+import { parseURL } from "@scrapeek/shared/utils";
 import type { StaticBlueprint } from "@scrapeek/shared/blueprint";
 import { parse } from "node-html-parser";
 import { request } from "undici";

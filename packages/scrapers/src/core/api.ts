@@ -1,11 +1,11 @@
 import type { APIBlueprint } from "@scrapeek/shared/blueprint";
 import type { IScraper, ScraperOptions } from "@/types";
-import { parseURL } from "@/utils/url";
+import { parseURL } from "@scrapeek/shared/utils";
 import { request } from "undici";
-import { getValueFromFlatPath } from "@/utils/path";
-import { formatVariables, hasVariables } from "@/utils/template";
-import { canScrape } from "@/utils/robots";
-import { sleep } from "@/utils/sleep";
+import { getValueFromFlatPath } from "../utils/path";
+import { formatVariables, hasVariables } from "../utils/template";
+import { canScrape } from "../utils/robots";
+import { sleep } from "../utils/sleep";
 
 export class APIScraper implements IScraper {
   blueprint: APIBlueprint;
