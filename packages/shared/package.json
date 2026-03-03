@@ -13,6 +13,7 @@
     "./utils": "./src/utils/index.ts"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.2.2",
     "@types/node": "^25.2.3",
     "typescript": "^5.9.3"
   },
