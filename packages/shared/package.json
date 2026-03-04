@@ -4,12 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsup"
+    "format": "pnpm exec biome format --write",
+    "lint": "pnpm exec biome lint --write",
+    "check": "pnpm exec biome check --write"
   },
   "exports": {
-    "./blueprint": "./src/schemas/blueprint.ts",
-    "./upvote": "./src/schemas/upvote.ts",
-    "./group": "./src/schemas/group.ts",
     "./utils": "./src/utils/index.ts"
   },
   "devDependencies": {

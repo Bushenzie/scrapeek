@@ -1,0 +1,1 @@
+ALTER TABLE "blueprint" ALTER COLUMN "url" SET DATA TYPE varchar(512) USING "url"::varchar(512);

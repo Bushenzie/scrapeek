@@ -1,3 +1,4 @@
+import { groupInsertSchema } from "@scrapeek/db/validators";
 import { FolderPen, FolderPlus } from "lucide-react";
 import { type FC } from "react";
 import { Button } from "@/components/ui/button/button";
@@ -10,7 +11,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog/dialog";
 import { useAppForm } from "@/hooks/use-app-form";
-import { editableGroupSchema } from "@scrapeek/shared/group";
 import { useAddGroup } from "../../api/mutations/use-add-group";
 import { useGetGroups } from "../../api/queries/use-get-groups";
 
@@ -27,7 +27,7 @@ export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ groupId })
       name: "",
     },
     validators: {
-      onChange: editableGroupSchema,
+      onChange: groupInsertSchema,
       onSubmit: ({ value }) => {
         const alreadyExists = groups.find((group) => group.name === value.name);
         if (alreadyExists) return "Name already exists";

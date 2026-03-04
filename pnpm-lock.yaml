@@ -102,6 +102,9 @@ importers:
       '@scrapeek/api':
         specifier: workspace:*
         version: link:../api
+      '@scrapeek/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@scrapeek/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -257,6 +260,9 @@ importers:
 
   packages/scrapers:
     dependencies:
+      '@scrapeek/db':
+        specifier: workspace:*
+        version: link:../db
       '@scrapeek/shared':
         specifier: workspace:*
         version: link:../shared

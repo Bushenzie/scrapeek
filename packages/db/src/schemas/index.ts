@@ -6,16 +6,16 @@ import { result } from "./result.ts";
 import { upvote } from "./upvote.ts";
 
 export const schema = {
-  user,
-  account,
-  verification,
-  apikey,
-  session,
-  blueprint,
-  blueprintGroup,
-  group,
-  result,
-  upvote,
+	user,
+	account,
+	verification,
+	apikey,
+	session,
+	blueprint,
+	blueprintGroup,
+	group,
+	result,
+	upvote,
 };
 
 export * from "./auth.ts";

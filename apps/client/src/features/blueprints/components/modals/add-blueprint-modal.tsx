@@ -1,4 +1,4 @@
-import { BlueprintType } from "@scrapeek/shared/blueprint";
+import { BlueprintType } from "@scrapeek/db/constants";
 import { useRouter } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button/button";
 import {
@@ -54,8 +54,8 @@ export const AddBlueprintDialog = () => {
                 label=""
                 options={[
                   { label: "API", value: BlueprintType.API },
-                  { label: "Static", value: BlueprintType.STATIC },
-                  { label: "Dynamic", value: BlueprintType.DYNAMIC },
+                  { label: "Static", value: BlueprintType.Static },
+                  { label: "Dynamic", value: BlueprintType.Dynamic },
                 ]}
               />
             )}

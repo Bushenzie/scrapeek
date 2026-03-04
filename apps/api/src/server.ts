@@ -13,37 +13,37 @@ import groupRoutes from "@/routes/groups/groups.routes";
 import type { AuthType } from "./lib/auth";
 
 const app = new Hono<{
-  Variables: AuthType;
+	Variables: AuthType;
 }>({ strict: false })
-  .basePath("/api")
-  .use(logger())
-  .onError(errorHandler)
-  .use(
-    "*",
-    cors({
-      origin: env.CLIENT_URL,
-      allowHeaders: ["Content-Type", "Authorization"],
-      allowMethods: ["POST", "GET", "DELETE", "PATCH", "PUT", "OPTIONS"],
-      exposeHeaders: ["Content-Length"],
-      maxAge: 600,
-      credentials: true,
-    }),
-  )
-  .route("/auth", authRoutes)
-  .route("/blueprints", blueprintRoutes)
-  .route("/runners", runnerRoutes)
-  .route("/result", resultRoutes)
-  .route("/upvotes", upvoteRoutes)
-  .route("/groups", groupRoutes);
+	.basePath("/api")
+	.use(logger())
+	.onError(errorHandler)
+	.use(
+		"*",
+		cors({
+			origin: env.CLIENT_URL,
+			allowHeaders: ["Content-Type", "Authorization"],
+			allowMethods: ["POST", "GET", "DELETE", "PATCH", "PUT", "OPTIONS"],
+			exposeHeaders: ["Content-Length"],
+			maxAge: 600,
+			credentials: true,
+		}),
+	)
+	.route("/auth", authRoutes)
+	.route("/blueprints", blueprintRoutes)
+	.route("/runners", runnerRoutes)
+	.route("/result", resultRoutes)
+	.route("/upvotes", upvoteRoutes)
+	.route("/groups", groupRoutes);
 
 serve(
-  {
-    fetch: app.fetch,
-    port: Number(env.PORT ?? 3001),
-  },
-  (info) => {
-    console.log(`Server running | Port: ${info.port}`);
-  },
+	{
+		fetch: app.fetch,
+		port: Number(env.PORT ?? 3001),
+	},
+	(info) => {
+		console.log(`Server running | Port: ${info.port}`);
+	},
 );
 
 export default app;

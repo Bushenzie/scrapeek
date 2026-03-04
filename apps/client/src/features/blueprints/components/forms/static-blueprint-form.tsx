@@ -1,10 +1,10 @@
 import type { CheckedState } from "@radix-ui/react-checkbox";
+import {BlueprintType} from "@scrapeek/db/constants"
 import {
-  BlueprintType,
   type EditableStaticBlueprint,
   type StaticBlueprint,
-  staticEditableBlueprintSchema,
-} from "@scrapeek/shared/blueprint";
+  staticUpdateBlueprintSchema,
+} from "@scrapeek/db/validators";
 import { formOptions } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
 import { XIcon } from "lucide-react";
@@ -31,16 +31,16 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
   const { mutateAsync: editBlueprint } = useEditBlueprint();
   const { data: session } = authClient.useSession();
 
-  if (blueprint?.result) {
-    const { result, ...formattedBlueprint } = blueprint;
-    blueprint = formattedBlueprint;
-  }
+  // if (blueprint?.result) {
+  //   const { result, ...formattedBlueprint } = blueprint;
+  //   blueprint = formattedBlueprint;
+  // }
 
   const defaultOptions = formOptions({
     defaultValues:
       blueprint ??
       ({
-        type: BlueprintType.STATIC,
+        type: BlueprintType.Static,
         name: "",
         description: "",
         url: "",
@@ -57,7 +57,7 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
   const form = useAppForm({
     ...defaultOptions,
     validators: {
-      onChange: staticEditableBlueprintSchema,
+      onChange: staticUpdateBlueprintSchema,
     },
     onSubmit: async ({ value }) => {
       let blueprintId: string | null = null;
@@ -116,7 +116,7 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
                 name="config.elements"
                 children={(field) => (
                   <>
-                    {field.state.value.map((_, index) => (
+                    {field?.state?.value?.map((_, index) => (
                       <div key={index}>
                         <div className="grid grid-cols-8 gap-2">
                           <form.AppField
@@ -204,7 +204,7 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
                   children={(field) => <field.TextField label="Pagination selector" />}
                 />
                 <form.Subscribe
-                  selector={(state) => state.values.config.pagination?.variant === "link"}
+                  selector={(state) => state?.values?.config?.pagination?.variant === "link"}
                   children={(showAttribute) => (
                     <>
                       {showAttribute && (

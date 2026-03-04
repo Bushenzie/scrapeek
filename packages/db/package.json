@@ -4,6 +4,9 @@
   "type": "module",
   "description": "",
   "scripts": {
+    "format": "pnpm exec biome format --write",
+    "lint": "pnpm exec biome lint --write",
+    "check": "pnpm exec biome check --write",
     "db:generate": "pnpm exec drizzle-kit generate",
     "db:migrate": "pnpm exec drizzle-kit migrate",
     "db:studio": "pnpm exec drizzle-kit studio"
@@ -12,7 +15,8 @@
     "./auth-schema": "./src/schemas/auth.ts",
     "./schema": "./src/schemas/index.ts",
     "./relations": "./src/relations/index.ts",
-    "./validators": "./src/validators/index.ts"
+    "./validators": "./src/validators/index.ts",
+    "./constants": "./src/lib/constants.ts"
   },
   "keywords": [],
   "author": "",

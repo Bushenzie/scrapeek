@@ -5,7 +5,9 @@
   "private": true,
   "description": "",
   "scripts": {
-    "build": "tsup"
+    "format": "pnpm exec biome format --write",
+    "lint": "pnpm exec biome lint --write",
+    "check": "pnpm exec biome check --write"
   },
   "exports": {
     "./static": "./src/core/static.ts",
@@ -18,6 +20,7 @@
   "packageManager": "pnpm@10.9.0",
   "dependencies": {
     "@scrapeek/shared": "workspace:*",
+    "@scrapeek/db": "workspace:*",
     "axios": "^1.12.2",
     "cheerio": "^1.1.2",
     "node-html-parser": "^7.0.1",

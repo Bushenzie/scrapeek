@@ -2,52 +2,52 @@ import type * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import type { ComponentProps } from "react";
 
 export type DropdownMenuProps = ComponentProps<
-  typeof DropdownMenuPrimitive.Root
+	typeof DropdownMenuPrimitive.Root
 >;
 export type DropdownMenuPortalProps = ComponentProps<
-  typeof DropdownMenuPrimitive.Portal
+	typeof DropdownMenuPrimitive.Portal
 >;
 export type DropdownMenuTriggerProps = ComponentProps<
-  typeof DropdownMenuPrimitive.Trigger
+	typeof DropdownMenuPrimitive.Trigger
 >;
 export type DropdownMenuContentProps = ComponentProps<
-  typeof DropdownMenuPrimitive.Content
+	typeof DropdownMenuPrimitive.Content
 >;
 export type DropdownMenuGroupProps = ComponentProps<
-  typeof DropdownMenuPrimitive.Group
+	typeof DropdownMenuPrimitive.Group
 >;
 export type DropdownMenuItemProps = ComponentProps<
-  typeof DropdownMenuPrimitive.Item
+	typeof DropdownMenuPrimitive.Item
 > & {
-  inset?: boolean;
-  variant?: "default" | "destructive";
+	inset?: boolean;
+	variant?: "default" | "destructive";
 };
 export type DropdownMenuCheckboxItemProps = ComponentProps<
-  typeof DropdownMenuPrimitive.CheckboxItem
+	typeof DropdownMenuPrimitive.CheckboxItem
 >;
 export type DropdownMenuRadioGroupProps = ComponentProps<
-  typeof DropdownMenuPrimitive.RadioGroup
+	typeof DropdownMenuPrimitive.RadioGroup
 >;
 export type DropdownMenuRadioItemProps = ComponentProps<
-  typeof DropdownMenuPrimitive.RadioItem
+	typeof DropdownMenuPrimitive.RadioItem
 >;
 export type DropdownMenuLabelProps = ComponentProps<
-  typeof DropdownMenuPrimitive.Label
+	typeof DropdownMenuPrimitive.Label
 > & {
-  inset?: boolean;
+	inset?: boolean;
 };
 export type DropdownMenuSeparatorProps = ComponentProps<
-  typeof DropdownMenuPrimitive.Separator
+	typeof DropdownMenuPrimitive.Separator
 >;
 export type DropdownMenuShortcutProps = ComponentProps<"span">;
 export type DropdownMenuSubProps = ComponentProps<
-  typeof DropdownMenuPrimitive.Sub
+	typeof DropdownMenuPrimitive.Sub
 >;
 export type DropdownMenuSubTriggerProps = ComponentProps<
-  typeof DropdownMenuPrimitive.SubTrigger
+	typeof DropdownMenuPrimitive.SubTrigger
 > & {
-  inset?: boolean;
+	inset?: boolean;
 };
 export type DropdownMenuSubContentProps = ComponentProps<
-  typeof DropdownMenuPrimitive.SubContent
+	typeof DropdownMenuPrimitive.SubContent
 >;

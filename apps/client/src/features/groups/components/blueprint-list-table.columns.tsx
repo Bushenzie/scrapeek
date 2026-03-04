@@ -1,4 +1,4 @@
-import type { Blueprint } from "@scrapeek/shared/blueprint";
+import type { Blueprint } from "@scrapeek/db/validators";
 import { createColumnHelper } from "@tanstack/react-table";
 import { format } from "date-fns";
 

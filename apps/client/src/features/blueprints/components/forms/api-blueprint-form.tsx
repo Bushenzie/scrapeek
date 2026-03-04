@@ -1,11 +1,13 @@
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import {
-  type APIBlueprint,
-  apiEditableBlueprintSchema,
-  BlueprintHTTPMethods,
+  BLUEPRINT_HTTP_METHODS,
   BlueprintType,
+} from "@scrapeek/db/constants";
+import {
+  type APIBlueprint,
+  apiUpdateBlueprintSchema,
   type EditableAPIBlueprint,
-} from "@scrapeek/shared/blueprint";
+} from "@scrapeek/db/validators";
 import { formOptions } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
 import { XIcon } from "lucide-react";
@@ -33,10 +35,10 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
   const { mutateAsync: editBlueprint } = useEditBlueprint();
   const { data: session } = authClient.useSession();
 
-  if (blueprint?.result) {
-    const { result, ...formattedBlueprint } = blueprint;
-    blueprint = formattedBlueprint;
-  }
+  // if (blueprint?.result) {
+  //   const { result, ...formattedBlueprint } = blueprint;
+  //   blueprint = formattedBlueprint;
+  // }
 
   const defaultOptions = formOptions({
     defaultValues:
@@ -63,7 +65,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
   const form = useAppForm({
     ...defaultOptions,
     validators: {
-      onChange: apiEditableBlueprintSchema,
+      onChange: apiUpdateBlueprintSchema,
     },
     listeners: {
       onChange: ({ formApi, fieldApi }) => {
@@ -176,7 +178,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                 name="config.method"
                 children={(field) => (
                   <field.SelectField
-                    options={BlueprintHTTPMethods.map((method) => ({ label: method, value: method }))}
+                    options={BLUEPRINT_HTTP_METHODS.map((method) => ({ label: method, value: method }))}
                     triggerLabel={field.form.getFieldValue("config.method") ?? "Select value"}
                     label="HTTP Method"
                   />
@@ -192,7 +194,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                 name="config.fields"
                 children={(field) => (
                   <>
-                    {field.state.value.map((_, index) => (
+                    {field?.state?.value?.map((_, index) => (
                       <div key={index}>
                         <div className="grid grid-cols-6 gap-2">
                           <form.AppField
@@ -273,7 +275,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                   />
                 </div>
                 <form.Subscribe
-                  selector={(state) => state.values.config.pagination?.type}
+                  selector={(state) => state?.values?.config?.pagination?.type}
                   children={(paginationType) => (
                     <>
                       {paginationType === "cursor" && (
