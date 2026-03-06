@@ -1,5 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import type { ValidationTargets } from "hono";
+import { StatusCodes } from "http-status-codes";
 import type { z } from "zod";
 import { StatusError } from "@/lib/error.ts";
 
@@ -20,7 +21,7 @@ export const zodValidator = <
 
 			const errorMessage = formattedIssues.join(" | ");
 
-			throw new StatusError(errorMessage, 400);
+			throw new StatusError(errorMessage, StatusCodes.BAD_REQUEST);
 		}
 	});
 };

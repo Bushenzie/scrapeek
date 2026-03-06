@@ -1,6 +1,7 @@
 import { schema } from "@scrapeek/db/schema";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
+import { StatusCodes } from "http-status-codes";
 import type { AuthType } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { StatusError } from "@/lib/error";
@@ -14,7 +15,7 @@ const app = new Hono<{ Variables: AuthType }>()
 		const user = c.get("user");
 
 		if (!user) {
-			throw new StatusError("No user found", 401);
+			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
 		}
 
 		const groups = await db.query.group.findMany({
@@ -33,7 +34,7 @@ const app = new Hono<{ Variables: AuthType }>()
 		const { name } = c.req.valid("json");
 
 		if (!user) {
-			throw new StatusError("No user found", 401);
+			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
 		}
 
 		const createdGroup = await db
@@ -52,7 +53,7 @@ const app = new Hono<{ Variables: AuthType }>()
 		const { name } = c.req.valid("json");
 
 		if (!user) {
-			throw new StatusError("No user found", 401);
+			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
 		}
 
 		await db.query.group
@@ -82,7 +83,7 @@ const app = new Hono<{ Variables: AuthType }>()
 		const id = c.req.param("id");
 
 		if (!user) {
-			throw new StatusError("No user found", 401);
+			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
 		}
 
 		await db.query.group

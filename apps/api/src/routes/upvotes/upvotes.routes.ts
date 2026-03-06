@@ -1,6 +1,7 @@
 import { schema } from "@scrapeek/db/schema";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
+import { StatusCodes } from "http-status-codes";
 import { db } from "@/lib/db";
 import { StatusError } from "@/lib/error";
 import { authMiddleware } from "@/middlewares/auth-middleware";
@@ -17,7 +18,7 @@ const app = new Hono()
 		const user = c.get("user");
 
 		if (!user) {
-			throw new StatusError("No user found", 401);
+			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
 		}
 
 		const existingUpvote = await db.query.upvote.findFirst({
@@ -42,7 +43,7 @@ const app = new Hono()
 		const user = c.get("user");
 
 		if (!user) {
-			throw new StatusError("No user found", 401);
+			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
 		}
 
 		const allUsersUpvotes = await db.query.upvote.findMany({
@@ -61,7 +62,7 @@ const app = new Hono()
 			const user = c.get("user");
 
 			if (!user) {
-				throw new StatusError("No user found", 401);
+				throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
 			}
 
 			const blueprintUpvotes = await db.query.upvote.findMany({

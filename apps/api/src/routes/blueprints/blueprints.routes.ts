@@ -6,6 +6,7 @@ import {
 } from "@scrapeek/db/validators";
 import { count, desc, eq, getColumns } from "drizzle-orm";
 import { Hono } from "hono";
+import { StatusCodes } from "http-status-codes";
 import type { AuthType } from "@/lib/auth.ts";
 import { db } from "@/lib/db.ts";
 import { StatusError } from "@/lib/error.ts";
@@ -25,7 +26,7 @@ const app = new Hono<{ Variables: AuthType }>()
 		const { page = 1 } = c.req.valid("query");
 
 		if (!user) {
-			throw new StatusError("No user found", 401);
+			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
 		}
 
 		// TODO: https://github.com/drizzle-team/drizzle-orm/discussions/2639
@@ -56,14 +57,14 @@ const app = new Hono<{ Variables: AuthType }>()
 
 		return c.json({ data: blueprints, totalCount: totalCount[0].count, page });
 	})
-	.get("/", zodValidator("query", paginatedBlueprint), async (c) => {
+	.get("/", async (c) => {
 		const user = c.get("user");
 
 		if (!user) {
-			throw new StatusError("No user found", 401);
+			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
 		}
 
-		const blueprints = (await db.query.blueprint.findMany({
+		const blueprints = await db.query.blueprint.findMany({
 			with: {
 				result: {
 					columns: {
@@ -74,7 +75,7 @@ const app = new Hono<{ Variables: AuthType }>()
 
 			// where: (blueprint, { eq }) => eq(blueprint.userId, user.id),
 			where: { userId: user.id },
-		})) as Blueprint[];
+		});
 
 		return c.json({ data: blueprints });
 	})
@@ -83,7 +84,7 @@ const app = new Hono<{ Variables: AuthType }>()
 		const { id } = c.req.valid("param");
 
 		if (!user) {
-			throw new StatusError("No user found", 401);
+			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
 		}
 
 		const searchedBlueprint = (await db.query.blueprint.findFirst({

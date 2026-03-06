@@ -2,6 +2,7 @@ import type { Blueprint } from "@scrapeek/db/validators";
 import { APIScraper } from "@scrapeek/scrapers/api";
 import { DynamicScraper } from "@scrapeek/scrapers/dynamic";
 import { StaticScraper } from "@scrapeek/scrapers/static";
+import { StatusCodes } from "http-status-codes";
 import { StatusError } from "@/lib/error.ts";
 
 export const scrapeData = async (blueprints: Blueprint[], testRun = false) => {
@@ -25,6 +26,6 @@ export const scrapeData = async (blueprints: Blueprint[], testRun = false) => {
 
 		return scrapedData;
 	} catch (err) {
-		throw new StatusError(err as string, 500);
+		throw new StatusError(err as string, StatusCodes.INTERNAL_SERVER_ERROR);
 	}
 };
