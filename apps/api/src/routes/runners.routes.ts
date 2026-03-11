@@ -1,5 +1,5 @@
 import { schema } from "@scrapeek/db/schema";
-import type { Blueprint } from "@scrapeek/db/validators";
+import { type Blueprint, blueprintSchema } from "@scrapeek/db/validators";
 import { eq, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
@@ -19,7 +19,7 @@ const app = new Hono().post(
 	async (c) => {
 		const { id, mode } = await c.req.valid("json");
 
-		const blueprint = (await db.query.blueprint
+		const blueprint = await db.query.blueprint
 			.findFirst({
 				where: {
 					id,
@@ -27,23 +27,25 @@ const app = new Hono().post(
 			})
 			.catch(() => {
 				throw new Error("No blueprints found");
-			})) as Blueprint;
+			});
+
+		const parsedBlueprint = blueprintSchema.parse(blueprint);
 
 		const isTestRun = mode === "test";
 
-		const data = await scrapeData([blueprint], isTestRun);
+		const data = await scrapeData([parsedBlueprint], isTestRun);
 
 		if (!isTestRun) {
 			const existingResult = await db.query.result.findFirst({
 				where: {
-					blueprintId: blueprint.id,
+					blueprintId: parsedBlueprint.id,
 				},
 			});
 
 			if (!existingResult) {
 				await db
 					.insert(schema.result)
-					.values({ blueprintId: blueprint.id, data: data[0] });
+					.values({ blueprintId: parsedBlueprint.id, data: data[0] });
 			} else {
 				await db
 					.update(schema.result)
@@ -51,11 +53,11 @@ const app = new Hono().post(
 						data: data[0],
 						updatedAt: sql`NOW()`,
 					})
-					.where(eq(schema.result.blueprintId, blueprint.id));
+					.where(eq(schema.result.blueprintId, parsedBlueprint.id));
 			}
 		}
 
-		return c.json(data);
+		return c.json({ data });
 	},
 );
 

@@ -106,22 +106,29 @@ const app = new Hono<{ Variables: AuthType }>()
 			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
 		}
 
-		const searchedBlueprint = (await db.query.blueprint.findFirst({
+		const searchedBlueprint = await db.query.blueprint.findFirst({
 			where: {
 				userId: user.id,
 				id,
 			},
 			with: {
+				user: true,
 				result: true,
 			},
-		})) as BlueprintWithRelations;
+		});
 
 		if (!searchedBlueprint) {
-			c.status(404);
-			throw new Error(`Item with id '${id}' was not found`);
+			throw new StatusError(
+				`Item with id '${id}' was not found`,
+				StatusCodes.NOT_FOUND,
+			);
 		}
 
-		return c.json({ data: searchedBlueprint });
+		console.log(searchedBlueprint);
+
+		const blueprint = blueprintWithRelationsSchema.parse(searchedBlueprint);
+
+		return c.json({ data: blueprint });
 	})
 	.post("/", zodValidator("json", insertBlueprintSchema), async (c) => {
 		const body = await c.req.valid("json");
@@ -145,8 +152,10 @@ const app = new Hono<{ Variables: AuthType }>()
 				},
 			})
 			.catch(() => {
-				c.status(404);
-				throw new Error(`Item with id '${id}' was not found`);
+				throw new StatusError(
+					`Item with id '${id}' was not found`,
+					StatusCodes.NOT_FOUND,
+				);
 			});
 
 		const removedBlueprint = await db
@@ -167,8 +176,10 @@ const app = new Hono<{ Variables: AuthType }>()
 				},
 			})
 			.catch(() => {
-				c.status(404);
-				throw new Error(`Item with id '${id}' was not found`);
+				throw new StatusError(
+					`Item with id '${id}' was not found`,
+					StatusCodes.NOT_FOUND,
+				);
 			});
 
 		const updatedBlueprint = await db

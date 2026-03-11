@@ -1,6 +1,7 @@
 import type { Blueprint } from "@scrapeek/db/validators";
 import { useMutation } from "@tanstack/react-query";
 import { client } from "@/lib/clients/hono";
+import { unwrap } from "@/lib/unwrap";
 import { blueprintQueryKeys } from "./blueprints.keys";
 
 export const useCreateBlueprint = () =>
@@ -49,13 +50,15 @@ export const useEditBlueprint = () =>
 
 export const useRunBlueprint = () =>
 	useMutation({
-		mutationFn: ({ id, mode }: { id: string; mode?: "test" | "normal" }) =>
-			client.api.runners.$post({
-				json: {
-					id,
-					mode,
-				},
-			}),
+		mutationFn: async ({ id, mode }: { id: string; mode?: "test" | "normal" }) =>
+			unwrap(
+				client.api.runners.$post({
+					json: {
+						id,
+						mode,
+					},
+				}),
+			),
 		meta: {
 			invalidatesQuery: blueprintQueryKeys.all,
 			errorMessage: "There was an error the scraping of blueprint",
