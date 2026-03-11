@@ -3,7 +3,7 @@ import {
 	createSelectSchema,
 	createUpdateSchema,
 } from "drizzle-orm/zod";
-import type { z } from "zod";
+import { z } from "zod";
 import { DATABASE_FIELDS } from "../lib/constants";
 import type { EditableFields } from "../lib/types";
 import { upvote } from "../schemas/upvote";
@@ -17,7 +17,10 @@ const editableFields: EditableFields<typeof upvote.$inferSelect> = {
 	blueprintId: true,
 } as const;
 
-export const upvoteSelectSchema = createSelectSchema(upvote);
+export const upvoteSelectSchema = createSelectSchema(upvote, {
+	createdAt: z.iso.date(),
+	updatedAt: z.iso.date(),
+});
 
 export const upvoteInsertSchema = createInsertSchema(upvote)
 	.pick(editableFields)

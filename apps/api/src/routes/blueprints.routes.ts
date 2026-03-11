@@ -1,6 +1,7 @@
 import { schema } from "@scrapeek/db/schema";
 import {
 	type BlueprintWithRelations,
+	blueprintWithRelationsSchema,
 	editableBlueprintSchema,
 	insertBlueprintSchema,
 } from "@scrapeek/db/validators";
@@ -63,9 +64,13 @@ const app = new Hono<{ Variables: AuthType }>()
 				.select({ count: count() })
 				.from(schema.blueprint);
 
+			const parsedBlueprints = blueprintWithRelationsSchema
+				.array()
+				.parse(blueprints);
+
 			return c.json({
 				data: {
-					blueprints,
+					blueprints: parsedBlueprints,
 					totalCount: totalCount[0].count,
 					page,
 				},

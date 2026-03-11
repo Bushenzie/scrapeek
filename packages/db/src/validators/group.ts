@@ -1,29 +1,37 @@
 import {
 	createInsertSchema,
-	createUpdateSchema,
 	createSelectSchema,
+	createUpdateSchema,
 } from "drizzle-orm/zod";
-import { group } from "../schemas/group";
-import type { z } from "zod";
-import type { EditableFields } from "../lib/types";
+import { z } from "zod";
 import { DATABASE_FIELDS } from "../lib/constants";
+import type { EditableFields } from "../lib/types";
+import { group } from "../schemas/group";
+
+const omitFields = {
+	...DATABASE_FIELDS,
+	userId: true,
+} as const;
 
 const editableFields: EditableFields<typeof group.$inferSelect> = {
 	name: true,
 };
 
-export const groupSelectSchema = createSelectSchema(group);
+export const groupSelectSchema = createSelectSchema(group, {
+	createdAt: z.iso.date(),
+	updatedAt: z.iso.date(),
+});
 
 export const groupInsertSchema = createInsertSchema(group, {
 	name: (field) => field.min(1).max(100),
 })
 	.pick(editableFields)
-	.omit(DATABASE_FIELDS);
+	.omit(omitFields);
 
 export const groupUpdateSchema = createUpdateSchema(group, {
 	name: (field) => field.min(1).max(100),
 })
 	.pick(editableFields)
-	.omit(DATABASE_FIELDS);
+	.omit(omitFields);
 
 export type Group = z.infer<typeof groupSelectSchema>;
