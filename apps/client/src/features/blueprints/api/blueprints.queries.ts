@@ -46,9 +46,9 @@ export const blueprintUpvotesOptions = (id: string) =>
 		queryKey: blueprintQueryKeys.upvote(id),
 		queryFn: () =>
 			unwrap(
-				client.api.upvotes[":blueprintId"].$get({
+				client.api.upvotes[":id"].$get({
 					param: {
-						blueprintId: id,
+						id,
 					},
 				}),
 			),

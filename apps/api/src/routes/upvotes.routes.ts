@@ -1,4 +1,5 @@
 import { schema } from "@scrapeek/db/schema";
+import { upvoteInsertSchema } from "@scrapeek/db/validators";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { StatusCodes } from "http-status-codes";
@@ -6,14 +7,11 @@ import { db } from "@/lib/db";
 import { StatusError } from "@/lib/error";
 import { authMiddleware } from "@/middlewares/auth-middleware";
 import { zodValidator } from "@/middlewares/custom-zod-validator";
-import {
-	upvoteBlueprintParamSchema,
-	upvoteBodySchema,
-} from "./upvotes.schemas";
+import { idParamSearchSchema } from "@/schemas/id-param-search-schema";
 
 const app = new Hono()
 	.use(authMiddleware)
-	.post("/", zodValidator("json", upvoteBodySchema), async (c) => {
+	.post("/", zodValidator("json", upvoteInsertSchema), async (c) => {
 		const { blueprintId } = c.req.valid("json");
 		const user = c.get("user");
 
@@ -54,25 +52,21 @@ const app = new Hono()
 
 		return c.json({ data: allUsersUpvotes });
 	})
-	.get(
-		"/:blueprintId",
-		zodValidator("param", upvoteBlueprintParamSchema),
-		async (c) => {
-			const { blueprintId } = c.req.valid("param");
-			const user = c.get("user");
+	.get("/:id", zodValidator("param", idParamSearchSchema), async (c) => {
+		const { id } = c.req.valid("param");
+		const user = c.get("user");
 
-			if (!user) {
-				throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
-			}
+		if (!user) {
+			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
+		}
 
-			const blueprintUpvotes = await db.query.upvote.findMany({
-				where: {
-					blueprintId,
-				},
-			});
+		const blueprintUpvotes = await db.query.upvote.findMany({
+			where: {
+				blueprintId: id,
+			},
+		});
 
-			return c.json({ data: blueprintUpvotes });
-		},
-	);
+		return c.json({ data: blueprintUpvotes });
+	});
 
 export default app;

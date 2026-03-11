@@ -1,4 +1,5 @@
 import { schema } from "@scrapeek/db/schema";
+import { groupInsertSchema, groupUpdateSchema } from "@scrapeek/db/validators";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { StatusCodes } from "http-status-codes";
@@ -7,7 +8,6 @@ import { db } from "@/lib/db";
 import { StatusError } from "@/lib/error";
 import { authMiddleware } from "@/middlewares/auth-middleware";
 import { zodValidator } from "@/middlewares/custom-zod-validator";
-import { editableGroup } from "./groups.schemas";
 
 const app = new Hono<{ Variables: AuthType }>()
 	.use(authMiddleware)
@@ -19,9 +19,6 @@ const app = new Hono<{ Variables: AuthType }>()
 		}
 
 		const groups = await db.query.group.findMany({
-			where: {
-				userId: user.id,
-			},
 			with: {
 				blueprints: true,
 			},
@@ -29,7 +26,7 @@ const app = new Hono<{ Variables: AuthType }>()
 
 		return c.json({ data: groups });
 	})
-	.post("/", zodValidator("json", editableGroup), async (c) => {
+	.post("/", zodValidator("json", groupInsertSchema), async (c) => {
 		const user = c.get("user");
 		const { name } = c.req.valid("json");
 
@@ -40,14 +37,14 @@ const app = new Hono<{ Variables: AuthType }>()
 		const createdGroup = await db
 			.insert(schema.group)
 			.values({
-				name,
 				userId: user.id,
+				name,
 			})
 			.returning();
 
-		return c.json({ data: createdGroup[0] });
+		return c.json({ data: createdGroup });
 	})
-	.patch("/:id", zodValidator("json", editableGroup), async (c) => {
+	.patch("/:id", zodValidator("json", groupUpdateSchema), async (c) => {
 		const user = c.get("user");
 		const id = c.req.param("id");
 		const { name } = c.req.valid("json");
@@ -59,7 +56,6 @@ const app = new Hono<{ Variables: AuthType }>()
 		await db.query.group
 			.findFirst({
 				where: {
-					userId: user.id,
 					id,
 				},
 			})
@@ -89,7 +85,6 @@ const app = new Hono<{ Variables: AuthType }>()
 		await db.query.group
 			.findFirst({
 				where: {
-					userId: user.id,
 					id,
 				},
 			})

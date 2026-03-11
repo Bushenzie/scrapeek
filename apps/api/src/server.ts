@@ -4,12 +4,12 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { env } from "@/lib/env.ts";
 import { errorHandler } from "@/middlewares/error-handler";
-import authRoutes from "@/routes/auth/auth.routes.ts";
-import blueprintRoutes from "@/routes/blueprints/blueprints.routes.ts";
-import resultRoutes from "@/routes/result/result.routes.ts";
-import runnerRoutes from "@/routes/runners/runners.routes.ts";
-import upvoteRoutes from "@/routes/upvotes/upvotes.routes.ts";
-import groupRoutes from "@/routes/groups/groups.routes";
+import authRoutes from "@/routes/auth.routes.ts";
+import blueprintRoutes from "@/routes/blueprints.routes.ts";
+import groupRoutes from "@/routes/groups.routes";
+import resultRoutes from "@/routes/result.routes.ts";
+import runnerRoutes from "@/routes/runners.routes.ts";
+import upvoteRoutes from "@/routes/upvotes.routes.ts";
 import type { AuthType } from "./lib/auth";
 
 const app = new Hono<{

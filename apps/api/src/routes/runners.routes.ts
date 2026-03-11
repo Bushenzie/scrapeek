@@ -2,21 +2,27 @@ import { schema } from "@scrapeek/db/schema";
 import type { Blueprint } from "@scrapeek/db/validators";
 import { eq, sql } from "drizzle-orm";
 import { Hono } from "hono";
+import { z } from "zod";
 import { db } from "@/lib/db.ts";
 import { scrapeData } from "@/lib/scrape.ts";
 import { zodValidator } from "@/middlewares/custom-zod-validator.ts";
-import { runnerSchema } from "./runners.schemas.ts";
 
 const app = new Hono().post(
 	"/",
-	zodValidator("json", runnerSchema),
+	zodValidator(
+		"json",
+		z.object({
+			id: z.uuid(),
+			mode: z.union([z.literal("test"), z.literal("normal")]).optional(),
+		}),
+	),
 	async (c) => {
-		const { blueprintId, mode } = await c.req.valid("json");
+		const { id, mode } = await c.req.valid("json");
 
 		const blueprint = (await db.query.blueprint
 			.findFirst({
 				where: {
-					id: blueprintId,
+					id,
 				},
 			})
 			.catch(() => {

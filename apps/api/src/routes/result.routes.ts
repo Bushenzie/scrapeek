@@ -2,11 +2,11 @@ import { Hono } from "hono";
 import { db } from "@/lib/db";
 import { apiKeyMiddleware } from "@/middlewares/api-key-middleware";
 import { zodValidator } from "@/middlewares/custom-zod-validator";
-import { resultParamSchema } from "./result.schemas";
+import { idParamSearchSchema } from "@/schemas/id-param-search-schema";
 
 const app = new Hono()
 	.use(apiKeyMiddleware)
-	.get("/:id", zodValidator("param", resultParamSchema), async (c) => {
+	.get("/:id", zodValidator("param", idParamSearchSchema), async (c) => {
 		const { id } = c.req.valid("param");
 
 		const result = await db.query.result

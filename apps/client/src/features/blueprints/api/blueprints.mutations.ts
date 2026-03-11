@@ -52,7 +52,7 @@ export const useRunBlueprint = () =>
 		mutationFn: ({ id, mode }: { id: string; mode?: "test" | "normal" }) =>
 			client.api.runners.$post({
 				json: {
-					blueprintId: id,
+					id,
 					mode,
 				},
 			}),
