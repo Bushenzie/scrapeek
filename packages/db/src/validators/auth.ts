@@ -3,6 +3,6 @@ import { z } from "zod";
 import { user } from "../schemas";
 
 export const userSelectSchema = createSelectSchema(user, {
-	createdAt: z.iso.date(),
-	updatedAt: z.iso.date(),
+	createdAt: z.date().transform((d) => d.toISOString()),
+	updatedAt: z.date().transform((d) => d.toISOString()),
 });

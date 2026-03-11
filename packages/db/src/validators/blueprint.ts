@@ -111,8 +111,8 @@ const baseRefinements = {
 	description: (field: z.ZodString) => field.max(255).optional(),
 	userId: (field: z.ZodString) => field.min(32).max(32),
 	config: z.unknown(),
-	createdAt: z.iso.date(),
-	updatedAt: z.iso.date(),
+	createdAt: z.date().transform((d) => d.toISOString()),
+	updatedAt: z.date().transform((d) => d.toISOString()),
 };
 
 //select

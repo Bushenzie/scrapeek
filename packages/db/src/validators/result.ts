@@ -13,8 +13,8 @@ const editableFields: EditableFields<typeof result.$inferSelect> = {
 } as const;
 
 export const resultSelectSchema = createSelectSchema(result, {
-	createdAt: z.iso.date(),
-	updatedAt: z.iso.date(),
+	createdAt: z.date().transform((d) => d.toISOString()),
+	updatedAt: z.date().transform((d) => d.toISOString()),
 });
 
 export const resultInsertSchema = createInsertSchema(result)

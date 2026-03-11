@@ -18,8 +18,8 @@ const editableFields: EditableFields<typeof upvote.$inferSelect> = {
 } as const;
 
 export const upvoteSelectSchema = createSelectSchema(upvote, {
-	createdAt: z.iso.date(),
-	updatedAt: z.iso.date(),
+	createdAt: z.date().transform((d) => d.toISOString()),
+	updatedAt: z.date().transform((d) => d.toISOString()),
 });
 
 export const upvoteInsertSchema = createInsertSchema(upvote)

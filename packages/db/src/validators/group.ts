@@ -18,8 +18,8 @@ const editableFields: EditableFields<typeof group.$inferSelect> = {
 };
 
 export const groupSelectSchema = createSelectSchema(group, {
-	createdAt: z.iso.date(),
-	updatedAt: z.iso.date(),
+	createdAt: z.date().transform((d) => d.toISOString()),
+	updatedAt: z.date().transform((d) => d.toISOString()),
 });
 
 export const groupInsertSchema = createInsertSchema(group, {
