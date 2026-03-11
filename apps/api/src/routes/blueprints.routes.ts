@@ -25,7 +25,7 @@ const app = new Hono<{ Variables: AuthType }>()
 		zodValidator(
 			"query",
 			z.object({
-				page: z.number().positive(),
+				page: z.coerce.number().positive(),
 			}),
 		),
 		async (c) => {
@@ -64,13 +64,9 @@ const app = new Hono<{ Variables: AuthType }>()
 				.select({ count: count() })
 				.from(schema.blueprint);
 
-			const parsedBlueprints = blueprintWithRelationsSchema
-				.array()
-				.parse(blueprints);
-
 			return c.json({
 				data: {
-					blueprints: parsedBlueprints,
+					blueprints: blueprints,
 					totalCount: totalCount[0].count,
 					page,
 				},

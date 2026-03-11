@@ -6,6 +6,7 @@ export const errorHandler: ErrorHandler = async (err, c) => {
 	if (err instanceof StatusError) {
 		return c.json({ error: err.message, status: err.statusCode }, err.statusCode);
 	}
+
 	return c.json({
 		error: err.message,
 	});

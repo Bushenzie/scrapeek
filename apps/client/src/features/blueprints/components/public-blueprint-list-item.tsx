@@ -12,7 +12,7 @@ import { useUpvoteBlueprint } from "../api/blueprints.mutations";
 import { blueprintUpvotesOptions } from "../api/blueprints.queries";
 
 type PublicBlueprintListItemProps = {
-  blueprint: BlueprintWithRelations;
+  blueprint: any; // TODO: fix with correct schema
 };
 
 export const PublicBlueprintListItem: FC<PublicBlueprintListItemProps> = ({ blueprint }) => {
@@ -55,12 +55,14 @@ export const PublicBlueprintListItem: FC<PublicBlueprintListItemProps> = ({ blue
             }
             size={"sm"}
             onClick={async () => {
+              console.log(blueprint.id)
+
               await upvoteBlueprint(blueprint.id);
             }}
             className="flex items-center justify-center"
           >
             <ThumbsUp className="size-4" />
-            <span className="text-md">{blueprint.upvotes?.blueprintId}</span>
+            <span className="text-md">{blueprint.upvotes}</span>
           </Button>
           <Button variant={"outline"} size={"sm"} disabled>
             <Plus className="size-4" />

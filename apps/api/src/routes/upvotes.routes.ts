@@ -1,8 +1,12 @@
-import { schema } from "@scrapeek/db/schema";
-import { upvoteInsertSchema } from "@scrapeek/db/validators";
+import { blueprint, schema } from "@scrapeek/db/schema";
+import {
+	upvoteInsertSchema,
+	upvoteUpdateSchema,
+} from "@scrapeek/db/validators";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { StatusCodes } from "http-status-codes";
+import { z } from "zod";
 import { db } from "@/lib/db";
 import { StatusError } from "@/lib/error";
 import { authMiddleware } from "@/middlewares/auth-middleware";
@@ -11,32 +15,41 @@ import { idParamSearchSchema } from "@/schemas/id-param-search-schema";
 
 const app = new Hono()
 	.use(authMiddleware)
-	.post("/", zodValidator("json", upvoteInsertSchema), async (c) => {
-		const { blueprintId } = c.req.valid("json");
-		const user = c.get("user");
+	.post(
+		"/",
+		zodValidator(
+			"json",
+			z.object({
+				blueprintId: z.uuid(), // TODO: use upvote insert schema from drizzle-zod
+			}),
+		),
+		async (c) => {
+			const { blueprintId } = c.req.valid("json");
+			const user = c.get("user");
 
-		if (!user) {
-			throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
-		}
+			if (!user) {
+				throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
+			}
 
-		const existingUpvote = await db.query.upvote.findFirst({
-			where: {
-				userId: user.id,
-				blueprintId,
-			},
-		});
+			const existingUpvote = await db.query.upvote.findFirst({
+				where: {
+					userId: user.id,
+					blueprintId,
+				},
+			});
 
-		// TODO: Redo this and make some kind of status for upvote like "active"|"inactive" to just simple update wihtout always deleting and inserting
-		if (existingUpvote) {
-			await db
-				.delete(schema.upvote)
-				.where(eq(schema.upvote.id, existingUpvote.id));
-		} else {
-			await db.insert(schema.upvote).values({ blueprintId, userId: user.id });
-		}
+			// TODO: Redo this and make some kind of status for upvote like "active"|"inactive" to just simple update wihtout always deleting and inserting
+			if (existingUpvote) {
+				await db
+					.delete(schema.upvote)
+					.where(eq(schema.upvote.id, existingUpvote.id));
+			} else {
+				await db.insert(schema.upvote).values({ blueprintId, userId: user.id });
+			}
 
-		return c.json({ message: "Upvote action successful" });
-	})
+			return c.json({ message: "Upvote action successful" });
+		},
+	)
 	.get("/", async (c) => {
 		const user = c.get("user");
 
