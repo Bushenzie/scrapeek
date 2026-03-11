@@ -15,6 +15,7 @@ declare module "@tanstack/react-query" {
     mutationMeta: {
       invalidatesQuery?: QueryKey;
       successMessage?: string;
+      mutateMessage?: string;
       errorMessage?: string;
     };
   }
@@ -32,6 +33,11 @@ export const getRouter = () => {
       onSuccess: (_error, _variables, _context, mutation) => {
         if (mutation.meta?.successMessage) {
           toast({ title: "Success", description: mutation.meta?.successMessage })
+        }
+      },
+      onMutate: (_variables, _context, mutation) => {
+        if (mutation.meta?.mutateMessage) {
+          toast({ title: "In process", description: mutation.meta?.mutateMessage })
         }
       },
       onSettled: (_data, _error, _variables, _context, mutation) => {

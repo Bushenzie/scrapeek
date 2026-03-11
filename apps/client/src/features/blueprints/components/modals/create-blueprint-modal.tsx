@@ -12,7 +12,7 @@ import {
 import { useAppForm } from "@/hooks/use-app-form";
 import { blueprintTypeSelectSchema } from "../../schemas/blueprint-type";
 
-export const AddBlueprintDialog = () => {
+export const CreateBlueprintDialog = () => {
   const router = useRouter();
 
   const form = useAppForm({

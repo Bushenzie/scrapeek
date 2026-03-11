@@ -4,8 +4,7 @@ import { Box } from "@/components/ui/box/box";
 import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner";
 import { Separator } from "@/components/ui/separator/separator";
 import { BlueprintList } from "@/features/blueprints/components/blueprint-list";
-import { AddBlueprintDialog } from "@/features/blueprints/components/modals/add-blueprint-modal";
-import { EditCreateGroupModal } from "@/features/groups/components/modals/edit-create-group-modal";
+import { CreateBlueprintDialog } from "@/features/blueprints/components/modals/create-blueprint-modal";
 
 export const Route = createFileRoute("/_authenticated/blueprints/")({
   component: BlueprintsPage,
@@ -17,7 +16,7 @@ function BlueprintsPage() {
       <div className="flex justify-between p-6">
         <h1 className="text-2xl">Blueprints</h1>
         <div className="flex gap-2 items-center">
-          <AddBlueprintDialog />
+          <CreateBlueprintDialog />
         </div>
       </div>
       <Separator />

@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog/dialog";
-import { useDeleteAPIKey } from "../../api/mutations/use-delete-api-key";
+import { useDeleteApiKey } from "../../api/auth.mutations";
 
 type DeleteApiKeyModalProps = {
   id: string;
@@ -18,7 +18,7 @@ type DeleteApiKeyModalProps = {
 };
 
 export const DeleteApiKeyModal: FC<DeleteApiKeyModalProps> = ({ id, name }) => {
-  const deleteApiKeyMutation = useDeleteAPIKey();
+  const deleteApiKeyMutation = useDeleteApiKey();
 
   const handleDeleteClick = () => {
     deleteApiKeyMutation.mutate(id);

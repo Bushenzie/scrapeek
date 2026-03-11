@@ -1,15 +1,15 @@
 import {
-	createSelectSchema,
 	createInsertSchema,
+	createSelectSchema,
 	createUpdateSchema,
 } from "drizzle-orm/zod";
-import { blueprint } from "../schemas";
 import { z } from "zod";
 import {
 	BLUEPRINT_HTTP_METHODS,
 	BlueprintType,
 	DATABASE_FIELDS,
 } from "../lib/constants";
+import { blueprint } from "../schemas";
 import { userSelectSchema } from "./auth";
 import { resultSelectSchema } from "./result";
 import { upvoteSelectSchema } from "./upvote";
@@ -111,6 +111,8 @@ const baseRefinements = {
 	description: (field: z.ZodString) => field.max(255).optional(),
 	userId: (field: z.ZodString) => field.min(32).max(32),
 	config: z.unknown(),
+	createdAt: z.coerce.date(),
+	updatedAt: z.coerce.date(),
 };
 
 //select

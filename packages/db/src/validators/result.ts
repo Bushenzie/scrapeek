@@ -1,18 +1,21 @@
 import {
-	createUpdateSchema,
-	createSelectSchema,
 	createInsertSchema,
+	createSelectSchema,
+	createUpdateSchema,
 } from "drizzle-orm/zod";
-import { result } from "../schemas/result";
-import type { z } from "zod";
-import type { EditableFields } from "../lib/types";
+import { z } from "zod";
 import { DATABASE_FIELDS } from "../lib/constants";
+import type { EditableFields } from "../lib/types";
+import { result } from "../schemas/result";
 
 const editableFields: EditableFields<typeof result.$inferSelect> = {
 	blueprintId: true,
 } as const;
 
-export const resultSelectSchema = createSelectSchema(result);
+export const resultSelectSchema = createSelectSchema(result, {
+	createdAt: z.coerce.date(),
+	updatedAt: z.coerce.date(),
+});
 
 export const resultInsertSchema = createInsertSchema(result)
 	.pick(editableFields)

@@ -4,8 +4,9 @@ import {
   BlueprintType,
 } from "@scrapeek/db/constants";
 import {
-  type APIBlueprint,
+  type APIBlueprintWithRelations,
   apiUpdateBlueprintSchema,
+  type Blueprint,
   type EditableAPIBlueprint,
 } from "@scrapeek/db/validators";
 import { formOptions } from "@tanstack/react-form";
@@ -19,26 +20,25 @@ import { Label } from "@/components/ui/label/label";
 import { Textarea } from "@/components/ui/textarea/textarea";
 import { useAppForm } from "@/hooks/use-app-form";
 import { authClient } from "@/lib/clients/auth";
-import { useAddBlueprint } from "../../api/mutations/use-add-blueprint";
-import { useEditBlueprint } from "../../api/mutations/use-edit-blueprint";
+import { useCreateBlueprint, useEditBlueprint } from "../../api/blueprints.mutations";
 
 // TODO: Cleanup this form
 
 type APIBlueprintFormProps = {
-  blueprint?: APIBlueprint;
+  blueprint?: APIBlueprintWithRelations;
 };
 
 export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
   const [showPagination, setShowPagination] = useState(blueprint && blueprint?.config.pagination ? true : false);
   const router = useRouter();
-  const { mutateAsync: addBlueprint } = useAddBlueprint();
+  const { mutateAsync: addBlueprint } = useCreateBlueprint();
   const { mutateAsync: editBlueprint } = useEditBlueprint();
   const { data: session } = authClient.useSession();
 
-  // if (blueprint?.result) {
-  //   const { result, ...formattedBlueprint } = blueprint;
-  //   blueprint = formattedBlueprint;
-  // }
+  if (blueprint?.result) {
+    const { result, ...formattedBlueprint } = blueprint;
+    blueprint = formattedBlueprint;
+  }
 
   const defaultOptions = formOptions({
     defaultValues:
@@ -126,17 +126,19 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
       let blueprintId: string | null = null;
 
       if (blueprint) {
-        const { data } = await editBlueprint(value);
-        blueprintId = data.id;
+        const response = await editBlueprint(value as Blueprint);
+        const data = await response.json();
+        blueprintId = data.data.id;
       } else {
-        const { data } = await addBlueprint(value);
-        blueprintId = data.id;
+        const response = await addBlueprint(value as Blueprint);
+        const data = await response.json();
+        blueprintId = data.data.id;
       }
 
       await router.navigate({
         to: "/blueprints/$blueprintId",
         params: {
-          blueprintId: blueprintId,
+          blueprintId: blueprintId!,
         },
       });
     },

@@ -1,4 +1,5 @@
 import { groupInsertSchema } from "@scrapeek/db/validators";
+import { useQuery } from "@tanstack/react-query";
 import { FolderPen, FolderPlus } from "lucide-react";
 import { type FC } from "react";
 import { Button } from "@/components/ui/button/button";
@@ -11,16 +12,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog/dialog";
 import { useAppForm } from "@/hooks/use-app-form";
-import { useAddGroup } from "../../api/mutations/use-add-group";
-import { useGetGroups } from "../../api/queries/use-get-groups";
+import { useCreateGroup } from "../../api/groups.mutations";
+import { groupsListOptions } from "../../api/groups.queries";
 
 type EditCreateGroupModalProps = {
   groupId?: string;
 };
 
 export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ groupId }) => {
-  const { data: groups } = useGetGroups();
-  const { mutateAsync: createGroup } = useAddGroup();
+  const { data: groups } = useQuery(groupsListOptions());
+  const { mutateAsync: createGroup } = useCreateGroup();
 
   const form = useAppForm({
     defaultValues: {
@@ -29,7 +30,7 @@ export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ groupId })
     validators: {
       onChange: groupInsertSchema,
       onSubmit: ({ value }) => {
-        const alreadyExists = groups.find((group) => group.name === value.name);
+        const alreadyExists = groups?.find((group) => group.name === value.name);
         if (alreadyExists) return "Name already exists";
         return undefined;
       },

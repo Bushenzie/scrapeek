@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import fileSaver from "file-saver";
 import { Copy, Download } from "lucide-react";
 import { type FC, useMemo } from "react";
@@ -5,26 +6,24 @@ import { Button } from "@/components/ui/button/button";
 import { CodeBlock } from "@/components/ui/code-block/code-block";
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
-import { useRunBlueprint } from "../api/mutations/use-run-blueprint";
-import { useBlueprintDetail } from "../api/queries/use-blueprint-detail";
+import { useRunBlueprint } from "../api/blueprints.mutations";
+import { blueprintDetailOptions } from "../api/blueprints.queries";
 
 type BlueprintDetailProps = {
   blueprintId: string;
 };
 
 export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
-  const { data: blueprint } = useBlueprintDetail({ blueprintId });
+  const { data: blueprint } = useQuery(blueprintDetailOptions(blueprintId));
   const {
     data,
     isPending,
     mutate: runScraper,
-  } = useRunBlueprint({
-    blueprintId,
-  });
+  } = useRunBlueprint();
 
   const resultURL = useMemo(() => {
-    if (!blueprint.result) return undefined;
-    return `http://localhost:3001/api/result/${blueprint.result?.id}`;
+    if (!blueprint?.result) return undefined
+    return `http://localhost:3001/api/result/${blueprint?.result?.id}`;
   }, [blueprint, data]);
 
   const lastScrapedData = useMemo(() => {
@@ -38,7 +37,7 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
   const handleDownload = () => {
     const dataBlob = new Blob([lastScrapedData], { type: "application/json" });
 
-    fileSaver.saveAs(dataBlob, `${blueprint.name}_data.json`);
+    fileSaver.saveAs(dataBlob, `${blueprint?.name}_data.json`);
   };
 
   const handleCopy = async () => {
@@ -46,11 +45,11 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
   };
 
   const handleRunScraper = () => {
-    runScraper("normal");
+    runScraper({id: blueprintId,mode: "normal"});
   };
 
   const handleTestRunScraper = () => {
-    runScraper("test");
+    runScraper({id: blueprintId,mode: "test"});
   };
 
   return (
@@ -60,11 +59,11 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
           <div className="space-y-4">
             <div className="flex flex-col gap-2">
               <Label>Name</Label>
-              <Input value={blueprint.name} readOnly />
+              <Input value={blueprint?.name} readOnly />
             </div>
             <div className="flex flex-col gap-2">
               <Label>URL</Label>
-              <Input value={blueprint.url} readOnly />
+              <Input value={blueprint?.url} readOnly />
             </div>
           </div>
         </div>

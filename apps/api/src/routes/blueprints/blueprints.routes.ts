@@ -1,6 +1,6 @@
 import { schema } from "@scrapeek/db/schema";
 import {
-	type Blueprint,
+	type BlueprintWithRelations,
 	editableBlueprintSchema,
 	insertBlueprintSchema,
 } from "@scrapeek/db/validators";
@@ -55,7 +55,13 @@ const app = new Hono<{ Variables: AuthType }>()
 
 		const totalCount = await db.select({ count: count() }).from(schema.blueprint);
 
-		return c.json({ data: blueprints, totalCount: totalCount[0].count, page });
+		return c.json({
+			data: {
+				blueprints,
+				totalCount: totalCount[0].count,
+				page,
+			},
+		});
 	})
 	.get("/", async (c) => {
 		const user = c.get("user");
@@ -73,7 +79,6 @@ const app = new Hono<{ Variables: AuthType }>()
 				},
 			},
 
-			// where: (blueprint, { eq }) => eq(blueprint.userId, user.id),
 			where: { userId: user.id },
 		});
 
@@ -92,11 +97,10 @@ const app = new Hono<{ Variables: AuthType }>()
 				userId: user.id,
 				id,
 			},
-			// where: (blueprints, { eq, and }) => and(eq(blueprints.id, id), eq(blueprints.userId, user.id)),
 			with: {
 				result: true,
 			},
-		})) as Blueprint;
+		})) as BlueprintWithRelations;
 
 		if (!searchedBlueprint) {
 			c.status(404);

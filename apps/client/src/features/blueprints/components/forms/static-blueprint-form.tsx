@@ -1,9 +1,10 @@
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import {BlueprintType} from "@scrapeek/db/constants"
 import {
+    type Blueprint,
   type EditableStaticBlueprint,
-  type StaticBlueprint,
-  staticUpdateBlueprintSchema,
+  type StaticBlueprintWithRelations,
+  staticInsertBlueprintSchema,
 } from "@scrapeek/db/validators";
 import { formOptions } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
@@ -16,25 +17,24 @@ import { Label } from "@/components/ui/label/label";
 import { Textarea } from "@/components/ui/textarea/textarea";
 import { useAppForm } from "@/hooks/use-app-form";
 import { authClient } from "@/lib/clients/auth";
-import { useAddBlueprint } from "../../api/mutations/use-add-blueprint";
-import { useEditBlueprint } from "../../api/mutations/use-edit-blueprint";
+import { useCreateBlueprint, useEditBlueprint } from "../../api/blueprints.mutations";
 
 type StaticBlueprintFormProps = {
-  blueprint?: StaticBlueprint;
+  blueprint?: StaticBlueprintWithRelations;
 };
 
 export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint }) => {
   const [showPagination, setShowPagination] = useState(blueprint && blueprint?.config.pagination ? true : false);
 
   const router = useRouter();
-  const { mutateAsync: addBlueprint } = useAddBlueprint();
+  const { mutateAsync: addBlueprint } = useCreateBlueprint();
   const { mutateAsync: editBlueprint } = useEditBlueprint();
   const { data: session } = authClient.useSession();
 
-  // if (blueprint?.result) {
-  //   const { result, ...formattedBlueprint } = blueprint;
-  //   blueprint = formattedBlueprint;
-  // }
+  if (blueprint?.result) {
+    const { result, ...formattedBlueprint } = blueprint;
+    blueprint = formattedBlueprint;
+  }
 
   const defaultOptions = formOptions({
     defaultValues:
@@ -57,17 +57,19 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
   const form = useAppForm({
     ...defaultOptions,
     validators: {
-      onChange: staticUpdateBlueprintSchema,
+      onChange: staticInsertBlueprintSchema,
     },
     onSubmit: async ({ value }) => {
       let blueprintId: string | null = null;
 
       if (blueprint) {
-        const { data } = await editBlueprint(value);
-        blueprintId = data.id;
+        const response = await editBlueprint(value as Blueprint);
+        const data = await response.json();
+        blueprintId = data.data.id
       } else {
-        const { data } = await addBlueprint(value);
-        blueprintId = data.id;
+        const response = await addBlueprint(value as Blueprint);
+        const data = await response.json();
+        blueprintId = data.data.id
       }
 
       await router.navigate({
