@@ -4,27 +4,21 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsup"
+    "format": "pnpm exec biome format --write",
+    "lint": "pnpm exec biome lint --write",
+    "check": "pnpm exec biome check --write"
   },
   "exports": {
-    "./blueprint": {
-      "types": "./dist/blueprint.d.ts",
-      "default": "./dist/blueprint.js"
-    },
-    "./upvote": {
-      "types": "./dist/upvote.d.ts",
-      "default": "./dist/upvote.js"
-    },
-    "./group": {
-      "types": "./dist/group.d.ts",
-      "default": "./dist/group.js"
-    }
+    "./utils": "./src/utils/index.ts"
   },
   "devDependencies": {
-    "tsup": "^8.5.0",
+    "@biomejs/biome": "2.2.2",
+    "@types/node": "^25.2.3",
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "query-string": "^9.3.1",
+    "tldts": "^7.0.23",
     "zod": "^4.1.11"
   }
 }

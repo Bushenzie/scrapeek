@@ -1,10 +1,11 @@
 import type { CheckedState } from "@radix-ui/react-checkbox";
+import {BlueprintType} from "@scrapeek/db/constants"
 import {
-  BlueprintType,
+    type Blueprint,
   type EditableStaticBlueprint,
-  type StaticBlueprint,
-  staticEditableBlueprintSchema,
-} from "@scrapeek/shared/blueprint";
+  type StaticBlueprintWithRelations,
+  staticInsertBlueprintSchema,
+} from "@scrapeek/db/validators";
 import { formOptions } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
 import { XIcon } from "lucide-react";
@@ -16,18 +17,17 @@ import { Label } from "@/components/ui/label/label";
 import { Textarea } from "@/components/ui/textarea/textarea";
 import { useAppForm } from "@/hooks/use-app-form";
 import { authClient } from "@/lib/clients/auth";
-import { useAddBlueprint } from "../../api/mutations/use-add-blueprint";
-import { useEditBlueprint } from "../../api/mutations/use-edit-blueprint";
+import { useCreateBlueprint, useEditBlueprint } from "../../api/blueprints.mutations";
 
 type StaticBlueprintFormProps = {
-  blueprint?: StaticBlueprint;
+  blueprint?: StaticBlueprintWithRelations;
 };
 
 export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint }) => {
   const [showPagination, setShowPagination] = useState(blueprint && blueprint?.config.pagination ? true : false);
 
   const router = useRouter();
-  const { mutateAsync: addBlueprint } = useAddBlueprint();
+  const { mutateAsync: addBlueprint } = useCreateBlueprint();
   const { mutateAsync: editBlueprint } = useEditBlueprint();
   const { data: session } = authClient.useSession();
 
@@ -40,7 +40,7 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
     defaultValues:
       blueprint ??
       ({
-        type: BlueprintType.STATIC,
+        type: BlueprintType.Static,
         name: "",
         description: "",
         url: "",
@@ -57,17 +57,19 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
   const form = useAppForm({
     ...defaultOptions,
     validators: {
-      onChange: staticEditableBlueprintSchema,
+      onChange: staticInsertBlueprintSchema,
     },
     onSubmit: async ({ value }) => {
       let blueprintId: string | null = null;
 
       if (blueprint) {
-        const { data } = await editBlueprint(value);
-        blueprintId = data.id;
+        const response = await editBlueprint(value as Blueprint);
+        const data = await response.json();
+        blueprintId = data.data.id
       } else {
-        const { data } = await addBlueprint(value);
-        blueprintId = data.id;
+        const response = await addBlueprint(value as Blueprint);
+        const data = await response.json();
+        blueprintId = data.data.id
       }
 
       await router.navigate({
@@ -116,7 +118,7 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
                 name="config.elements"
                 children={(field) => (
                   <>
-                    {field.state.value.map((_, index) => (
+                    {field?.state?.value?.map((_, index) => (
                       <div key={index}>
                         <div className="grid grid-cols-8 gap-2">
                           <form.AppField
@@ -204,7 +206,7 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
                   children={(field) => <field.TextField label="Pagination selector" />}
                 />
                 <form.Subscribe
-                  selector={(state) => state.values.config.pagination?.variant === "link"}
+                  selector={(state) => state?.values?.config?.pagination?.variant === "link"}
                   children={(showAttribute) => (
                     <>
                       {showAttribute && (

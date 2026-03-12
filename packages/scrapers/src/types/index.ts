@@ -1,12 +1,12 @@
-import type { Blueprint } from "@scrapeek/shared/blueprint";
+import type { Blueprint } from "@scrapeek/db/validators";
 
 export type ScraperOptions = {
-  isTestRun?: boolean;
-  ignorePagination?: boolean;
+	isTestRun?: boolean;
+	ignorePagination?: boolean;
 };
 
 export interface IScraper {
-  blueprint: Blueprint;
-  options?: ScraperOptions;
-  scrape: () => Promise<Record<string, any>>;
+	blueprint: Blueprint;
+	options?: ScraperOptions;
+	scrape: () => Promise<Record<string, any>>;
 }

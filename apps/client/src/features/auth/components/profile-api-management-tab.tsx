@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { format, formatDistanceToNow } from "date-fns";
 import {
   Table,
@@ -7,11 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table/table";
-import { useApiKeyList } from "../api/queries/use-api-key-list";
+import { apiKeyListOptions } from "../api/auth.queries";
 import { DeleteApiKeyModal } from "./modals/delete-api-key-modal";
 
 export const ProfileAPIManagementTab = () => {
-  const { data: apiKeys } = useApiKeyList();
+  const { data: apiKeys } = useQuery(apiKeyListOptions());
 
   return (
     <div className="flex items-start">

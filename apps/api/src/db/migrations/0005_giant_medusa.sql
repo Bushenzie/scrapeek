@@ -1,1 +1,0 @@
-ALTER TABLE "blueprint_group" ADD CONSTRAINT "blueprint_group_group_id_blueprint_id_pk" PRIMARY KEY("group_id","blueprint_id");

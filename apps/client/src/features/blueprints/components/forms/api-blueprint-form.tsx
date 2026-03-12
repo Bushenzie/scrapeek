@@ -1,11 +1,14 @@
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import {
-  type APIBlueprint,
-  apiEditableBlueprintSchema,
-  BlueprintHTTPMethods,
+  BLUEPRINT_HTTP_METHODS,
   BlueprintType,
+} from "@scrapeek/db/constants";
+import {
+  type APIBlueprintWithRelations,
+  apiUpdateBlueprintSchema,
+  type Blueprint,
   type EditableAPIBlueprint,
-} from "@scrapeek/shared/blueprint";
+} from "@scrapeek/db/validators";
 import { formOptions } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
 import { XIcon } from "lucide-react";
@@ -17,19 +20,18 @@ import { Label } from "@/components/ui/label/label";
 import { Textarea } from "@/components/ui/textarea/textarea";
 import { useAppForm } from "@/hooks/use-app-form";
 import { authClient } from "@/lib/clients/auth";
-import { useAddBlueprint } from "../../api/mutations/use-add-blueprint";
-import { useEditBlueprint } from "../../api/mutations/use-edit-blueprint";
+import { useCreateBlueprint, useEditBlueprint } from "../../api/blueprints.mutations";
 
 // TODO: Cleanup this form
 
 type APIBlueprintFormProps = {
-  blueprint?: APIBlueprint;
+  blueprint?: APIBlueprintWithRelations;
 };
 
 export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
   const [showPagination, setShowPagination] = useState(blueprint && blueprint?.config.pagination ? true : false);
   const router = useRouter();
-  const { mutateAsync: addBlueprint } = useAddBlueprint();
+  const { mutateAsync: addBlueprint } = useCreateBlueprint();
   const { mutateAsync: editBlueprint } = useEditBlueprint();
   const { data: session } = authClient.useSession();
 
@@ -63,7 +65,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
   const form = useAppForm({
     ...defaultOptions,
     validators: {
-      onChange: apiEditableBlueprintSchema,
+      onChange: apiUpdateBlueprintSchema,
     },
     listeners: {
       onChange: ({ formApi, fieldApi }) => {
@@ -124,17 +126,19 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
       let blueprintId: string | null = null;
 
       if (blueprint) {
-        const { data } = await editBlueprint(value);
-        blueprintId = data.id;
+        const response = await editBlueprint(value as Blueprint);
+        const data = await response.json();
+        blueprintId = data.data.id;
       } else {
-        const { data } = await addBlueprint(value);
-        blueprintId = data.id;
+        const response = await addBlueprint(value as Blueprint);
+        const data = await response.json();
+        blueprintId = data.data.id;
       }
 
       await router.navigate({
         to: "/blueprints/$blueprintId",
         params: {
-          blueprintId: blueprintId,
+          blueprintId: blueprintId!,
         },
       });
     },
@@ -176,7 +180,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                 name="config.method"
                 children={(field) => (
                   <field.SelectField
-                    options={BlueprintHTTPMethods.map((method) => ({ label: method, value: method }))}
+                    options={BLUEPRINT_HTTP_METHODS.map((method) => ({ label: method, value: method }))}
                     triggerLabel={field.form.getFieldValue("config.method") ?? "Select value"}
                     label="HTTP Method"
                   />
@@ -192,7 +196,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                 name="config.fields"
                 children={(field) => (
                   <>
-                    {field.state.value.map((_, index) => (
+                    {field?.state?.value?.map((_, index) => (
                       <div key={index}>
                         <div className="grid grid-cols-6 gap-2">
                           <form.AppField
@@ -273,7 +277,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                   />
                 </div>
                 <form.Subscribe
-                  selector={(state) => state.values.config.pagination?.type}
+                  selector={(state) => state?.values?.config?.pagination?.type}
                   children={(paginationType) => (
                     <>
                       {paginationType === "cursor" && (

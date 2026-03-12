@@ -1,0 +1,35 @@
+{
+  "name": "@scrapeek/db",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "scripts": {
+    "format": "pnpm exec biome format --write",
+    "lint": "pnpm exec biome lint --write",
+    "check": "pnpm exec biome check --write",
+    "db:generate": "pnpm exec drizzle-kit generate",
+    "db:migrate": "pnpm exec drizzle-kit migrate",
+    "db:studio": "pnpm exec drizzle-kit studio"
+  },
+  "exports": {
+    "./auth-schema": "./src/schemas/auth.ts",
+    "./schema": "./src/schemas/index.ts",
+    "./relations": "./src/relations/index.ts",
+    "./validators": "./src/validators/index.ts",
+    "./constants": "./src/lib/constants.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.9.0",
+  "dependencies": {
+    "@scrapeek/shared": "workspace:*",
+    "drizzle-orm": "1.0.0-beta.15-859cf75",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.2",
+    "@types/node": "^25.2.3",
+    "drizzle-kit": "1.0.0-beta.15-859cf75"
+  }
+}

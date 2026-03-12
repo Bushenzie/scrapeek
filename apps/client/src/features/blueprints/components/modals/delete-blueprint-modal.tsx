@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog/dialog";
-import { useDeleteBlueprint } from "../../api/mutations/use-delete-blueprint";
+import { useDeleteBlueprint } from "../../api/blueprints.mutations";
 
 type DeleteBlueprintModalProps = {
   blueprintId: string;

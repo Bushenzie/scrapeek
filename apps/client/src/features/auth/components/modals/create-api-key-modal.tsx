@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog/dialog";
 import { Input } from "@/components/ui/input/input";
 import { useAppForm } from "@/hooks/use-app-form";
-import { useCreateAPIKey } from "../../api/mutations/use-create-api-key";
+import { useCreateApiKey } from "../../api/auth.mutations";
 
 type CreateApiKeyModalProps = {
   isOpen: boolean;
@@ -24,7 +24,7 @@ export const CreateApiKeyModal: FC<CreateApiKeyModalProps> = ({
   isOpen,
   setIsOpen,
 }) => {
-  const { data, mutate: createApiKey, reset } = useCreateAPIKey();
+  const { data, mutate: createApiKey, reset } = useCreateApiKey();
 
   const form = useAppForm({
     defaultValues: {

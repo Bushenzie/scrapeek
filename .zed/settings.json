@@ -1,0 +1,11 @@
+{
+  "file_scan_exclusions": [
+    "**/node_modules",
+    "**/.turbo",
+    "**/.output",
+    "**/.nitro",
+    "**/.tanstack",
+    "**/dist",
+    "**/.git",
+  ],
+}

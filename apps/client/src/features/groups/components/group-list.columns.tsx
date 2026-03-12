@@ -1,4 +1,4 @@
-import type { Group } from "@scrapeek/shared/group";
+import type { Group } from "@scrapeek/db/validators";
 import { createColumnHelper } from "@tanstack/react-table";
 import { format } from "date-fns";
 
@@ -9,10 +9,10 @@ export const columns = [
     header: "Name",
     cell: (row) => row.getValue(),
   }),
-  columnsHelper.accessor("blueprints", {
-    header: "Blueprint count",
-    cell: (row) => row.getValue()?.length,
-  }),
+  // columnsHelper.accessor("blueprints", {
+  //   header: "Blueprint count",
+  //   cell: (row) => row.getValue()?.length,
+  // }),
   columnsHelper.accessor("createdAt", {
     header: "Created At",
     cell: (row) => <>{format(row.getValue(), "dd.MM.yyyy / HH:mm")}</>,
