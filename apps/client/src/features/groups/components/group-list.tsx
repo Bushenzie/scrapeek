@@ -12,12 +12,12 @@ export const GroupList: FC<GroupListProps> = ({}) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <DataTable
+      {/*<DataTable
         data={groups}
         columns={groupListColumns}
         // @ts-expect-error this should work
         renderExpandedRow={(row) => <DataTable data={row.original?.blueprints ?? []} columns={blueprintListColumns} />}
-      />
+      />*/}
     </div>
   );
 };

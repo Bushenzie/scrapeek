@@ -72,7 +72,7 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
             <div className="flex justify-between">
               <div className="flex flex-col">
                 <h2 className="text-sm">Last scraper run result</h2>
-                <span className="text-xs">{JSON.parse(lastScrapedData).length} results</span>
+                <span className="text-xs">{JSON.parse(lastScrapedData).length ?? 0} results</span>
               </div>
               <div className="flex gap-4">
                 <Button variant={"link"} size={"icon"} className="m-0 p-0 h-max w-fit" onClick={handleDownload}>

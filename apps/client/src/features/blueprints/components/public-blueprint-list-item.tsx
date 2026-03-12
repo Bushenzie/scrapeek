@@ -1,5 +1,4 @@
 import type { BlueprintWithRelations } from "@scrapeek/db/validators";
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Plus, ThumbsUp } from "lucide-react";
 import { type FC } from "react";
@@ -9,16 +8,14 @@ import { Box } from "@/components/ui/box/box";
 import { Button } from "@/components/ui/button/button";
 import { authClient } from "@/lib/clients/auth";
 import { useUpvoteBlueprint } from "../api/blueprints.mutations";
-import { blueprintUpvotesOptions } from "../api/blueprints.queries";
 
 type PublicBlueprintListItemProps = {
-  blueprint: any; // TODO: fix with correct schema
+  blueprint: BlueprintWithRelations;
 };
 
 export const PublicBlueprintListItem: FC<PublicBlueprintListItemProps> = ({ blueprint }) => {
   const { data: session } = authClient.useSession();
   const { mutate: upvoteBlueprint } = useUpvoteBlueprint();
-  const { data: upvotes } = useQuery(blueprintUpvotesOptions(blueprint.id));
 
   return (
     <Box className="p-5 h-48 grid grid-rows-4">
@@ -51,7 +48,7 @@ export const PublicBlueprintListItem: FC<PublicBlueprintListItemProps> = ({ blue
         <div className="flex items-center gap-2 justify-end">
           <Button
             variant={
-              upvotes?.find((upvote) => upvote.userId === session?.user.id) !== undefined ? "primary" : "outline"
+              blueprint?.upvotes?.find((upvote) => upvote.userId === session?.user.id) !== undefined ? "primary" : "outline"
             }
             size={"sm"}
             onClick={async () => {
@@ -62,7 +59,7 @@ export const PublicBlueprintListItem: FC<PublicBlueprintListItemProps> = ({ blue
             className="flex items-center justify-center"
           >
             <ThumbsUp className="size-4" />
-            <span className="text-md">{blueprint.upvotes}</span>
+            <span className="text-md">{blueprint?.upvotes?.length}</span>
           </Button>
           <Button variant={"outline"} size={"sm"} disabled>
             <Plus className="size-4" />

@@ -1,11 +1,10 @@
 import { schema } from "@scrapeek/db/schema";
 import {
-	type BlueprintWithRelations,
 	blueprintWithRelationsSchema,
 	editableBlueprintSchema,
 	insertBlueprintSchema,
 } from "@scrapeek/db/validators";
-import { count, desc, eq, getColumns } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { StatusCodes } from "http-status-codes";
 import { z } from "zod";
@@ -37,37 +36,30 @@ const app = new Hono<{ Variables: AuthType }>()
 			}
 
 			// TODO: https://github.com/drizzle-team/drizzle-orm/discussions/2639
-			const blueprints = await db
-				.select({
-					...getColumns(schema.blueprint),
-					user: {
-						name: schema.user.name,
-						image: schema.user.image,
+			const blueprints = await db.query.blueprint.findMany({
+				where: {
+					public: true,
+				},
+				with: {
+					user: true,
+					upvotes: {
+						orderBy: (t, { desc }) => desc(t.id),
 					},
-					upvotes: count(schema.upvote.id).as("upvotes"),
-				})
-				.from(schema.blueprint)
-				.leftJoin(schema.user, eq(schema.blueprint.userId, user.id))
-				.leftJoin(schema.upvote, eq(schema.upvote.blueprintId, schema.blueprint.id))
-				.where(eq(schema.blueprint.public, true))
-				.groupBy(
-					schema.blueprint.id,
-					schema.user.id,
-					schema.user.name,
-					schema.user.image,
-				)
-				.orderBy(desc(count(schema.upvote.id)))
-				.limit(paginationLimit)
-				.offset(paginationLimit * page - paginationLimit);
+				},
+				limit: paginationLimit,
+				offset: paginationLimit * page - paginationLimit,
+			});
 
-			const totalCount = await db
-				.select({ count: count() })
-				.from(schema.blueprint);
+			const totalPublicBlueprints = await db.query.blueprint.findMany({
+				where: {
+					public: true,
+				},
+			});
 
 			return c.json({
 				data: {
 					blueprints: blueprints,
-					totalCount: totalCount[0].count,
+					totalCount: totalPublicBlueprints.length,
 					page,
 				},
 			});

@@ -18,6 +18,7 @@ export const PublicBlueprintsList = () => {
         )}
         {(data?.blueprints ?? []).length > 0 &&
           data?.blueprints?.map((blueprint) => (
+            // @ts-expect-error ...
             <PublicBlueprintListItem key={blueprint.id} blueprint={blueprint} />
           ))}
       </div>
@@ -25,7 +26,7 @@ export const PublicBlueprintsList = () => {
         <Pagination
           currentPage={page}
           itemsPerPage={12}
-          itemsTotal={data?.totalCount ?? 0}
+          itemsTotal={data?.totalCount}
           setCurrentPage={setPage}
         />
       </div>
