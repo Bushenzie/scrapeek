@@ -26,7 +26,7 @@ export const PublicBlueprintsList = () => {
         <Pagination
           currentPage={page}
           itemsPerPage={12}
-          itemsTotal={data?.totalCount}
+          itemsTotal={data?.totalCount ?? 0}
           setCurrentPage={setPage}
         />
       </div>
