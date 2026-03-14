@@ -1,7 +1,7 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+import { createLink, type LinkComponent } from "@tanstack/react-router";
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
 import type { FC } from "react";
-
 import { cn } from "@/lib/class";
 import type {
   DropdownMenuCheckboxItemProps,
@@ -89,6 +89,13 @@ export const DropdownMenuItem: FC<DropdownMenuItemProps> = ({
     />
   );
 };
+
+const DropdownMenuItemLinkComponent = createLink(DropdownMenuItem);
+
+export const DropdownMenuItemLink: LinkComponent<typeof DropdownMenuItem> = (props) => {
+  return <DropdownMenuItemLinkComponent {...props} />;
+};
+
 
 export const DropdownMenuCheckboxItem: FC<DropdownMenuCheckboxItemProps> = ({
   className,

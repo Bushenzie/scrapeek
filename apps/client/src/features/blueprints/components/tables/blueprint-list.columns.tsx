@@ -3,7 +3,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { formatDistance } from "date-fns";
 import { EllipsisVertical } from "lucide-react";
 import { Badge } from "@/components/ui/badge/badge";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown/dropdown";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuItemLink, DropdownMenuTrigger } from "@/components/ui/dropdown/dropdown";
+import { SelectGroupsModal } from "@/features/groups/components/modals/select-groups-modal";
 import type { BlueprintListResponse } from "../../api/blueprints.types";
 
 export const columns: ColumnDef<BlueprintListResponse["data"][number]>[] = [
@@ -35,14 +36,25 @@ export const columns: ColumnDef<BlueprintListResponse["data"][number]>[] = [
     id: "actions",
     size: 100,
     header: () => <span className="flex items-center w-full justify-center cursor-pointer">Actions</span>,
-    cell: () =>
+    cell: ({row}) =>
       <DropdownMenu>
         <DropdownMenuTrigger className="flex items-center w-full justify-center cursor-pointer">
           <EllipsisVertical />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem>Test 1</DropdownMenuItem>
-          <DropdownMenuItem>Test 2</DropdownMenuItem>
+          <DropdownMenuItemLink className="cursor-pointer" to="/blueprints/$blueprintId" params={{
+              blueprintId: row.original.id
+            }}>
+            View
+          </DropdownMenuItemLink>
+          <DropdownMenuItemLink className="cursor-pointer" to="/blueprints/$blueprintId/edit" params={{
+              blueprintId: row.original.id
+          }}>
+            Edit
+          </DropdownMenuItemLink>
+          <DropdownMenuItem className="cursor-pointer">
+           <SelectGroupsModal />
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
   }

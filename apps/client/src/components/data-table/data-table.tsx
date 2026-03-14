@@ -73,7 +73,7 @@ export function DataTable<TData, TValue>({
                   <TableRow data-state={row.getIsSelected() && "selected"}>
                     {renderExpandedRow && (
                       <TableCell className="w-10">
-                        <Button variant="link" size="icon-sm" onClick={() => row.toggleExpanded()}>
+                        <Button variant="link" className="size-4 flex items-center justify-center"  onClick={() => row.toggleExpanded()}>
                           {row.getIsExpanded() ? (
                             <ChevronDown className="size-4" />
                           ) : (

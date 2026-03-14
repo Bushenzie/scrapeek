@@ -11,36 +11,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog/dialog";
-import { useAppForm } from "@/hooks/use-app-form";
-import { useCreateGroup } from "../../api/groups.mutations";
+import { groupsListOptions } from "../../api/groups.queries";
 
-type EditCreateGroupModalProps = {
-  groupId?: string;
-};
-
-export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ groupId }) => {
-  const createGroup = useCreateGroup();
-
-  const form = useAppForm({
-    defaultValues: {
-      name: "",
-    },
-    validators: {
-      onChange: groupInsertSchema,
-    },
-    onSubmit: ({ value }) => {
-      createGroup.mutate({
-        json: {
-          name: value.name,
-        }
-      })
-    },
-  });
+export const SelectGroupsModal = () => {
+  const {data:groups} = useQuery(groupsListOptions())
 
   return (
     <Dialog>
-      <DialogTrigger className="z-10" asChild>
-        <Button>{groupId ? <FolderPen /> : <FolderPlus />} Group</Button>
+      <DialogTrigger className="z-10">
+        <Button variant={"link"}>Select group</Button>
       </DialogTrigger>
       <DialogContent>
         <form
@@ -50,8 +29,9 @@ export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ groupId })
             e.stopPropagation();
           }}
         >
-          <DialogTitle>{groupId ? "Edit" : "Add"} group</DialogTitle>
-          <form.AppField name="name" children={(field) => <field.TextField label="Name" />} />
+          <DialogTitle>Select group</DialogTitle>
+          {groups?.map(test => (test.name))}
+          {/*<form.AppField name="name" children={(field) => <field.TextField label="Name" />} />
           <DialogFooter>
             <DialogClose>
               <Button variant="outline">Cancel</Button>
@@ -59,7 +39,7 @@ export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ groupId })
             <form.AppForm>
               <form.SubmitButton btnText={groupId ? "Edit" : "Add"} />
             </form.AppForm>
-          </DialogFooter>
+          </DialogFooter>*/}
         </form>
       </DialogContent>
     </Dialog>

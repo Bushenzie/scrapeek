@@ -12,6 +12,8 @@ export const zodValidator = <
 	schema: Schema,
 ) => {
 	return zValidator(target, schema, (result) => {
+		console.log(target);
+
 		if (!result.success) {
 			const { issues } = result.error;
 
