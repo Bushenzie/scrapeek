@@ -7,6 +7,7 @@ export const CodeBlock: FC<CodeBlockProps> = ({ code, lang, theme }) => {
     <ShikiHighligher
       language={lang}
       theme={theme ?? "github-dark"}
+      className="rounded-none"
       showLanguage={false}
     >
       {code.trim()}

@@ -34,7 +34,7 @@ export const Toast: FC<ToastProps> = ({ id, title, description, action }) => {
   };
 
   return (
-    <div className="bg-blueprint-700 font-mono border relative border-blueprint-400 rounded-lg px-4 py-3 min-w-96 w-full max-w-screen">
+    <div className="bg-blueprint-700 font-mono border relative border-blueprint-400  px-4 py-3 min-w-96 w-full max-w-screen">
       <div
         className="absolute rounded-full h-6 w-6 flex items-center justify-center bg-blueprint-700 hover:bg-blueprint-900 border border-blueprint-400 -top-2 -right-2 cursor-pointer"
         onClick={closeToast}

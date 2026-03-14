@@ -136,7 +136,7 @@
 }
 
 pre.shiki {
-  @apply !rounded-md !bg-blueprint-900 !border !border-blueprint-400 !p-3;
+  @apply !rounded-none  !bg-blueprint-900 !border !border-blueprint-400 !p-3;
 }
 
 pre.shiki,

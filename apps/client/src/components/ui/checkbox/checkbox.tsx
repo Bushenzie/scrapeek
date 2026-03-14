@@ -14,7 +14,7 @@ export const Checkbox: FC<CheckboxProps> = ({ className, ...props }) => {
         "dark:data-[state=checked]:bg-blueprint-900 dark:aria-invalid:ring-destructive/40",
         "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         "border-blueprint-400",
-        "peer aria-invalid:ring-destructive/20 aria-invalid:border-destructive size-5 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none disabled:cursor-not-allowed disabled:opacity-50",
+        "peer aria-invalid:ring-destructive/20 aria-invalid:border-destructive size-5 shrink-0 border shadow-xs transition-shadow outline-none disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}

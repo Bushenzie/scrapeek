@@ -29,7 +29,7 @@ export const RadioGroupItem: FC<RadioGroupItemProps> = ({
       className={cn(
         "focus-visible:ring focus-visible:ring-blueprint-400 bg-blueprint-900",
         "aria-invalid:ring-destructive/20 aria-invalid:border-destructive dark:aria-invalid:ring-destructive/40",
-        "border-blueprint-400 text-primary aspect-square size-5 shrink-0 rounded-sm border shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50",
+        "border-blueprint-400 text-primary aspect-square size-5 shrink-0  border shadow-xs transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}

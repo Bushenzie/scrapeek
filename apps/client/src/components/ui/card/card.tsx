@@ -15,7 +15,7 @@ export const Card: FC<CardProps> = ({ className, ...props }) => {
     <div
       data-slot="card"
       className={cn(
-        "bg-blueprint-700/75 flex flex-col gap-6 rounded-xl border border-blueprint-400 py-6 shadow-sm",
+        "bg-blueprint-700/75 flex flex-col gap-6  border border-blueprint-400 py-6 shadow-sm",
         className
       )}
       {...props}
