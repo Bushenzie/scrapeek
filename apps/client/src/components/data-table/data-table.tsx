@@ -1,19 +1,18 @@
-import type { DataTableProps } from "./data-table.types";
 import {
-  type SortingState,
-  flexRender,
-  getPaginationRowModel,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
   type ExpandedState,
+  flexRender,
+  getCoreRowModel,
   getExpandedRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  type SortingState,
+  useReactTable,
 } from "@tanstack/react-table";
-
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table/table";
-import { Button } from "@/components/ui/button/button";
-import { Fragment, useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import { Fragment, useState } from "react";
+import { Button } from "@/components/ui/button/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table/table";
+import type { DataProps } from "./data-table.types";
 
 export function DataTable<TData, TValue>({
   columns,
@@ -21,7 +20,7 @@ export function DataTable<TData, TValue>({
   pageSize = 10,
   paginationEnabled = true,
   renderExpandedRow,
-}: DataTableProps<TData, TValue>) {
+}: DataProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [expanded, setExpanded] = useState<ExpandedState>({});
   const table = useReactTable({
@@ -42,6 +41,11 @@ export function DataTable<TData, TValue>({
       sorting,
       expanded,
     },
+    defaultColumn: {
+      minSize: 0,
+      size: Number.MAX_SAFE_INTEGER,
+      maxSize: Number.MAX_SAFE_INTEGER,
+    }
   });
 
   return (
@@ -54,7 +58,7 @@ export function DataTable<TData, TValue>({
                 {renderExpandedRow && <TableHead className="w-10" />}
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} style={{width: header.getSize() === Number.MAX_SAFE_INTEGER ? "auto" : header.getSize()}}>
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
@@ -79,7 +83,12 @@ export function DataTable<TData, TValue>({
                       </TableCell>
                     )}
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                      <TableCell
+                        style={{ width: cell.column.getSize() === Number.MAX_SAFE_INTEGER ? "auto" : cell.column.getSize() }}
+                        key={cell.id}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
                     ))}
                   </TableRow>
                   {row.getIsExpanded() && renderExpandedRow && (

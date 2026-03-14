@@ -6,7 +6,11 @@ import { PublicBlueprintListItem } from "./public-blueprint-list-item";
 
 export const PublicBlueprintsList = () => {
   const [page, setPage] = useState(1);
-  const { data } = useQuery(blueprintListPublicOptions());
+  const { data } = useQuery(blueprintListPublicOptions({
+    query: {
+      page: String(page)
+    }
+  }));
 
   return (
     <>
@@ -18,7 +22,6 @@ export const PublicBlueprintsList = () => {
         )}
         {(data?.blueprints ?? []).length > 0 &&
           data?.blueprints?.map((blueprint) => (
-            // @ts-expect-error ...
             <PublicBlueprintListItem key={blueprint.id} blueprint={blueprint} />
           ))}
       </div>

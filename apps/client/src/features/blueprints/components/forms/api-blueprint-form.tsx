@@ -5,6 +5,7 @@ import {
 } from "@scrapeek/db/constants";
 import {
   type APIBlueprintWithRelations,
+  apiInsertBlueprintSchema,
   apiUpdateBlueprintSchema,
   type Blueprint,
   type EditableAPIBlueprint,
@@ -65,7 +66,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
   const form = useAppForm({
     ...defaultOptions,
     validators: {
-      onChange: apiUpdateBlueprintSchema,
+      onChange: blueprint ? apiUpdateBlueprintSchema : apiInsertBlueprintSchema,
     },
     listeners: {
       onChange: ({ formApi, fieldApi }) => {
@@ -126,11 +127,11 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
       let blueprintId: string | null = null;
 
       if (blueprint) {
-        const response = await editBlueprint(value as Blueprint);
+        const response = await editBlueprint({json: value, param: {id: blueprint.id}});
         const data = await response.json();
         blueprintId = data.data.id;
       } else {
-        const response = await addBlueprint(value as Blueprint);
+        const response = await addBlueprint({ json: value as Blueprint});
         const data = await response.json();
         blueprintId = data.data.id;
       }

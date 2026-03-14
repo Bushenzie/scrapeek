@@ -3,6 +3,7 @@ import {BlueprintType} from "@scrapeek/db/constants"
 import {
     type Blueprint,
   type DynamicBlueprintWithRelations,
+  dynamicInsertBlueprintSchema,
   dynamicUpdateBlueprintSchema,
   type EditableDynamicBlueprint,
 } from "@scrapeek/db/validators";
@@ -58,17 +59,17 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint 
   const form = useAppForm({
     ...defaultOptions,
     validators: {
-      onChange: dynamicUpdateBlueprintSchema,
+      onChange: blueprint ? dynamicUpdateBlueprintSchema : dynamicInsertBlueprintSchema,
     },
     onSubmit: async ({ value }) => {
       let blueprintId: string | null = null;
 
       if (blueprint) {
-        const response = await editBlueprint(value  as Blueprint);
+        const response = await editBlueprint({json:value,param: {id: blueprint.id}});
         const {data} = await response.json()
         blueprintId = data.id;
       } else {
-        const response = await addBlueprint(value  as Blueprint);
+        const response = await addBlueprint({json: value as Blueprint});
         const {data} = await response.json()
         blueprintId = data.id;
       }

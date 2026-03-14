@@ -1,15 +1,13 @@
-import type { Blueprint } from "@scrapeek/db/validators";
 import { useMutation } from "@tanstack/react-query";
 import { client } from "@/lib/clients/hono";
 import { unwrap } from "@/lib/unwrap";
 import { blueprintQueryKeys } from "./blueprints.keys";
+import type { CreateBlueprintRequest, DeleteBlueprintRequest, EditBlueprintRequest, RunBlueprintRequest, UpvoteBlueprintRequest } from "./blueprints.types";
 
 export const useCreateBlueprint = () =>
 	useMutation({
-		mutationFn: (blueprint: Blueprint) =>
-			client.api.blueprints.$post({
-				json: blueprint,
-			}),
+		mutationFn: (request: CreateBlueprintRequest) =>
+			client.api.blueprints.$post(request),
 		meta: {
 			invalidatesQuery: blueprintQueryKeys.list(),
 			errorMessage: "There was an error during creation of blueprint",
@@ -19,12 +17,8 @@ export const useCreateBlueprint = () =>
 
 export const useDeleteBlueprint = () =>
 	useMutation({
-		mutationFn: (id: string) =>
-			client.api.blueprints[":id"].$delete({
-				param: {
-					id,
-				},
-			}),
+		mutationFn: (request: DeleteBlueprintRequest) =>
+			client.api.blueprints[":id"].$delete(request),
 		meta: {
 			invalidatesQuery: blueprintQueryKeys.list(),
 			errorMessage: "There was an error during deletion of blueprint",
@@ -34,13 +28,8 @@ export const useDeleteBlueprint = () =>
 
 export const useEditBlueprint = () =>
 	useMutation({
-		mutationFn: (blueprint: Blueprint) =>
-			client.api.blueprints[":id"].$patch({
-				param: {
-					id: blueprint.id,
-				},
-				json: blueprint,
-			}),
+		mutationFn: (request: EditBlueprintRequest) =>
+			client.api.blueprints[":id"].$patch(request),
 		meta: {
 			invalidatesQuery: blueprintQueryKeys.list(),
 			errorMessage: "There was an error during update of blueprint",
@@ -50,14 +39,9 @@ export const useEditBlueprint = () =>
 
 export const useRunBlueprint = () =>
 	useMutation({
-		mutationFn: async ({ id, mode }: { id: string; mode?: "test" | "normal" }) =>
+		mutationFn: (request: RunBlueprintRequest) =>
 			unwrap(
-				client.api.runners.$post({
-					json: {
-						id,
-						mode,
-					},
-				}),
+				client.api.runners.$post(request),
 			),
 		meta: {
 			invalidatesQuery: blueprintQueryKeys.all,
@@ -69,12 +53,8 @@ export const useRunBlueprint = () =>
 
 export const useUpvoteBlueprint = () =>
 	useMutation({
-		mutationFn: (id: string) =>
-			client.api.upvotes.$post({
-				json: {
-					blueprintId: id,
-				},
-			}),
+		mutationFn: (request: UpvoteBlueprintRequest) =>
+			client.api.upvotes.$post(request),
 		meta: {
 			invalidatesQuery: blueprintQueryKeys.all,
 			errorMessage: "There was an error while upvoting a blueprint",

@@ -10,7 +10,11 @@ type EditBlueprintProps = {
 };
 
 export const EditBlueprint: FC<EditBlueprintProps> = ({ blueprintId }) => {
-  const { data: blueprint } = useQuery(blueprintDetailOptions(blueprintId));
+  const { data: blueprint } = useQuery(blueprintDetailOptions({
+    param: {
+      id: blueprintId
+    }
+  }));
 
   return (
     <div className="flex flex-col p-6">

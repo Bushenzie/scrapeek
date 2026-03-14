@@ -8,9 +8,10 @@ import { Box } from "@/components/ui/box/box";
 import { Button } from "@/components/ui/button/button";
 import { authClient } from "@/lib/clients/auth";
 import { useUpvoteBlueprint } from "../api/blueprints.mutations";
+import type { BlueprintPublicListResponse } from "../api/blueprints.types";
 
 type PublicBlueprintListItemProps = {
-  blueprint: BlueprintWithRelations;
+  blueprint: BlueprintPublicListResponse["data"]["blueprints"][number];
 };
 
 export const PublicBlueprintListItem: FC<PublicBlueprintListItemProps> = ({ blueprint }) => {
@@ -52,9 +53,12 @@ export const PublicBlueprintListItem: FC<PublicBlueprintListItemProps> = ({ blue
             }
             size={"sm"}
             onClick={async () => {
-              console.log(blueprint.id)
 
-              await upvoteBlueprint(blueprint.id);
+              await upvoteBlueprint({
+                json: {
+                  blueprintId: blueprint.id
+                }
+              });
             }}
             className="flex items-center justify-center"
           >

@@ -5,6 +5,7 @@ import {
   type EditableStaticBlueprint,
   type StaticBlueprintWithRelations,
   staticInsertBlueprintSchema,
+  staticUpdateBlueprintSchema,
 } from "@scrapeek/db/validators";
 import { formOptions } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
@@ -57,17 +58,17 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
   const form = useAppForm({
     ...defaultOptions,
     validators: {
-      onChange: staticInsertBlueprintSchema,
+      onChange: blueprint ? staticUpdateBlueprintSchema : staticInsertBlueprintSchema,
     },
     onSubmit: async ({ value }) => {
       let blueprintId: string | null = null;
 
       if (blueprint) {
-        const response = await editBlueprint(value as Blueprint);
+        const response = await editBlueprint({json: value, param: { id: blueprint.id}});
         const data = await response.json();
         blueprintId = data.data.id
       } else {
-        const response = await addBlueprint(value as Blueprint);
+        const response = await addBlueprint({json: value as Blueprint});
         const data = await response.json();
         blueprintId = data.data.id
       }

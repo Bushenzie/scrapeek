@@ -14,7 +14,11 @@ type BlueprintDetailProps = {
 };
 
 export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
-  const { data: blueprint } = useQuery(blueprintDetailOptions(blueprintId));
+  const { data: blueprint } = useQuery(blueprintDetailOptions({
+    param: {
+      id: blueprintId
+    }
+  }));
   const {
     data,
     isPending,
@@ -45,11 +49,11 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
   };
 
   const handleRunScraper = () => {
-    runScraper({id: blueprintId,mode: "normal"});
+    runScraper({json: {id: blueprintId,mode: "normal"}});
   };
 
   const handleTestRunScraper = () => {
-    runScraper({id: blueprintId,mode: "test"});
+    runScraper({json: {id: blueprintId,mode: "test"}});
   };
 
   return (

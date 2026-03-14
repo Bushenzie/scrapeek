@@ -80,9 +80,9 @@ const app = new Hono<{ Variables: AuthType }>()
 					},
 				},
 			},
-
 			where: { userId: user.id },
 		});
+
 
 		return c.json({ data: blueprints });
 	})
@@ -112,11 +112,8 @@ const app = new Hono<{ Variables: AuthType }>()
 			);
 		}
 
-		console.log(searchedBlueprint);
 
-		const blueprint = blueprintWithRelationsSchema.parse(searchedBlueprint);
-
-		return c.json({ data: blueprint });
+		return c.json({ data: searchedBlueprint });
 	})
 	.post("/", zodValidator("json", insertBlueprintSchema), async (c) => {
 		const body = await c.req.valid("json");

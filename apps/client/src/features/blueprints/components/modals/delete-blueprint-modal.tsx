@@ -20,7 +20,7 @@ export const DeleteBlueprintModal: FC<DeleteBlueprintModalProps> = ({ blueprintI
   const deleteBlueprint = useDeleteBlueprint();
 
   const handleSubmit = async () => {
-    await deleteBlueprint.mutateAsync(blueprintId);
+    await deleteBlueprint.mutateAsync({ param: {id: blueprintId}});
   };
 
   return (
