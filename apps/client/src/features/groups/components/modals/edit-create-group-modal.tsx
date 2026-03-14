@@ -36,7 +36,11 @@ export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ groupId })
       },
     },
     onSubmit: async ({ value }) => {
-      if (!groupId) await createGroup(value.name);
+      if (!groupId) await createGroup({
+        json: {
+          name: value.name
+        }
+      });
     },
   });
 
