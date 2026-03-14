@@ -6,6 +6,8 @@ import { z } from "zod";
 import { db } from "@/lib/db.ts";
 import { scrapeData } from "@/lib/scrape.ts";
 import { zodValidator } from "@/middlewares/custom-zod-validator.ts";
+import { StatusError } from "@/lib/error";
+import { StatusCodes } from "http-status-codes";
 
 const app = new Hono().post(
 	"/",
@@ -25,11 +27,10 @@ const app = new Hono().post(
 					id,
 				},
 			})
-			.catch(() => {
-				throw new Error("No blueprints found");
-			});
 
-		const parsedBlueprint = blueprintSchema.parse(blueprint);
+    if (!blueprint) throw new StatusError("No blueprint found", StatusCodes.NOT_FOUND)
+
+    const parsedBlueprint = blueprintSchema.parse(blueprint);
 
 		const isTestRun = mode === "test";
 

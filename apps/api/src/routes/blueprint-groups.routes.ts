@@ -60,8 +60,7 @@ const app = new Hono<{ Variables: AuthType }>()
 				},
 			})
 			.catch(() => {
-				c.status(404);
-				throw new Error(`Group with id '${id}' was not found`);
+				throw new StatusError(`Group with id '${id}' was not found`,StatusCodes.NOT_FOUND);
 			});
 
 		const updatedGroup = await db
@@ -89,8 +88,7 @@ const app = new Hono<{ Variables: AuthType }>()
 				},
 			})
 			.catch(() => {
-				c.status(404);
-				throw new Error(`Group with id '${id}' was not found`);
+				throw new StatusError(`Group with id '${id}' was not found`,StatusCodes.NOT_FOUND);
 			});
 
 		const deletedGroup = await db
