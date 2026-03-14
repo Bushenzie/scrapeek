@@ -1,4 +1,3 @@
-import type { BlueprintWithRelations } from "@scrapeek/db/validators";
 import { Link } from "@tanstack/react-router";
 import { Plus, ThumbsUp } from "lucide-react";
 import { type FC } from "react";

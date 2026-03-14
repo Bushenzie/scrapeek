@@ -143,7 +143,7 @@ export const blueprintSchema = z.discriminatedUnion("type", [
 ]);
 
 const baseSelectSchemaWithRelationsSchema = baseSelectSchema.extend({
-	user: userSelectSchema,
+	user: userSelectSchema.nullish(),
 	result: resultSelectSchema.nullish(),
 	upvotes: upvoteSelectSchema.array().nullish(),
 });

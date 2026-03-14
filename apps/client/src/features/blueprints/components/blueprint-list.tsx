@@ -1,6 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
-import { formatDistance } from "date-fns";
 import { blueprintListOptions } from "../api/blueprints.queries";
 import { BlueprintListTable } from "./tables/blueprint-list.table";
 

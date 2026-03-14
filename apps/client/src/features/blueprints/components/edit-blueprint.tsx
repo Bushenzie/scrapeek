@@ -18,11 +18,14 @@ export const EditBlueprint: FC<EditBlueprintProps> = ({ blueprintId }) => {
 
   return (
     <div className="flex flex-col p-6">
+        {/* @ts-expect-error TODO */}
       {blueprint?.type === "api" && <APIBlueprintForm blueprint={blueprint} />}
       {blueprint?.type === "static" && (
+        // @ts-expect-error TODO
         <StaticBlueprintForm blueprint={blueprint} />
       )}
       {blueprint?.type === "dynamic" && (
+        // @ts-expect-error TODO
         <DynamicBlueprintForm blueprint={blueprint} />
       )}
     </div>

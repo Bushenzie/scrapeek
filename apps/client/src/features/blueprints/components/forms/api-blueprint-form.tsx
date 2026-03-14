@@ -22,6 +22,7 @@ import { Textarea } from "@/components/ui/textarea/textarea";
 import { useAppForm } from "@/hooks/use-app-form";
 import { authClient } from "@/lib/clients/auth";
 import { useCreateBlueprint, useEditBlueprint } from "../../api/blueprints.mutations";
+import type { BlueprintDetailResponse } from "../../api/blueprints.types";
 
 // TODO: Cleanup this form
 
