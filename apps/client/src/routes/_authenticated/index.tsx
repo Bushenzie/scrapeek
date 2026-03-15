@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { Modal } from "@/components/modal/modal";
 import { Badge } from "@/components/ui/badge/badge";
 import { Box } from "@/components/ui/box/box";
 import { Button } from "@/components/ui/button/button";
@@ -13,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card/card";
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
+import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox/combobox-core";
 import {
   Dialog,
   DialogClose,
@@ -70,6 +72,7 @@ export const Route = createFileRoute("/_authenticated/")({
 
 function DashboardPage() {
   const [page, setPage] = useState(1);
+  const [openOutOfBountModal, setOpenOutOfBountModal] = useState(false);
 
   return (
     <div>
@@ -98,6 +101,47 @@ function DashboardPage() {
         >
           Summon action toast
         </Button>
+        <Button onClick={() => setOpenOutOfBountModal(true)}>Out of bound btn to open modal</Button>
+        <div className="flex flex-col gap-2">
+          <Modal
+            title="Called out of nowhere"
+            description="This modal way called out of nowhere and not managed by internal state"
+            trigger={null}
+            state={{
+              open: openOutOfBountModal,
+              setOpen: setOpenOutOfBountModal
+            }}
+          >
+          </Modal>
+          <Modal
+            title="Called normally by trigger btn"
+            description="This modal way called out of nowhere and not managed by internal state"
+
+          >
+          </Modal>
+          <Dialog>
+            <DialogTrigger>
+              <Button variant={"outline"}>Old dialog</Button>
+            </DialogTrigger>
+            <DialogContent overlayClickClose>
+              <DialogHeader>
+                <DialogTitle>Are you absolutely sure?</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. This will permanently delete your
+                  account and remove your data from our servers.
+                </DialogDescription>
+              </DialogHeader>
+
+              <DialogFooter>
+                <DialogClose>
+                  <Button variant="outline">Cancel</Button>
+                </DialogClose>
+                <Button type="submit">Save changes</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+
         <div className="flex gap-2">
           <Badge variant={"primary"}>primary</Badge>
           <Badge variant={"destructive"}>destructive</Badge>
@@ -173,27 +217,7 @@ function DashboardPage() {
             </TableRow>
           </TableBody>
         </Table>
-        <Dialog>
-          <DialogTrigger>
-            <Button variant={"outline"}>Open dialog</Button>
-          </DialogTrigger>
-          <DialogContent overlayClickClose>
-            <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </DialogDescription>
-            </DialogHeader>
 
-            <DialogFooter>
-              <DialogClose>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
-              <Button type="submit">Save changes</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button>Open dropdown</Button>

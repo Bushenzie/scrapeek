@@ -18,7 +18,7 @@ const app = new Hono()
 				},
 			})
 			.catch(() => {
-			  throw new StatusError(`Result was not found`,StatusCodes.NOT_FOUND);
+				throw new StatusError(`Result was not found`, StatusCodes.NOT_FOUND);
 			});
 
 		return c.json({ data: result });

@@ -83,7 +83,6 @@ const app = new Hono<{ Variables: AuthType }>()
 			where: { userId: user.id },
 		});
 
-
 		return c.json({ data: blueprints });
 	})
 	.get("/:id", zodValidator("param", idParamSearchSchema), async (c) => {
@@ -111,7 +110,6 @@ const app = new Hono<{ Variables: AuthType }>()
 				StatusCodes.NOT_FOUND,
 			);
 		}
-
 
 		return c.json({ data: searchedBlueprint });
 	})

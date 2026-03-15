@@ -104,7 +104,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint 
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-2">
+      <div className=" gap-2">
         <div>
           <form onSubmit={handleSubmit} className="space-y-4 col-span-1">
             <form.AppField name="name" children={(field) => <field.TextField label="Blueprint name" />} />
@@ -229,7 +229,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint 
             )}
           </form>
         </div>
-        <form.Subscribe
+        {/*<form.Subscribe
           selector={(state) => state.values}
           children={(state) => (
             <div className="flex flex-col gap-2">
@@ -237,7 +237,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint 
               <Textarea className="h-full" value={JSON.stringify(state, null, 4)} readOnly />
             </div>
           )}
-        />
+        />*/}
       </div>
       <div className="flex my-2 justify-end">
         <form.AppForm>

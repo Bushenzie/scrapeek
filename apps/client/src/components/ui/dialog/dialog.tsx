@@ -145,7 +145,7 @@ export const DialogDescription: FC<DialogDescriptionProps> = ({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("text-muted-foreground text-xs", className)}
+      className={cn("text-blueprint-200 text-xs", className)}
       {...props}
     />
   );

@@ -12,15 +12,17 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { Fragment, useState } from "react";
 import { Button } from "@/components/ui/button/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table/table";
-import type { DataProps } from "./data-table.types";
+import { cn } from "@/lib/class";
+import type { DataTableProps } from "./data-table.types";
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   pageSize = 10,
+  showHeaders = true,
   paginationEnabled = true,
   renderExpandedRow,
-}: DataProps<TData, TValue>) {
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [expanded, setExpanded] = useState<ExpandedState>({});
   const table = useReactTable({
@@ -52,7 +54,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="overflow-hidden ">
         <Table>
-          <TableHeader>
+          <TableHeader className={cn({"hidden": !showHeaders})}>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {renderExpandedRow && <TableHead className="w-10" />}

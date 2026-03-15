@@ -21,16 +21,16 @@ const app = new Hono().post(
 	async (c) => {
 		const { id, mode } = await c.req.valid("json");
 
-		const blueprint = await db.query.blueprint
-			.findFirst({
-				where: {
-					id,
-				},
-			})
+		const blueprint = await db.query.blueprint.findFirst({
+			where: {
+				id,
+			},
+		});
 
-    if (!blueprint) throw new StatusError("No blueprint found", StatusCodes.NOT_FOUND)
+		if (!blueprint)
+			throw new StatusError("No blueprint found", StatusCodes.NOT_FOUND);
 
-    const parsedBlueprint = blueprintSchema.parse(blueprint);
+		const parsedBlueprint = blueprintSchema.parse(blueprint);
 
 		const isTestRun = mode === "test";
 

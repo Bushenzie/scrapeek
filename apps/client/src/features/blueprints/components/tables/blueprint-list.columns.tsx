@@ -4,7 +4,6 @@ import { formatDistance } from "date-fns";
 import { EllipsisVertical } from "lucide-react";
 import { Badge } from "@/components/ui/badge/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuItemLink, DropdownMenuTrigger } from "@/components/ui/dropdown/dropdown";
-import { SelectGroupsModal } from "@/features/groups/components/modals/select-groups-modal";
 import type { BlueprintListResponse } from "../../api/blueprints.types";
 
 export const columns: ColumnDef<BlueprintListResponse["data"][number]>[] = [
@@ -52,9 +51,6 @@ export const columns: ColumnDef<BlueprintListResponse["data"][number]>[] = [
           }}>
             Edit
           </DropdownMenuItemLink>
-          <DropdownMenuItem className="cursor-pointer">
-           <SelectGroupsModal />
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
   }

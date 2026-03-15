@@ -1,14 +1,7 @@
 import { BlueprintType } from "@scrapeek/db/constants";
 import { useRouter } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog/dialog";
+import { Modal } from "@/components/modal/modal";
+
 import { useAppForm } from "@/hooks/use-app-form";
 import { blueprintTypeSelectSchema } from "../../schemas/blueprint-type";
 
@@ -33,14 +26,21 @@ export const CreateBlueprintDialog = () => {
     },
   });
 
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button>Add</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>Select type</DialogHeader>
+  const options = [
+    { label: "API", value: BlueprintType.API },
+    { label: "Static", value: BlueprintType.Static },
+    { label: "Dynamic", value: BlueprintType.Dynamic },
+  ]
 
+  return (
+    <Modal
+      title="Select type"
+      submitBtn={{
+        text: "Add",
+        onSubmit: form.handleSubmit
+      }}
+      trigger={{text:"Add"}}
+    >
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -52,25 +52,11 @@ export const CreateBlueprintDialog = () => {
             children={(field) => (
               <field.RadioGroupField
                 label=""
-                options={[
-                  { label: "API", value: BlueprintType.API },
-                  { label: "Static", value: BlueprintType.Static },
-                  { label: "Dynamic", value: BlueprintType.Dynamic },
-                ]}
+                options={options}
               />
             )}
           />
-          <DialogFooter>
-            <DialogClose>
-              <Button variant={"outline"}>Close</Button>
-            </DialogClose>
-
-            <Button type="submit" onClick={form.handleSubmit}>
-              Add
-            </Button>
-          </DialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+    </Modal>
   );
 };

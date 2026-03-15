@@ -2,7 +2,13 @@ import { useMutation } from "@tanstack/react-query";
 import { client } from "@/lib/clients/hono";
 import { unwrap } from "@/lib/unwrap";
 import { blueprintQueryKeys } from "./blueprints.keys";
-import type { CreateBlueprintRequest, DeleteBlueprintRequest, EditBlueprintRequest, RunBlueprintRequest, UpvoteBlueprintRequest } from "./blueprints.types";
+import type {
+	CreateBlueprintRequest,
+	DeleteBlueprintRequest,
+	EditBlueprintRequest,
+	RunBlueprintRequest,
+	UpvoteBlueprintRequest,
+} from "./blueprints.types";
 
 export const useCreateBlueprint = () =>
 	useMutation({
@@ -40,9 +46,7 @@ export const useEditBlueprint = () =>
 export const useRunBlueprint = () =>
 	useMutation({
 		mutationFn: (request: RunBlueprintRequest) =>
-			unwrap(
-				client.api.runners.$post(request),
-			),
+			unwrap(client.api.runners.$post(request)),
 		meta: {
 			invalidatesQuery: blueprintQueryKeys.all,
 			errorMessage: "There was an error the scraping of blueprint",

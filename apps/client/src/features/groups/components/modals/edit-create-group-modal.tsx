@@ -1,16 +1,7 @@
-import { groupInsertSchema, groupUpdateSchema } from "@scrapeek/db/validators";
-import { useQuery } from "@tanstack/react-query";
+import { groupInsertSchema } from "@scrapeek/db/validators";
 import { FolderPen, FolderPlus } from "lucide-react";
 import { type FC } from "react";
-import { Button } from "@/components/ui/button/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog/dialog";
+import { Modal } from "@/components/modal/modal";
 import { useAppForm } from "@/hooks/use-app-form";
 import { useCreateGroup } from "../../api/groups.mutations";
 
@@ -38,30 +29,31 @@ export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ groupId })
   });
 
   return (
-    <Dialog>
-      <DialogTrigger className="z-10" asChild>
-        <Button>{groupId ? <FolderPen /> : <FolderPlus />} Group</Button>
-      </DialogTrigger>
-      <DialogContent>
+    <Modal
+      title={`${groupId ? "Edit" : "Add"} group`}
+      trigger={{
+          text: groupId ? <FolderPen /> : <FolderPlus />,
+          props: {
+            size: "icon",
+            variant: "link"
+          }
+        }}
+      submitBtn={{
+        text: groupId ? "Edit" : "Add",
+        onSubmit: form.handleSubmit
+      }}
+    >
         <form
           className="space-y-2"
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
           }}
-        >
-          <DialogTitle>{groupId ? "Edit" : "Add"} group</DialogTitle>
-          <form.AppField name="name" children={(field) => <field.TextField label="Name" />} />
-          <DialogFooter>
-            <DialogClose>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <form.AppForm>
-              <form.SubmitButton btnText={groupId ? "Edit" : "Add"} />
-            </form.AppForm>
-          </DialogFooter>
+      >
+        <form.AppField name="name" children={(field) => <field.TextField label="Name" />} />
+
         </form>
-      </DialogContent>
-    </Dialog>
+    </Modal>
+
   );
 };

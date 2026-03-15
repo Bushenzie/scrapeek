@@ -1,40 +1,39 @@
 {
-    "vcs": {
-        "enabled": false,
-        "clientKind": "git",
-        "useIgnoreFile": false
+  "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "tab",
+    "indentWidth": 1,
+    "includes": ["**/*.ts"],
+    "lineWidth": 80
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
     },
-    "files": {
-        "ignoreUnknown": false
-    },
+    "includes": ["**/*.ts"]
+  },
+  "javascript": {
     "formatter": {
-        "enabled": true,
-        "indentStyle": "tab",
-        "indentWidth": 1,
-        "includes": [
-            "**/*.ts"
-        ]
-    },
-    "linter": {
-        "enabled": true,
-        "rules": {
-            "recommended": true
-        },
-        "includes": [
-            "**/*.ts"
-        ]
-    },
-    "javascript": {
-        "formatter": {
-            "quoteStyle": "double"
-        }
-    },
-    "assist": {
-        "enabled": true,
-        "actions": {
-            "source": {
-                "organizeImports": "on"
-            }
-        }
+      "quoteStyle": "double",
+      "lineWidth": 80
     }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
 }

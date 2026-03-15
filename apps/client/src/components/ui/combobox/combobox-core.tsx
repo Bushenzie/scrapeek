@@ -14,7 +14,7 @@ import type {
   ComboboxContentProps,
   ComboboxLabelProps,
   ComboboxSeparatorProps,
-} from "./combobox.types";
+} from "./combobox-core.types";
 import {
   type ComboboxChipProps,
   type ComboboxChipsProps,
@@ -27,7 +27,7 @@ import {
   type ComboboxListProps,
   type ComboboxTriggerProps,
   type ComboboxValueProps,
-} from "./combobox.types";
+} from "./combobox-core.types";
 
 // TODO - radix?
 
