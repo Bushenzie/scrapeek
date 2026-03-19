@@ -9,6 +9,7 @@ export const Button: FC<ButtonProps> = ({
   className,
   size,
   variant,
+  icon,
   disabled = false,
   loading = false,
   asChild = false,
@@ -23,6 +24,7 @@ export const Button: FC<ButtonProps> = ({
       disabled={disabled || loading}
       {...props}
     >
+      {icon && <span className="size-4">{icon}</span>}
       {loading && <LoadingSpinner size="sm" />}
       {props.children}
     </Comp>
