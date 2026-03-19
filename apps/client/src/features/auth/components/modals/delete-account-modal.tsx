@@ -15,7 +15,7 @@ export const DeleteAccountModal = () => {
       title="Remove account"
       description="Are you sure you want to remove your account"
       trigger={{
-        text: "Delete account",
+        content: "Delete account",
         props: {
           variant: "destructive"
         }

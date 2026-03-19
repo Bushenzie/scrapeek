@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Group, Pen } from "lucide-react";
 import { useState } from "react";
 import { Modal } from "@/components/modal/modal";
 import { Badge } from "@/components/ui/badge/badge";
@@ -14,7 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card/card";
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
-import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox/combobox-core";
+import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox-core/combobox-core";
 import {
   Dialog,
   DialogClose,
@@ -101,7 +102,7 @@ function DashboardPage() {
         >
           Summon action toast
         </Button>
-        <Button onClick={() => setOpenOutOfBountModal(true)}>Out of bound btn to open modal</Button>
+        <Button icon={<Pen/>} onClick={() => setOpenOutOfBountModal(true)}>Out of bound btn to open modal</Button>
         <div className="flex flex-col gap-2">
           <Modal
             title="Called out of nowhere"

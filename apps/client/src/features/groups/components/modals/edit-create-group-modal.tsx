@@ -1,25 +1,37 @@
-import { groupInsertSchema } from "@scrapeek/db/validators";
-import { FolderPen, FolderPlus } from "lucide-react";
+import { type Group, groupInsertSchema } from "@scrapeek/db/validators";
 import { type FC } from "react";
 import { Modal } from "@/components/modal/modal";
 import { useAppForm } from "@/hooks/use-app-form";
-import { useCreateGroup } from "../../api/groups.mutations";
+import { useCreateGroup, useEditGroup } from "../../api/groups.mutations";
 
 type EditCreateGroupModalProps = {
-  groupId?: string;
+  group?: Group;
+  isDropdownMenuItem?: boolean
 };
 
-export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ groupId }) => {
+export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ group,isDropdownMenuItem=false }) => {
   const createGroup = useCreateGroup();
+  const editGroup = useEditGroup();
 
   const form = useAppForm({
     defaultValues: {
-      name: "",
+      name: group ? group.name : "",
     },
     validators: {
       onChange: groupInsertSchema,
     },
     onSubmit: ({ value }) => {
+      if (group) {
+        editGroup.mutate({
+          json: {
+            name: value.name
+          },
+          param: {
+            id: group.id
+          }
+        })
+        return;
+      }
       createGroup.mutate({
         json: {
           name: value.name,
@@ -30,18 +42,18 @@ export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ groupId })
 
   return (
     <Modal
-      title={`${groupId ? "Edit" : "Add"} group`}
+      title={`${group ? "Edit" : "Create"} group`}
       trigger={{
-          text: groupId ? <FolderPen /> : <FolderPlus />,
+          content: `${group ? "Edit" : "Create"} group`,
           props: {
-            size: "icon",
-            variant: "link"
+            variant: "outline",
           }
         }}
       submitBtn={{
-        text: groupId ? "Edit" : "Add",
+        text: group ? "Edit" : "Create",
         onSubmit: form.handleSubmit
       }}
+      isDropdownMenuItem={isDropdownMenuItem}
     >
         <form
           className="space-y-2"

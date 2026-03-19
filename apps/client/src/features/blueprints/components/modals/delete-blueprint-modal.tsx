@@ -29,7 +29,7 @@ export const DeleteBlueprintModal: FC<DeleteBlueprintModalProps> = ({ blueprintI
       title={`Delete blueprint`}
       description={"Are you sure you want to delete this blueprint?"}
       trigger={{
-          text: (<Trash className="w-5 h-5 p-0 m-0" />),
+          content: (<Trash className="w-5 h-5 p-0 m-0" />),
           props: {
             variant: "destructive"
           }

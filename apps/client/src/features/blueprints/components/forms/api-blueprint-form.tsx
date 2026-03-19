@@ -18,11 +18,9 @@ import { Button } from "@/components/ui/button/button";
 import { Checkbox } from "@/components/ui/checkbox/checkbox";
 import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
-import { Textarea } from "@/components/ui/textarea/textarea";
 import { useAppForm } from "@/hooks/use-app-form";
 import { authClient } from "@/lib/clients/auth";
 import { useCreateBlueprint, useEditBlueprint } from "../../api/blueprints.mutations";
-import type { BlueprintDetailResponse } from "../../api/blueprints.types";
 
 // TODO: Cleanup this form
 
@@ -126,6 +124,8 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
     },
     onSubmit: async ({ value }) => {
       let blueprintId: string | null = null;
+
+
 
       if (blueprint) {
         const response = await editBlueprint({json: value, param: {id: blueprint.id}});

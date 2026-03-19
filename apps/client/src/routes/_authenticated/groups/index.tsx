@@ -3,8 +3,8 @@ import { Suspense } from "react";
 import { Box } from "@/components/ui/box/box";
 import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner";
 import { Separator } from "@/components/ui/separator/separator";
-import { EditCreateGroupModal } from "@/features/groups/components/modals/edit-create-group-modal";
 import { GroupList } from "@/features/groups/components/group-list";
+import { EditCreateGroupModal } from "@/features/groups/components/modals/edit-create-group-modal";
 
 export const Route = createFileRoute("/_authenticated/groups/")({
   component: GroupListPage,

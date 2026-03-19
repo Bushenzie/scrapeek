@@ -1,7 +1,7 @@
 import { BlueprintType } from "@scrapeek/db/constants";
 import { useRouter } from "@tanstack/react-router";
+import { Plus } from "lucide-react";
 import { Modal } from "@/components/modal/modal";
-
 import { useAppForm } from "@/hooks/use-app-form";
 import { blueprintTypeSelectSchema } from "../../schemas/blueprint-type";
 
@@ -36,10 +36,15 @@ export const CreateBlueprintDialog = () => {
     <Modal
       title="Select type"
       submitBtn={{
-        text: "Add",
+        text: "Create",
         onSubmit: form.handleSubmit
       }}
-      trigger={{text:"Add"}}
+      trigger={{
+        content: "Create",
+          props: {
+            icon: (<Plus />)
+          }
+      }}
     >
         <form
           onSubmit={(e) => {

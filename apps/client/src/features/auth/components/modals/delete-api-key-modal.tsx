@@ -20,7 +20,7 @@ export const DeleteApiKeyModal: FC<DeleteApiKeyModalProps> = ({ id, name }) => {
       title={`Delete "${name}`}
       description={`Are you sure you want to delete "${name}" API Key?`}
       trigger={{
-          text: (<Trash />),
+          content: (<Trash />),
           props: {
             size: "icon",
             variant: "link"
