@@ -1,9 +1,9 @@
-import { Slot } from "@radix-ui/react-slot";
-import type { FC } from "react";
-import { cn } from "@/lib/class";
-import { LoadingSpinner } from "../loading-spinner/loading-spinner";
-import type { ButtonProps } from "./button.types";
-import { buttonVariants } from "./button.variants";
+import { Slot } from "@radix-ui/react-slot"
+import type { FC } from "react"
+import { cn } from "@/lib/class"
+import { LoadingSpinner } from "../loading-spinner/loading-spinner"
+import type { ButtonProps } from "./button.types"
+import { buttonVariants } from "./button.variants"
 
 export const Button: FC<ButtonProps> = ({
   className,
@@ -15,7 +15,7 @@ export const Button: FC<ButtonProps> = ({
   asChild = false,
   ...props
 }) => {
-  const Comp = asChild ? Slot : "button";
+  const Comp = asChild ? Slot : "button"
 
   return (
     <Comp
@@ -24,9 +24,9 @@ export const Button: FC<ButtonProps> = ({
       disabled={disabled || loading}
       {...props}
     >
-      {icon && <span className="size-4">{icon}</span>}
+      {icon && <span className="size-4">{icon}</span>}
       {loading && <LoadingSpinner size="sm" />}
       {props.children}
     </Comp>
-  );
-};
+  )
+}

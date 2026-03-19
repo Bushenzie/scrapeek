@@ -1,39 +1,39 @@
-import { Combobox as ComboboxPrimitive } from "@base-ui/react";
-import { CheckIcon, ChevronDownIcon, XIcon } from "lucide-react";
-import type { FC } from "react";
-import { Button } from "@/components/ui/button/button";
+import { Combobox as ComboboxPrimitive } from "@base-ui/react"
+import { CheckIcon, ChevronDownIcon, XIcon } from "lucide-react"
+import type { FC } from "react"
+import { Button } from "@/components/ui/button/button"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@/components/ui/input-group/input-group";
-import { cn } from "@/lib/class";
+} from "@/components/ui/input-group/input-group"
+import { cn } from "@/lib/class"
 import type {
   ComboboxChipsInputProps,
   ComboboxContentProps,
   ComboboxLabelProps,
   ComboboxSeparatorProps,
-} from "./combobox-core.types";
-import {
-  type ComboboxChipProps,
-  type ComboboxChipsProps,
-  type ComboboxClearProps,
-  type ComboboxCollectionProps,
-  type ComboboxEmptyProps,
-  type ComboboxGroupProps,
-  type ComboboxInputProps,
-  type ComboboxItemProps,
-  type ComboboxListProps,
-  type ComboboxTriggerProps,
-  type ComboboxValueProps,
-} from "./combobox-core.types";
+} from "./combobox-core.types"
+import type {
+  ComboboxChipProps,
+  ComboboxChipsProps,
+  ComboboxClearProps,
+  ComboboxCollectionProps,
+  ComboboxEmptyProps,
+  ComboboxGroupProps,
+  ComboboxInputProps,
+  ComboboxItemProps,
+  ComboboxListProps,
+  ComboboxTriggerProps,
+  ComboboxValueProps,
+} from "./combobox-core.types"
 
-export const Combobox = ComboboxPrimitive.Root;
+export const Combobox = ComboboxPrimitive.Root
 
 export const ComboboxValue: FC<ComboboxValueProps> = ({ ...props }) => {
-  return <ComboboxPrimitive.Value data-slot="combobox-value" {...props} />;
-};
+  return <ComboboxPrimitive.Value data-slot="combobox-value" {...props} />
+}
 
 export const ComboboxTrigger: FC<ComboboxTriggerProps> = ({ className, children, ...props }) => {
   return (
@@ -43,10 +43,13 @@ export const ComboboxTrigger: FC<ComboboxTriggerProps> = ({ className, children,
       {...props}
     >
       {children}
-      <ChevronDownIcon data-slot="combobox-trigger-icon" className="text-blueprint-100 pointer-events-none size-4" />
+      <ChevronDownIcon
+        data-slot="combobox-trigger-icon"
+        className="text-blueprint-100 pointer-events-none size-4"
+      />
     </ComboboxPrimitive.Trigger>
-  );
-};
+  )
+}
 
 export const ComboboxClear: FC<ComboboxClearProps> = ({ className, ...props }) => {
   return (
@@ -58,8 +61,8 @@ export const ComboboxClear: FC<ComboboxClearProps> = ({ className, ...props }) =
     >
       <XIcon className="pointer-events-none text-blueprint-100" />
     </ComboboxPrimitive.Clear>
-  );
-};
+  )
+}
 
 export const ComboboxInput: FC<ComboboxInputProps> = ({
   className,
@@ -89,8 +92,8 @@ export const ComboboxInput: FC<ComboboxInputProps> = ({
       </InputGroupAddon>
       {children}
     </InputGroup>
-  );
-};
+  )
+}
 
 export const ComboboxContent: FC<ComboboxContentProps> = ({
   className,
@@ -122,8 +125,8 @@ export const ComboboxContent: FC<ComboboxContentProps> = ({
         />
       </ComboboxPrimitive.Positioner>
     </ComboboxPrimitive.Portal>
-  );
-};
+  )
+}
 
 export const ComboboxList: FC<ComboboxListProps> = ({ className, ...props }) => {
   return (
@@ -135,8 +138,8 @@ export const ComboboxList: FC<ComboboxListProps> = ({ className, ...props }) => 
       )}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const ComboboxItem: FC<ComboboxItemProps> = ({ className, children, ...props }) => {
   return (
@@ -151,17 +154,19 @@ export const ComboboxItem: FC<ComboboxItemProps> = ({ className, children, ...pr
       {children}
       <ComboboxPrimitive.ItemIndicator
         data-slot="combobox-item-indicator"
-        render={<span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />}
+        render={
+          <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />
+        }
       >
         <CheckIcon className="pointer-events-none size-4 pointer-coarse:size-5" />
       </ComboboxPrimitive.ItemIndicator>
     </ComboboxPrimitive.Item>
-  );
-};
+  )
+}
 
 export const ComboboxGroup: FC<ComboboxGroupProps> = ({ className, ...props }) => {
-  return <ComboboxPrimitive.Group data-slot="combobox-group" className={cn(className)} {...props} />;
-};
+  return <ComboboxPrimitive.Group data-slot="combobox-group" className={cn(className)} {...props} />
+}
 
 export const ComboboxLabel: FC<ComboboxLabelProps> = ({ className, ...props }) => {
   return (
@@ -173,12 +178,12 @@ export const ComboboxLabel: FC<ComboboxLabelProps> = ({ className, ...props }) =
       )}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const ComboboxCollection: FC<ComboboxCollectionProps> = ({ ...props }) => {
-  return <ComboboxPrimitive.Collection data-slot="combobox-collection" {...props} />;
-};
+  return <ComboboxPrimitive.Collection data-slot="combobox-collection" {...props} />
+}
 
 export const ComboboxEmpty: FC<ComboboxEmptyProps> = ({ className, ...props }) => {
   return (
@@ -190,8 +195,8 @@ export const ComboboxEmpty: FC<ComboboxEmptyProps> = ({ className, ...props }) =
       )}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const ComboboxSeparator: FC<ComboboxSeparatorProps> = ({ className, ...props }) => {
   return (
@@ -200,8 +205,8 @@ export const ComboboxSeparator: FC<ComboboxSeparatorProps> = ({ className, ...pr
       className={cn("bg-border -mx-1 my-1 h-px", className)}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const ComboboxChips: FC<ComboboxChipsProps> = ({ className, ...props }) => {
   return (
@@ -213,10 +218,15 @@ export const ComboboxChips: FC<ComboboxChipsProps> = ({ className, ...props }) =
       )}
       {...props}
     />
-  );
-};
+  )
+}
 
-export const ComboboxChip: FC<ComboboxChipProps> = ({ className, children, showRemove = true, ...props }) => {
+export const ComboboxChip: FC<ComboboxChipProps> = ({
+  className,
+  children,
+  showRemove = true,
+  ...props
+}) => {
   return (
     <ComboboxPrimitive.Chip
       data-slot="combobox-chip"
@@ -229,7 +239,7 @@ export const ComboboxChip: FC<ComboboxChipProps> = ({ className, children, showR
       {children}
       {showRemove && (
         <ComboboxPrimitive.ChipRemove
-          render={<Button variant="link" size="icon-sm"/>}
+          render={<Button variant="link" size="icon-sm" />}
           className="-ml-1 opacity-50 hover:opacity-100 text-blueprint-100"
           data-slot="combobox-chip-remove"
         >
@@ -237,15 +247,19 @@ export const ComboboxChip: FC<ComboboxChipProps> = ({ className, children, showR
         </ComboboxPrimitive.ChipRemove>
       )}
     </ComboboxPrimitive.Chip>
-  );
-};
+  )
+}
 
-export const ComboboxChipsInput: FC<ComboboxChipsInputProps> = ({ className, children, ...props }) => {
+export const ComboboxChipsInput: FC<ComboboxChipsInputProps> = ({
+  className,
+  children,
+  ...props
+}) => {
   return (
     <ComboboxPrimitive.Input
       data-slot="combobox-chip-input"
       className={cn("min-w-16 flex-1 outline-none", className)}
       {...props}
     />
-  );
-};
+  )
+}

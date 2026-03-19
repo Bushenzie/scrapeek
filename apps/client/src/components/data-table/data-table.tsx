@@ -7,13 +7,20 @@ import {
   getSortedRowModel,
   type SortingState,
   useReactTable,
-} from "@tanstack/react-table";
-import { ChevronDown, ChevronRight } from "lucide-react";
-import { Fragment, useState } from "react";
-import { Button } from "@/components/ui/button/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table/table";
-import { cn } from "@/lib/class";
-import type { DataTableProps } from "./data-table.types";
+} from "@tanstack/react-table"
+import { ChevronDown, ChevronRight } from "lucide-react"
+import { Fragment, useState } from "react"
+import { Button } from "@/components/ui/button/button"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table/table"
+import { cn } from "@/lib/class"
+import type { DataTableProps } from "./data-table.types"
 
 export function DataTable<TData, TValue>({
   columns,
@@ -23,8 +30,8 @@ export function DataTable<TData, TValue>({
   paginationEnabled = true,
   renderExpandedRow,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [expanded, setExpanded] = useState<ExpandedState>({});
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [expanded, setExpanded] = useState<ExpandedState>({})
   const table = useReactTable({
     data,
     columns,
@@ -47,23 +54,31 @@ export function DataTable<TData, TValue>({
       minSize: 0,
       size: Number.MAX_SAFE_INTEGER,
       maxSize: Number.MAX_SAFE_INTEGER,
-    }
-  });
+    },
+  })
 
   return (
     <div>
       <div className="overflow-hidden ">
         <Table>
-          <TableHeader className={cn({"hidden": !showHeaders})}>
+          <TableHeader className={cn({ hidden: !showHeaders })}>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {renderExpandedRow && <TableHead className="w-10" />}
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} style={{width: header.getSize() === Number.MAX_SAFE_INTEGER ? "auto" : header.getSize()}}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    <TableHead
+                      key={header.id}
+                      style={{
+                        width:
+                          header.getSize() === Number.MAX_SAFE_INTEGER ? "auto" : header.getSize(),
+                      }}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -75,7 +90,11 @@ export function DataTable<TData, TValue>({
                   <TableRow data-state={row.getIsSelected() && "selected"}>
                     {renderExpandedRow && (
                       <TableCell className="w-10">
-                        <Button variant="link" className="size-4 flex items-center justify-center"  onClick={() => row.toggleExpanded()}>
+                        <Button
+                          variant="link"
+                          className="size-4 flex items-center justify-center"
+                          onClick={() => row.toggleExpanded()}
+                        >
                           {row.getIsExpanded() ? (
                             <ChevronDown className="size-4" />
                           ) : (
@@ -86,7 +105,12 @@ export function DataTable<TData, TValue>({
                     )}
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
-                        style={{ width: cell.column.getSize() === Number.MAX_SAFE_INTEGER ? "auto" : cell.column.getSize() }}
+                        style={{
+                          width:
+                            cell.column.getSize() === Number.MAX_SAFE_INTEGER
+                              ? "auto"
+                              : cell.column.getSize(),
+                        }}
                         key={cell.id}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -120,11 +144,16 @@ export function DataTable<TData, TValue>({
           >
             Previous
           </Button>
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
             Next
           </Button>
         </div>
       )}
     </div>
-  );
+  )
 }

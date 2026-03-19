@@ -1,13 +1,13 @@
-import { type FC } from "react";
-import { Button } from "@/components/ui/button/button";
-import { useFormContext } from "@/hooks/use-app-form";
+import type { FC } from "react"
+import { Button } from "@/components/ui/button/button"
+import { useFormContext } from "@/hooks/use-app-form"
 
 type SubmitButtonProps = {
-  btnText?: string;
-};
+  btnText?: string
+}
 
 export const SubmitButton: FC<SubmitButtonProps> = ({ btnText }) => {
-  const form = useFormContext();
+  const form = useFormContext()
 
   return (
     <form.Subscribe
@@ -24,5 +24,5 @@ export const SubmitButton: FC<SubmitButtonProps> = ({ btnText }) => {
         </Button>
       )}
     />
-  );
-};
+  )
+}

@@ -1,19 +1,16 @@
-import { type FC } from "react";
-import { Input } from "@/components/ui/input/input";
-import { Label } from "@/components/ui/label/label";
-import { useFieldContext } from "@/hooks/use-app-form";
-import { ErrorField } from "./error-field";
+import type { FC } from "react"
+import { Input } from "@/components/ui/input/input"
+import { Label } from "@/components/ui/label/label"
+import { useFieldContext } from "@/hooks/use-app-form"
+import { ErrorField } from "./error-field"
 
 type NumberFieldProps = {
-  label: string;
-  showError?: boolean;
-};
+  label: string
+  showError?: boolean
+}
 
-export const NumberField: FC<NumberFieldProps> = ({
-  label,
-  showError = true,
-}) => {
-  const field = useFieldContext<number>();
+export const NumberField: FC<NumberFieldProps> = ({ label, showError = true }) => {
+  const field = useFieldContext<number>()
 
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -26,5 +23,5 @@ export const NumberField: FC<NumberFieldProps> = ({
       />
       {showError && <ErrorField fieldMeta={field.getMeta()} />}
     </div>
-  );
-};
+  )
+}

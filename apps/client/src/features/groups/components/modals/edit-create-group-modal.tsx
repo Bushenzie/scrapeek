@@ -1,17 +1,20 @@
-import { type Group, groupInsertSchema } from "@scrapeek/db/validators";
-import { type FC } from "react";
-import { Modal } from "@/components/modal/modal";
-import { useAppForm } from "@/hooks/use-app-form";
-import { useCreateGroup, useEditGroup } from "../../api/groups.mutations";
+import { type Group, groupInsertSchema } from "@scrapeek/db/validators"
+import type { FC } from "react"
+import { Modal } from "@/components/modal/modal"
+import { useAppForm } from "@/hooks/use-app-form"
+import { useCreateGroup, useEditGroup } from "../../api/groups.mutations"
 
 type EditCreateGroupModalProps = {
-  group?: Group;
+  group?: Group
   isDropdownMenuItem?: boolean
-};
+}
 
-export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ group,isDropdownMenuItem=false }) => {
-  const createGroup = useCreateGroup();
-  const editGroup = useEditGroup();
+export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({
+  group,
+  isDropdownMenuItem = false,
+}) => {
+  const createGroup = useCreateGroup()
+  const editGroup = useEditGroup()
 
   const form = useAppForm({
     defaultValues: {
@@ -24,48 +27,46 @@ export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({ group,isDr
       if (group) {
         editGroup.mutate({
           json: {
-            name: value.name
+            name: value.name,
           },
           param: {
-            id: group.id
-          }
+            id: group.id,
+          },
         })
-        return;
+        return
       }
       createGroup.mutate({
         json: {
           name: value.name,
-        }
+        },
       })
     },
-  });
+  })
 
   return (
     <Modal
       title={`${group ? "Edit" : "Create"} group`}
       trigger={{
-          content: `${group ? "Edit" : "Create"} group`,
-          props: {
-            variant: "outline",
-          }
-        }}
+        content: `${group ? "Edit" : "Create"} group`,
+        props: {
+          variant: "outline",
+        },
+      }}
       submitBtn={{
         text: group ? "Edit" : "Create",
-        onSubmit: form.handleSubmit
+        onSubmit: form.handleSubmit,
       }}
       isDropdownMenuItem={isDropdownMenuItem}
     >
-        <form
-          className="space-y-2"
-          onSubmit={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
+      <form
+        className="space-y-2"
+        onSubmit={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        }}
       >
         <form.AppField name="name" children={(field) => <field.TextField label="Name" />} />
-
-        </form>
+      </form>
     </Modal>
-
-  );
-};
+  )
+}

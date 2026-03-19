@@ -1,10 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Group, Pen } from "lucide-react";
-import { useState } from "react";
-import { Modal } from "@/components/modal/modal";
-import { Badge } from "@/components/ui/badge/badge";
-import { Box } from "@/components/ui/box/box";
-import { Button } from "@/components/ui/button/button";
+import { createFileRoute } from "@tanstack/react-router"
+import { Group, Pen } from "lucide-react"
+import { useState } from "react"
+import { Modal } from "@/components/modal/modal"
+import { Badge } from "@/components/ui/badge/badge"
+import { Box } from "@/components/ui/box/box"
+import { Button } from "@/components/ui/button/button"
 import {
   Card,
   CardAction,
@@ -13,9 +13,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card/card";
-import { Checkbox } from "@/components/ui/checkbox/checkbox";
-import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox-core/combobox-core";
+} from "@/components/ui/card/card"
+import { Checkbox } from "@/components/ui/checkbox/checkbox"
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox-core/combobox-core"
 import {
   Dialog,
   DialogClose,
@@ -25,7 +32,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog/dialog";
+} from "@/components/ui/dialog/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,21 +40,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown/dropdown";
-import { Input } from "@/components/ui/input/input";
-import { Label } from "@/components/ui/label/label";
-import { Pagination } from "@/components/ui/pagination/pagination";
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/radio-group/radio-group";
+} from "@/components/ui/dropdown/dropdown"
+import { Input } from "@/components/ui/input/input"
+import { Label } from "@/components/ui/label/label"
+import { Pagination } from "@/components/ui/pagination/pagination"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group/radio-group"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select/select";
+} from "@/components/ui/select/select"
 import {
   Table,
   TableBody,
@@ -56,24 +60,19 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table/table";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs/tabs";
-import { Textarea } from "@/components/ui/textarea/textarea";
-import { toast } from "@/components/ui/toasts/toast";
+} from "@/components/ui/table/table"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs/tabs"
+import { Textarea } from "@/components/ui/textarea/textarea"
+import { toast } from "@/components/ui/toasts/toast"
 // import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/")({
   component: DashboardPage,
-});
+})
 
 function DashboardPage() {
-  const [page, setPage] = useState(1);
-  const [openOutOfBountModal, setOpenOutOfBountModal] = useState(false);
+  const [page, setPage] = useState(1)
+  const [openOutOfBountModal, setOpenOutOfBountModal] = useState(false)
 
   return (
     <div>
@@ -102,7 +101,9 @@ function DashboardPage() {
         >
           Summon action toast
         </Button>
-        <Button icon={<Pen/>} onClick={() => setOpenOutOfBountModal(true)}>Out of bound btn to open modal</Button>
+        <Button icon={<Pen />} onClick={() => setOpenOutOfBountModal(true)}>
+          Out of bound btn to open modal
+        </Button>
         <div className="flex flex-col gap-2">
           <Modal
             title="Called out of nowhere"
@@ -110,19 +111,14 @@ function DashboardPage() {
             trigger={null}
             state={{
               open: openOutOfBountModal,
-              setOpen: setOpenOutOfBountModal
+              setOpen: setOpenOutOfBountModal,
             }}
-          >
-          </Modal>
+          ></Modal>
           <Modal
             title="Called normally by trigger btn"
             description="This modal way called out of nowhere and not managed by internal state"
-
-          >
-          </Modal>
-
+          ></Modal>
         </div>
-
         <div className="flex gap-2">
           <Badge variant={"primary"}>primary</Badge>
           <Badge variant={"destructive"}>destructive</Badge>
@@ -130,16 +126,11 @@ function DashboardPage() {
           <Badge variant={"secondary"}>secondary</Badge>
         </div>
         Current page: {page}
-        <Pagination
-          currentPage={page}
-          setCurrentPage={setPage}
-          itemsPerPage={10}
-          itemsTotal={89}
-        />
+        <Pagination currentPage={page} setCurrentPage={setPage} itemsPerPage={10} itemsTotal={89} />
         <Input placeholder="test" />
         <RadioGroup defaultValue="2">
           <div className="flex items-center gap-2">
-            <RadioGroupItem value={"1"} id="option-1" />
+            <RadioGroupItem value={`1`} id="option-1" />
             <Label>Option 1</Label>
           </div>
           <div className="flex items-center gap-2">
@@ -162,9 +153,7 @@ function DashboardPage() {
             <TabsTrigger value="account">Account</TabsTrigger>
             <TabsTrigger value="password">Password</TabsTrigger>
           </TabsList>
-          <TabsContent value="account">
-            Make changes to your account here.
-          </TabsContent>
+          <TabsContent value="account">Make changes to your account here.</TabsContent>
           <TabsContent value="password">Change your password here.</TabsContent>
         </Tabs>
         <div className="flex gap-2">
@@ -198,7 +187,6 @@ function DashboardPage() {
             </TableRow>
           </TableBody>
         </Table>
-
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button>Open dropdown</Button>
@@ -217,9 +205,7 @@ function DashboardPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
+          <CardDescription>Enter your email below to login to your account</CardDescription>
           <CardAction>
             <Button variant="link">Sign Up</Button>
           </CardAction>
@@ -229,18 +215,13 @@ function DashboardPage() {
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
+                <Input id="email" type="email" placeholder="m@example.com" required />
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <a
-                    href="#"
+                    href="http://localhost:3000/"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
@@ -261,5 +242,5 @@ function DashboardPage() {
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }

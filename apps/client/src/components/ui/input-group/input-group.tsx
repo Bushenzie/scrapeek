@@ -1,8 +1,8 @@
-import type { FC } from "react";
-import { Button } from "@/components/ui/button/button";
-import { Input } from "@/components/ui/input/input";
-import { Textarea } from "@/components/ui/textarea/textarea";
-import { cn } from "@/lib/class";
+import type { FC } from "react"
+import { Button } from "@/components/ui/button/button"
+import { Input } from "@/components/ui/input/input"
+import { Textarea } from "@/components/ui/textarea/textarea"
+import { cn } from "@/lib/class"
 import type {
   InputGroupAddonProps,
   InputGroupButtonProps,
@@ -10,8 +10,8 @@ import type {
   InputGroupProps,
   InputGroupTextareaProps,
   InputGroupTextProps,
-} from "./input-group.types";
-import { inputGroupAddonVariants, inputGroupButtonVariants } from "./input-group.variants";
+} from "./input-group.types"
+import { inputGroupAddonVariants, inputGroupButtonVariants } from "./input-group.variants"
 
 export const InputGroup: FC<InputGroupProps> = ({ className, ...props }) => {
   return (
@@ -38,10 +38,14 @@ export const InputGroup: FC<InputGroupProps> = ({ className, ...props }) => {
       )}
       {...props}
     />
-  );
-};
+  )
+}
 
-export const InputGroupAddon: FC<InputGroupAddonProps> = ({ className, align = "inline-start", ...props }) => {
+export const InputGroupAddon: FC<InputGroupAddonProps> = ({
+  className,
+  align = "inline-start",
+  ...props
+}) => {
   return (
     <div
       role="group"
@@ -50,14 +54,14 @@ export const InputGroupAddon: FC<InputGroupAddonProps> = ({ className, align = "
       className={cn(inputGroupAddonVariants({ align }), className)}
       onClick={(e) => {
         if ((e.target as HTMLElement).closest("button")) {
-          return;
+          return
         }
-        e.currentTarget.parentElement?.querySelector("input")?.focus();
+        e.currentTarget.parentElement?.querySelector("input")?.focus()
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const InputGroupButton: FC<InputGroupButtonProps> = ({
   className,
@@ -74,8 +78,8 @@ export const InputGroupButton: FC<InputGroupButtonProps> = ({
       className={cn(inputGroupButtonVariants({ size }), className)}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const InputGroupText: FC<InputGroupTextProps> = ({ className, ...props }) => {
   return (
@@ -86,8 +90,8 @@ export const InputGroupText: FC<InputGroupTextProps> = ({ className, ...props })
       )}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const InputGroupInput: FC<InputGroupInputProps> = ({ className, ...props }) => {
   return (
@@ -99,8 +103,8 @@ export const InputGroupInput: FC<InputGroupInputProps> = ({ className, ...props 
       )}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const InputGroupTextarea: FC<InputGroupTextareaProps> = ({ className, ...props }) => {
   return (
@@ -112,5 +116,5 @@ export const InputGroupTextarea: FC<InputGroupTextareaProps> = ({ className, ...
       )}
       {...props}
     />
-  );
-};
+  )
+}

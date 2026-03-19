@@ -1,9 +1,9 @@
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import { CheckIcon } from "lucide-react";
-import { type ComponentProps, type FC } from "react";
-import { cn } from "@/lib/class";
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
+import { CheckIcon } from "lucide-react"
+import type { ComponentProps, FC } from "react"
+import { cn } from "@/lib/class"
 
-type CheckboxProps = ComponentProps<typeof CheckboxPrimitive.Root>;
+type CheckboxProps = ComponentProps<typeof CheckboxPrimitive.Root>
 
 export const Checkbox: FC<CheckboxProps> = ({ className, ...props }) => {
   return (
@@ -15,7 +15,7 @@ export const Checkbox: FC<CheckboxProps> = ({ className, ...props }) => {
         "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         "border-blueprint-400",
         "peer aria-invalid:ring-destructive/20 aria-invalid:border-destructive size-5 shrink-0 border shadow-xs transition-shadow outline-none disabled:cursor-not-allowed disabled:opacity-50",
-        className
+        className,
       )}
       {...props}
     >
@@ -26,5 +26,5 @@ export const Checkbox: FC<CheckboxProps> = ({ className, ...props }) => {
         <CheckIcon className="size-4" />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
-  );
-};
+  )
+}

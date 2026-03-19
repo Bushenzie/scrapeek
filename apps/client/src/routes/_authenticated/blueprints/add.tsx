@@ -1,22 +1,22 @@
-import { createFileRoute, redirect, useSearch } from "@tanstack/react-router";
-import { Box } from "@/components/ui/box/box";
-import { GoBackButton } from "@/components/ui/go-back-button/go-back-button";
-import { Separator } from "@/components/ui/separator/separator";
-import { APIBlueprintForm } from "@/features/blueprints/components/forms/api-blueprint-form";
-import { DynamicBlueprintForm } from "@/features/blueprints/components/forms/dynamic-blueprint-form";
-import { StaticBlueprintForm } from "@/features/blueprints/components/forms/static-blueprint-form";
-import { blueprintTypeSelectSchema } from "@/features/blueprints/schemas/blueprint-type";
+import { createFileRoute, redirect, useSearch } from "@tanstack/react-router"
+import { Box } from "@/components/ui/box/box"
+import { GoBackButton } from "@/components/ui/go-back-button/go-back-button"
+import { Separator } from "@/components/ui/separator/separator"
+import { APIBlueprintForm } from "@/features/blueprints/components/forms/api-blueprint-form"
+import { DynamicBlueprintForm } from "@/features/blueprints/components/forms/dynamic-blueprint-form"
+import { StaticBlueprintForm } from "@/features/blueprints/components/forms/static-blueprint-form"
+import { blueprintTypeSelectSchema } from "@/features/blueprints/schemas/blueprint-type"
 
 export const Route = createFileRoute("/_authenticated/blueprints/add")({
   validateSearch: blueprintTypeSelectSchema,
   onError: () => {
-    throw redirect({ to: "/blueprints" });
+    throw redirect({ to: "/blueprints" })
   },
   component: AddBlueprintPage,
-});
+})
 
 function AddBlueprintPage() {
-  const { type } = useSearch({ from: "/_authenticated/blueprints/add" });
+  const { type } = useSearch({ from: "/_authenticated/blueprints/add" })
   return (
     <div>
       <GoBackButton fallbackTo=".." />
@@ -32,5 +32,5 @@ function AddBlueprintPage() {
         </div>
       </Box>
     </div>
-  );
+  )
 }

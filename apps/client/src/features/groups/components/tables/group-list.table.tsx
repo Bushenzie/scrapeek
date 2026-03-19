@@ -1,16 +1,21 @@
-
-import type { FC } from 'react'
-import { DataTable } from '@/components/data-table/data-table'
-import type { GroupListResponse } from '../../api/groups.types'
-import { columns } from './group-list.columns'
-import { GroupListExpandedTable } from './group-list-expanded.table'
+import type { FC } from "react"
+import { DataTable } from "@/components/data-table/data-table"
+import type { GroupListResponse } from "../../api/groups.types"
+import { columns } from "./group-list.columns"
+import { GroupListExpandedTable } from "./group-list-expanded.table"
 
 type GroupListTableProps = {
   groups: GroupListResponse["data"]
 }
 
-export const GroupListTable: FC<GroupListTableProps> = ({groups}) => {
-  return <DataTable data={groups} columns={columns} renderExpandedRow={(row) => (
-    <GroupListExpandedTable blueprints={row?.original.blueprints ??[]} />
-  )} />
+export const GroupListTable: FC<GroupListTableProps> = ({ groups }) => {
+  return (
+    <DataTable
+      data={groups}
+      columns={columns}
+      renderExpandedRow={(row) => (
+        <GroupListExpandedTable blueprints={row?.original.blueprints ?? []} />
+      )}
+    />
+  )
 }

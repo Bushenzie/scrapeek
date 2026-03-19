@@ -10,22 +10,32 @@
   },
   "formatter": {
     "enabled": true,
-    "indentStyle": "tab",
-    "indentWidth": 1,
-    "includes": ["**/*.ts"],
-    "lineWidth": 100
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "lineEnding": "lf",
+    "indentStyle": "space",
+    "includes": ["**/*.ts", "**/*.tsx"]
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "correctness": {
+        "useUniqueElementIds": "off",
+        "noChildrenProp": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      }
     },
-    "includes": ["**/*.ts"]
+    "includes": ["**/*.ts", "**/*.tsx"]
   },
   "javascript": {
     "formatter": {
       "quoteStyle": "double",
-      "lineWidth": 100
+      "lineWidth": 100,
+      "semicolons": "asNeeded",
+      "trailingCommas": "all"
     }
   },
   "assist": {

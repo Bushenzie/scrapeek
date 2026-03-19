@@ -1,40 +1,42 @@
-import type { CheckedState } from "@radix-ui/react-checkbox";
-import {BlueprintType} from "@scrapeek/db/constants"
+import type { CheckedState } from "@radix-ui/react-checkbox"
+import { BlueprintType } from "@scrapeek/db/constants"
 import {
-    type Blueprint,
+  type Blueprint,
   type DynamicBlueprintWithRelations,
   dynamicInsertBlueprintSchema,
   dynamicUpdateBlueprintSchema,
   type EditableDynamicBlueprint,
-} from "@scrapeek/db/validators";
-import { formOptions } from "@tanstack/react-form";
-import { useRouter } from "@tanstack/react-router";
-import { XIcon } from "lucide-react";
-import { type FC, useState } from "react";
-import { Button } from "@/components/ui/button/button";
-import { Checkbox } from "@/components/ui/checkbox/checkbox";
-import { Input } from "@/components/ui/input/input";
-import { Label } from "@/components/ui/label/label";
-import { Textarea } from "@/components/ui/textarea/textarea";
-import { useAppForm } from "@/hooks/use-app-form";
-import { authClient } from "@/lib/clients/auth";
-import { useCreateBlueprint, useEditBlueprint } from "../../api/blueprints.mutations";
-import type { BlueprintDetailResponse } from "../../api/blueprints.types";
+} from "@scrapeek/db/validators"
+import { formOptions } from "@tanstack/react-form"
+import { useRouter } from "@tanstack/react-router"
+import { XIcon } from "lucide-react"
+import { type FC, useState } from "react"
+import { Button } from "@/components/ui/button/button"
+import { Checkbox } from "@/components/ui/checkbox/checkbox"
+import { Input } from "@/components/ui/input/input"
+import { Label } from "@/components/ui/label/label"
+import { Textarea } from "@/components/ui/textarea/textarea"
+import { useAppForm } from "@/hooks/use-app-form"
+import { authClient } from "@/lib/clients/auth"
+import { useCreateBlueprint, useEditBlueprint } from "../../api/blueprints.mutations"
+import type { BlueprintDetailResponse } from "../../api/blueprints.types"
 
 type DynamicBlueprintFormProps = {
-  blueprint?: DynamicBlueprintWithRelations;
-};
+  blueprint?: DynamicBlueprintWithRelations
+}
 
 export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint }) => {
-  const [showPagination, setShowPagination] = useState(blueprint && blueprint?.config.pagination ? true : false);
-  const router = useRouter();
-  const { mutateAsync: addBlueprint } = useCreateBlueprint();
-  const { mutateAsync: editBlueprint } = useEditBlueprint();
-  const { data: session } = authClient.useSession();
+  const [showPagination, setShowPagination] = useState(
+    blueprint && blueprint?.config.pagination ? true : false,
+  )
+  const router = useRouter()
+  const { mutateAsync: addBlueprint } = useCreateBlueprint()
+  const { mutateAsync: editBlueprint } = useEditBlueprint()
+  const { data: session } = authClient.useSession()
 
   if (blueprint?.result) {
-    const { result, ...formattedBlueprint } = blueprint;
-    blueprint = formattedBlueprint;
+    const { result, ...formattedBlueprint } = blueprint
+    blueprint = formattedBlueprint
   }
 
   const defaultOptions = formOptions({
@@ -55,7 +57,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint 
           waitSelectorElement: "",
         },
       } as EditableDynamicBlueprint),
-  });
+  })
 
   const form = useAppForm({
     ...defaultOptions,
@@ -63,16 +65,16 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint 
       onChange: blueprint ? dynamicUpdateBlueprintSchema : dynamicInsertBlueprintSchema,
     },
     onSubmit: async ({ value }) => {
-      let blueprintId: string | null = null;
+      let blueprintId: string | null = null
 
       if (blueprint) {
-        const response = await editBlueprint({json:value,param: {id: blueprint.id}});
-        const {data} = await response.json()
-        blueprintId = data.id;
+        const response = await editBlueprint({ json: value, param: { id: blueprint.id } })
+        const { data } = await response.json()
+        blueprintId = data.id
       } else {
-        const response = await addBlueprint({json: value as Blueprint});
-        const {data} = await response.json()
-        blueprintId = data.id;
+        const response = await addBlueprint({ json: value as Blueprint })
+        const { data } = await response.json()
+        blueprintId = data.id
       }
 
       await router.navigate({
@@ -80,39 +82,45 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint 
         params: {
           blueprintId: blueprintId!,
         },
-      });
+      })
     },
-  });
+  })
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
+    e.preventDefault()
+    e.stopPropagation()
+  }
 
   const handlePaginationChange = (checked: CheckedState) => {
-    setShowPagination((prev) => !prev);
+    setShowPagination((prev) => !prev)
     if (checked) {
       form.setFieldValue("config.pagination", {
         variant: "link",
         selector: "",
         attribute: "",
-      });
+      })
     } else {
-      form.setFieldValue("config.pagination", undefined);
+      form.setFieldValue("config.pagination", undefined)
     }
-  };
+  }
 
   return (
     <>
       <div className=" gap-2">
         <div>
           <form onSubmit={handleSubmit} className="space-y-4 col-span-1">
-            <form.AppField name="name" children={(field) => <field.TextField label="Blueprint name" />} />
+            <form.AppField
+              name="name"
+              children={(field) => <field.TextField label="Blueprint name" />}
+            />
             <form.AppField
               name="description"
               children={(field) => <field.TextareaField label="Blueprint description" />}
             />
-            <form.AppField name="config.timeout" children={(field) => <field.NumberField label="Timeout (ms)" />} />
+            <form.AppField
+              name="config.timeout"
+              children={(field) => <field.NumberField label="Timeout (ms)" />}
+            />
             <form.AppField name="url" children={(field) => <field.TextField label="URL" />} />
             <form.AppField
               name="config.waitSelectorElement"
@@ -174,7 +182,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint 
                     <Button
                       className="w-full"
                       onClick={() => {
-                        field.pushValue({ key: "", selector: "" });
+                        field.pushValue({ key: "", selector: "" })
                       }}
                     >
                       Add element
@@ -185,14 +193,21 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint 
             </div>
 
             <div className="flex gap-2">
-              <Checkbox id="pagination" checked={showPagination} onCheckedChange={handlePaginationChange} />
+              <Checkbox
+                id="pagination"
+                checked={showPagination}
+                onCheckedChange={handlePaginationChange}
+              />
               <Label htmlFor="pagination">Include pagination</Label>
             </div>
             <form.AppField
               name="respectRobotsTxt"
               children={(field) => <field.CheckboxField label="Respect robots.txt" />}
             />
-            <form.AppField name="public" children={(field) => <field.CheckboxField label="Public" />} />
+            <form.AppField
+              name="public"
+              children={(field) => <field.CheckboxField label="Public" />}
+            />
             {showPagination && (
               <>
                 <form.AppField
@@ -245,5 +260,5 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint 
         </form.AppForm>
       </div>
     </>
-  );
-};
+  )
+}

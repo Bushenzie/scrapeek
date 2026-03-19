@@ -1,23 +1,18 @@
-import { Suspense, useState } from "react";
-import { Box } from "@/components/ui/box/box";
-import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner";
-import { Separator } from "@/components/ui/separator/separator";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs/tabs";
-import { ProfileAdvancedTab } from "@/features/auth/components/profile-advanced-tab";
-import { ProfileAPIManagementTab } from "@/features/auth/components/profile-api-management-tab";
-import { ProfileSettingsTab } from "@/features/auth/components/profile-settings-tab";
-import { CreateApiKeyModal } from "./modals/create-api-key-modal";
+import { Suspense, useState } from "react"
+import { Box } from "@/components/ui/box/box"
+import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner"
+import { Separator } from "@/components/ui/separator/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs/tabs"
+import { ProfileAdvancedTab } from "@/features/auth/components/profile-advanced-tab"
+import { ProfileAPIManagementTab } from "@/features/auth/components/profile-api-management-tab"
+import { ProfileSettingsTab } from "@/features/auth/components/profile-settings-tab"
+import { CreateApiKeyModal } from "./modals/create-api-key-modal"
 
-type TabOptions = "settings" | "advanced" | "api-management";
+type TabOptions = "settings" | "advanced" | "api-management"
 
 export const ProfilePageContent = () => {
-  const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [tab, setTab] = useState<TabOptions>("settings");
+  const [createModalOpen, setCreateModalOpen] = useState(false)
+  const [tab, setTab] = useState<TabOptions>("settings")
 
   return (
     <Tabs
@@ -41,14 +36,9 @@ export const ProfilePageContent = () => {
       <Suspense fallback={<LoadingSpinner />}>
         <Box className="col-span-3">
           <div className="flex justify-between items-center p-6">
-            <h1 className="text-2xl">
-              Profile | {tab.toUpperCase().split("-").join(" ")}
-            </h1>
+            <h1 className="text-2xl">Profile | {tab.toUpperCase().split("-").join(" ")}</h1>
             {tab === "api-management" && (
-              <CreateApiKeyModal
-                isOpen={createModalOpen}
-                setIsOpen={setCreateModalOpen}
-              />
+              <CreateApiKeyModal isOpen={createModalOpen} setIsOpen={setCreateModalOpen} />
             )}
           </div>
           <Separator />
@@ -64,5 +54,5 @@ export const ProfilePageContent = () => {
         </Box>
       </Suspense>
     </Tabs>
-  );
-};
+  )
+}

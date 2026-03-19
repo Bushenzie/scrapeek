@@ -1,28 +1,33 @@
 // import { useRouter } from "@tanstack/react-router";
 
-import { Link, useRouter } from "@tanstack/react-router";
-import { type ComponentProps, type FC } from "react";
-import { cn } from "@/lib/class";
-import { authClient } from "@/lib/clients/auth";
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar/avatar";
-import { Box } from "../box/box";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../dropdown/dropdown";
-import { LinkButton } from "../link-button/link-button";
+import { Link, useRouter } from "@tanstack/react-router"
+import type { ComponentProps, FC } from "react"
+import { cn } from "@/lib/class"
+import { authClient } from "@/lib/clients/auth"
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar/avatar"
+import { Box } from "../box/box"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../dropdown/dropdown"
+import { LinkButton } from "../link-button/link-button"
 
-type NavbarProps = ComponentProps<"div">;
+type NavbarProps = ComponentProps<"div">
 
 export const Navbar: FC<NavbarProps> = ({ className }) => {
-  const router = useRouter();
-  const { data: session, isPending } = authClient.useSession();
+  const router = useRouter()
+  const { data: session, isPending } = authClient.useSession()
 
   const handleSignOut = async () => {
-    await authClient.signOut();
+    await authClient.signOut()
 
-    return router.navigate({ to: "/" });
-  };
+    return router.navigate({ to: "/" })
+  }
 
   if (isPending || !session) {
-    return null;
+    return null
   }
 
   return (
@@ -98,5 +103,5 @@ export const Navbar: FC<NavbarProps> = ({ className }) => {
         </DropdownMenuContent>
       </DropdownMenu>
     </Box>
-  );
-};
+  )
+}

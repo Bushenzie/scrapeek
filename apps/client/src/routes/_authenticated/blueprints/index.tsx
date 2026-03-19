@@ -1,14 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Suspense } from "react";
-import { Box } from "@/components/ui/box/box";
-import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner";
-import { Separator } from "@/components/ui/separator/separator";
-import { BlueprintList } from "@/features/blueprints/components/blueprint-list";
-import { CreateBlueprintDialog } from "@/features/blueprints/components/modals/create-blueprint-modal";
+import { createFileRoute } from "@tanstack/react-router"
+import { Suspense } from "react"
+import { Box } from "@/components/ui/box/box"
+import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner"
+import { Separator } from "@/components/ui/separator/separator"
+import { BlueprintList } from "@/features/blueprints/components/blueprint-list"
+import { CreateBlueprintDialog } from "@/features/blueprints/components/modals/create-blueprint-modal"
 
 export const Route = createFileRoute("/_authenticated/blueprints/")({
   component: BlueprintsPage,
-});
+})
 
 function BlueprintsPage() {
   return (
@@ -24,5 +24,5 @@ function BlueprintsPage() {
         <BlueprintList />
       </Suspense>
     </Box>
-  );
+  )
 }

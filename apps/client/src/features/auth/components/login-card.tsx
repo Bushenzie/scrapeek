@@ -1,19 +1,14 @@
-import { Button } from "@/components/ui/button/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card/card";
-import { authClient } from "@/lib/clients/auth";
+import { Button } from "@/components/ui/button/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card/card"
+import { authClient } from "@/lib/clients/auth"
 
 export const LoginCard = () => {
   const handleSignIn = (provider: "github" | "gitlab" | "google") => {
     authClient.signIn.social({
       callbackURL: "http://localhost:3000/blueprints",
       provider,
-    });
-  };
+    })
+  }
 
   return (
     <Card>
@@ -34,5 +29,5 @@ export const LoginCard = () => {
         </div>
       </CardContent>
     </Card>
-  );
-};
+  )
+}

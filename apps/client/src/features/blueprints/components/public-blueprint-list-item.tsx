@@ -1,21 +1,21 @@
-import { Link } from "@tanstack/react-router";
-import { Plus, ThumbsUp } from "lucide-react";
-import { type FC } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar/avatar";
-import { Badge } from "@/components/ui/badge/badge";
-import { Box } from "@/components/ui/box/box";
-import { Button } from "@/components/ui/button/button";
-import { authClient } from "@/lib/clients/auth";
-import { useUpvoteBlueprint } from "../api/blueprints.mutations";
-import type { BlueprintPublicListResponse } from "../api/blueprints.types";
+import { Link } from "@tanstack/react-router"
+import { Plus, ThumbsUp } from "lucide-react"
+import type { FC } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar/avatar"
+import { Badge } from "@/components/ui/badge/badge"
+import { Box } from "@/components/ui/box/box"
+import { Button } from "@/components/ui/button/button"
+import { authClient } from "@/lib/clients/auth"
+import { useUpvoteBlueprint } from "../api/blueprints.mutations"
+import type { BlueprintPublicListResponse } from "../api/blueprints.types"
 
 type PublicBlueprintListItemProps = {
-  blueprint: BlueprintPublicListResponse["data"]["blueprints"][number];
-};
+  blueprint: BlueprintPublicListResponse["data"]["blueprints"][number]
+}
 
 export const PublicBlueprintListItem: FC<PublicBlueprintListItemProps> = ({ blueprint }) => {
-  const { data: session } = authClient.useSession();
-  const { mutate: upvoteBlueprint } = useUpvoteBlueprint();
+  const { data: session } = authClient.useSession()
+  const { mutate: upvoteBlueprint } = useUpvoteBlueprint()
 
   return (
     <Box className="p-5 h-48 grid grid-rows-4">
@@ -48,16 +48,17 @@ export const PublicBlueprintListItem: FC<PublicBlueprintListItemProps> = ({ blue
         <div className="flex items-center gap-2 justify-end">
           <Button
             variant={
-              blueprint?.upvotes?.find((upvote) => upvote.userId === session?.user.id) !== undefined ? "primary" : "outline"
+              blueprint?.upvotes?.find((upvote) => upvote.userId === session?.user.id) !== undefined
+                ? "primary"
+                : "outline"
             }
             size={"sm"}
             onClick={async () => {
-
               await upvoteBlueprint({
                 json: {
-                  blueprintId: blueprint.id
-                }
-              });
+                  blueprintId: blueprint.id,
+                },
+              })
             }}
             className="flex items-center justify-center"
           >
@@ -71,5 +72,5 @@ export const PublicBlueprintListItem: FC<PublicBlueprintListItemProps> = ({ blue
         </div>
       </div>
     </Box>
-  );
-};
+  )
+}

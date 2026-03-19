@@ -1,6 +1,6 @@
-import { type FC } from "react";
-import ShikiHighligher from "react-shiki";
-import type { CodeBlockProps } from "./code-block.types";
+import type { FC } from "react"
+import ShikiHighligher from "react-shiki"
+import type { CodeBlockProps } from "./code-block.types"
 
 export const CodeBlock: FC<CodeBlockProps> = ({ code, lang, theme }) => {
   return (
@@ -12,5 +12,5 @@ export const CodeBlock: FC<CodeBlockProps> = ({ code, lang, theme }) => {
     >
       {code.trim()}
     </ShikiHighligher>
-  );
-};
+  )
+}

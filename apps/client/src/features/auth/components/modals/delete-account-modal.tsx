@@ -1,14 +1,14 @@
-import { useRouter } from "@tanstack/react-router";
-import { Modal } from "@/components/modal/modal";
-import { authClient } from "@/lib/clients/auth";
+import { useRouter } from "@tanstack/react-router"
+import { Modal } from "@/components/modal/modal"
+import { authClient } from "@/lib/clients/auth"
 
 export const DeleteAccountModal = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   const handleSubmit = async () => {
-    await authClient.deleteUser();
-    router.navigate({ to: "/" });
-  };
+    await authClient.deleteUser()
+    router.navigate({ to: "/" })
+  }
 
   return (
     <Modal
@@ -17,13 +17,13 @@ export const DeleteAccountModal = () => {
       trigger={{
         content: "Delete account",
         props: {
-          variant: "destructive"
-        }
+          variant: "destructive",
+        },
       }}
       submitBtn={{
         text: "Delete",
-        onSubmit: handleSubmit
+        onSubmit: handleSubmit,
       }}
     />
-  );
-};
+  )
+}
