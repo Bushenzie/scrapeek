@@ -120,27 +120,7 @@ function DashboardPage() {
 
           >
           </Modal>
-          <Dialog>
-            <DialogTrigger>
-              <Button variant={"outline"}>Old dialog</Button>
-            </DialogTrigger>
-            <DialogContent overlayClickClose>
-              <DialogHeader>
-                <DialogTitle>Are you absolutely sure?</DialogTitle>
-                <DialogDescription>
-                  This action cannot be undone. This will permanently delete your
-                  account and remove your data from our servers.
-                </DialogDescription>
-              </DialogHeader>
 
-              <DialogFooter>
-                <DialogClose>
-                  <Button variant="outline">Cancel</Button>
-                </DialogClose>
-                <Button type="submit">Save changes</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
         </div>
 
         <div className="flex gap-2">
