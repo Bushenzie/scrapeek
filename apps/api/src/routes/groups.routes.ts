@@ -3,6 +3,7 @@ import { groupInsertSchema, groupUpdateSchema } from "@scrapeek/db/validators";
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { StatusCodes } from "http-status-codes";
+import z from "zod";
 import type { AuthType } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { StatusError } from "@/lib/error";
@@ -47,6 +48,36 @@ const app = new Hono<{ Variables: AuthType }>()
 
 		return c.json({ data: createdGroup[0] });
 	})
+	.put(
+		"/",
+		zodValidator(
+			"json",
+			z.object({
+				blueprintId: z.string(),
+				groupIds: z.string().array(),
+			}),
+		),
+		async (c) => {
+			const user = c.get("user");
+			const { blueprintId, groupIds } = c.req.valid("json");
+
+			if (!user) {
+				throw new StatusError("No user found", StatusCodes.UNAUTHORIZED);
+			}
+
+			const createdBlueprintGroups = await db
+				.insert(schema.blueprintGroup)
+				.values(
+					groupIds.map((groupId) => ({
+						blueprintId,
+						groupId,
+					})),
+				)
+				.returning();
+
+			return c.json({ data: createdBlueprintGroups });
+		},
+	)
 	.patch("/:id", zodValidator("json", groupUpdateSchema), async (c) => {
 		const user = c.get("user");
 		const id = c.req.param("id");
@@ -64,10 +95,7 @@ const app = new Hono<{ Variables: AuthType }>()
 				},
 			})
 			.catch(() => {
-				throw new StatusError(
-					`Group with id '${id}' was not found`,
-					StatusCodes.NOT_FOUND,
-				);
+				throw new StatusError(`Group with id '${id}' was not found`, StatusCodes.NOT_FOUND);
 			});
 
 		const updatedGroup = await db
@@ -96,16 +124,10 @@ const app = new Hono<{ Variables: AuthType }>()
 				},
 			})
 			.catch(() => {
-				throw new StatusError(
-					`Group with id '${id}' was not found`,
-					StatusCodes.NOT_FOUND,
-				);
+				throw new StatusError(`Group with id '${id}' was not found`, StatusCodes.NOT_FOUND);
 			});
 
-		const deletedGroup = await db
-			.delete(schema.group)
-			.where(eq(schema.group.id, id))
-			.returning();
+		const deletedGroup = await db.delete(schema.group).where(eq(schema.group.id, id)).returning();
 
 		return c.json({ data: deletedGroup });
 	});

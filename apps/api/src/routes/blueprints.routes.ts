@@ -79,6 +79,7 @@ const app = new Hono<{ Variables: AuthType }>()
 						updatedAt: true,
 					},
 				},
+				groups: true,
 			},
 			where: { userId: user.id },
 		});
