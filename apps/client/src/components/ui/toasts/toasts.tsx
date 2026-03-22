@@ -5,11 +5,11 @@ import {
   OctagonXIcon,
   TriangleAlertIcon,
   XIcon,
-} from "lucide-react";
-import type { FC } from "react";
-import { Toaster as Sonner, type ToasterProps, toast } from "sonner";
-import { Button } from "../button/button";
-import type { ToastProps } from "./toasts.types";
+} from "lucide-react"
+import type { FC } from "react"
+import { Toaster as Sonner, type ToasterProps, toast } from "sonner"
+import { Button } from "../button/button"
+import type { ToastProps } from "./toasts.types"
 
 export const Toaster: FC<ToasterProps> = ({ ...props }) => {
   return (
@@ -25,16 +25,16 @@ export const Toaster: FC<ToasterProps> = ({ ...props }) => {
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const Toast: FC<ToastProps> = ({ id, title, description, action }) => {
   const closeToast = () => {
-    toast.dismiss(id);
-  };
+    toast.dismiss(id)
+  }
 
   return (
-    <div className="bg-blueprint-700 font-mono border relative border-blueprint-400 rounded-lg px-4 py-3 min-w-96 w-full max-w-screen">
+    <div className="bg-blueprint-700 font-mono border relative border-blueprint-400  px-4 py-3 min-w-96 w-full max-w-screen">
       <div
         className="absolute rounded-full h-6 w-6 flex items-center justify-center bg-blueprint-700 hover:bg-blueprint-900 border border-blueprint-400 -top-2 -right-2 cursor-pointer"
         onClick={closeToast}
@@ -44,16 +44,14 @@ export const Toast: FC<ToastProps> = ({ id, title, description, action }) => {
       <div className="flex justify-between">
         <div className="flex flex-col relative w-full gap-0.5 pr-2">
           <h3 className="text-sm font-medium select-none">{title}</h3>
-          <p className="text-xs text-blueprint-200 line-clamp-2 select-none">
-            {description}
-          </p>
+          <p className="text-xs text-blueprint-200 line-clamp-2 select-none">{description}</p>
         </div>
         {action && (
           <div className="flex items-center justify-center">
             <Button
               onClick={() => {
-                action.onClick();
-                closeToast();
+                action.onClick()
+                closeToast()
               }}
               size={"sm"}
             >
@@ -63,5 +61,5 @@ export const Toast: FC<ToastProps> = ({ id, title, description, action }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}

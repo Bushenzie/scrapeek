@@ -1,7 +1,7 @@
-import { Copy } from "lucide-react";
-import { type Dispatch, type FC, type SetStateAction } from "react";
-import { z } from "zod";
-import { Button } from "@/components/ui/button/button";
+import { Copy } from "lucide-react"
+import type { Dispatch, FC, SetStateAction } from "react"
+import { z } from "zod"
+import { Button } from "@/components/ui/button/button"
 import {
   Dialog,
   DialogClose,
@@ -10,21 +10,18 @@ import {
   DialogFooter,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog/dialog";
-import { Input } from "@/components/ui/input/input";
-import { useAppForm } from "@/hooks/use-app-form";
-import { useCreateApiKey } from "../../api/auth.mutations";
+} from "@/components/ui/dialog/dialog"
+import { Input } from "@/components/ui/input/input"
+import { useAppForm } from "@/hooks/use-app-form"
+import { useCreateApiKey } from "../../api/auth.mutations"
 
 type CreateApiKeyModalProps = {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-};
+  isOpen: boolean
+  setIsOpen: Dispatch<SetStateAction<boolean>>
+}
 
-export const CreateApiKeyModal: FC<CreateApiKeyModalProps> = ({
-  isOpen,
-  setIsOpen,
-}) => {
-  const { data, mutate: createApiKey, reset } = useCreateApiKey();
+export const CreateApiKeyModal: FC<CreateApiKeyModalProps> = ({ isOpen, setIsOpen }) => {
+  const { data, mutate: createApiKey, reset } = useCreateApiKey()
 
   const form = useAppForm({
     defaultValues: {
@@ -36,26 +33,23 @@ export const CreateApiKeyModal: FC<CreateApiKeyModalProps> = ({
       }),
     },
     onSubmit: async ({ formApi, value }) => {
-      await createApiKey(value.name);
-      formApi.reset();
+      await createApiKey(value.name)
+      formApi.reset()
     },
-  });
+  })
 
   const handleCopy = async () => {
-    if (!data) return;
-    await navigator.clipboard.writeText(data);
-  };
+    if (!data) return
+    await navigator.clipboard.writeText(data)
+  }
 
   const handleClose = async () => {
-    reset();
-    setIsOpen(false);
-  };
+    reset()
+    setIsOpen(false)
+  }
 
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={(open) => (open ? setIsOpen(true) : handleClose())}
-    >
+    <Dialog open={isOpen} onOpenChange={(open) => (open ? setIsOpen(true) : handleClose())}>
       <DialogTrigger className="z-10" asChild>
         <Button>Add API Key</Button>
       </DialogTrigger>
@@ -64,8 +58,8 @@ export const CreateApiKeyModal: FC<CreateApiKeyModalProps> = ({
           <DialogTitle>Add API Key</DialogTitle>
           <form
             onSubmit={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
+              e.preventDefault()
+              e.stopPropagation()
             }}
           >
             <form.AppForm>
@@ -86,8 +80,7 @@ export const CreateApiKeyModal: FC<CreateApiKeyModalProps> = ({
         <DialogContent>
           <DialogTitle>Copy API Key</DialogTitle>
           <DialogDescription>
-            Copy your API Key as you will not be able to reveal it again upon
-            losing it.
+            Copy your API Key as you will not be able to reveal it again upon losing it.
           </DialogDescription>
           <div className="flex h-full">
             <Input value={data} className="rounded-r-none truncate" readOnly />
@@ -103,5 +96,5 @@ export const CreateApiKeyModal: FC<CreateApiKeyModalProps> = ({
         </DialogContent>
       )}
     </Dialog>
-  );
-};
+  )
+}

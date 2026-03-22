@@ -1,9 +1,9 @@
-import * as SeparatorPrimitive from "@radix-ui/react-separator";
-import { type FC } from "react";
+import * as SeparatorPrimitive from "@radix-ui/react-separator"
+import type { FC } from "react"
 
-import { cn } from "@/lib/class";
+import { cn } from "@/lib/class"
 
-type SeparatorProps = React.ComponentProps<typeof SeparatorPrimitive.Root>;
+type SeparatorProps = React.ComponentProps<typeof SeparatorPrimitive.Root>
 
 export const Separator: FC<SeparatorProps> = ({
   className,
@@ -18,9 +18,9 @@ export const Separator: FC<SeparatorProps> = ({
       orientation={orientation}
       className={cn(
         "bg-blueprint-400 shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
-        className
+        className,
       )}
       {...props}
     />
-  );
-};
+  )
+}

@@ -1,8 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute(
-  '/_authenticated/blueprints/_/$blueprintId/preview',
-)({
+export const Route = createFileRoute("/_authenticated/blueprints/_/$blueprintId/preview")({
   component: RouteComponent,
 })
 

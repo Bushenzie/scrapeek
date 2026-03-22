@@ -1,10 +1,10 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps } from "react"
 
-export type Props = ComponentProps<"table">;
-export type HeaderProps = ComponentProps<"thead">;
-export type BodyProps = ComponentProps<"tbody">;
-export type FooterProps = ComponentProps<"tfoot">;
-export type RowProps = ComponentProps<"tr">;
-export type HeadProps = ComponentProps<"th">;
-export type CellProps = ComponentProps<"td">;
-export type CaptionProps = ComponentProps<"caption">;
+export type TableProps = ComponentProps<"table">
+export type TableHeaderProps = ComponentProps<"thead">
+export type TableBodyProps = ComponentProps<"tbody">
+export type TableFooterProps = ComponentProps<"tfoot">
+export type TableRowProps = ComponentProps<"tr">
+export type TableHeadProps = ComponentProps<"th">
+export type TableCellProps = ComponentProps<"td">
+export type TableCaptionProps = ComponentProps<"caption">

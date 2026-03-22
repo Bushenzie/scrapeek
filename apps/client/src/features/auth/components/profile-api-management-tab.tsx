@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { format, formatDistanceToNow } from "date-fns";
+import { useQuery } from "@tanstack/react-query"
+import { format, formatDistanceToNow } from "date-fns"
 import {
   Table,
   TableBody,
@@ -7,20 +7,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table/table";
-import { apiKeyListOptions } from "../api/auth.queries";
-import { DeleteApiKeyModal } from "./modals/delete-api-key-modal";
+} from "@/components/ui/table/table"
+import { apiKeyListOptions } from "../api/auth.queries"
+import { DeleteApiKeyModal } from "./modals/delete-api-key-modal"
 
 export const ProfileAPIManagementTab = () => {
-  const { data: apiKeys } = useQuery(apiKeyListOptions());
+  const { data: apiKeys } = useQuery(apiKeyListOptions())
 
   return (
     <div className="flex items-start">
       {!apiKeys ||
         (apiKeys?.length === 0 && (
-          <span className="text-blueprint-200 w-full text-center text-sm">
-            No API Keys found
-          </span>
+          <span className="text-blueprint-200 w-full text-center text-sm">No API Keys found</span>
         ))}
       {apiKeys && apiKeys?.length > 0 && (
         <Table className="w-full">
@@ -40,10 +38,7 @@ export const ProfileAPIManagementTab = () => {
                   {formatDistanceToNow(apiKey.createdAt, { addSuffix: true })})
                 </TableCell>
                 <TableCell className="text-center">
-                  <DeleteApiKeyModal
-                    name={apiKey?.name ?? "API Key"}
-                    id={apiKey.id}
-                  />
+                  <DeleteApiKeyModal name={apiKey?.name ?? "API Key"} id={apiKey.id} />
                 </TableCell>
               </TableRow>
             ))}
@@ -51,5 +46,5 @@ export const ProfileAPIManagementTab = () => {
         </Table>
       )}
     </div>
-  );
-};
+  )
+}

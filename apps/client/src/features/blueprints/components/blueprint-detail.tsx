@@ -1,56 +1,58 @@
-import { useQuery } from "@tanstack/react-query";
-import fileSaver from "file-saver";
-import { Copy, Download } from "lucide-react";
-import { type FC, useMemo } from "react";
-import { Button } from "@/components/ui/button/button";
-import { CodeBlock } from "@/components/ui/code-block/code-block";
-import { Input } from "@/components/ui/input/input";
-import { Label } from "@/components/ui/label/label";
-import { useRunBlueprint } from "../api/blueprints.mutations";
-import { blueprintDetailOptions } from "../api/blueprints.queries";
+import { useQuery } from "@tanstack/react-query"
+import fileSaver from "file-saver"
+import { Copy, Download } from "lucide-react"
+import { type FC, useMemo } from "react"
+import { Button } from "@/components/ui/button/button"
+import { CodeBlock } from "@/components/ui/code-block/code-block"
+import { Input } from "@/components/ui/input/input"
+import { Label } from "@/components/ui/label/label"
+import { useRunBlueprint } from "../api/blueprints.mutations"
+import { blueprintDetailOptions } from "../api/blueprints.queries"
 
 type BlueprintDetailProps = {
-  blueprintId: string;
-};
+  blueprintId: string
+}
 
 export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
-  const { data: blueprint } = useQuery(blueprintDetailOptions(blueprintId));
-  const {
-    data,
-    isPending,
-    mutate: runScraper,
-  } = useRunBlueprint();
+  const { data: blueprint } = useQuery(
+    blueprintDetailOptions({
+      param: {
+        id: blueprintId,
+      },
+    }),
+  )
+  const { data, isPending, mutate: runScraper } = useRunBlueprint()
 
   const resultURL = useMemo(() => {
     if (!blueprint?.result) return undefined
-    return `http://localhost:3001/api/result/${blueprint?.result?.id}`;
-  }, [blueprint, data]);
+    return `http://localhost:3001/api/result/${blueprint?.result?.id}`
+  }, [blueprint, data])
 
   const lastScrapedData = useMemo(() => {
-    const source = (data && Array.isArray(data) ? data[0] : data) ?? blueprint?.result?.data;
+    const source = (data && Array.isArray(data) ? data[0] : data) ?? blueprint?.result?.data
 
-    const lastScrapedData = source ?? {};
+    const lastScrapedData = source ?? {}
 
-    return JSON.stringify(lastScrapedData, null, 4);
-  }, [blueprint, data]);
+    return JSON.stringify(lastScrapedData, null, 4)
+  }, [blueprint, data])
 
   const handleDownload = () => {
-    const dataBlob = new Blob([lastScrapedData], { type: "application/json" });
+    const dataBlob = new Blob([lastScrapedData], { type: "application/json" })
 
-    fileSaver.saveAs(dataBlob, `${blueprint?.name}_data.json`);
-  };
+    fileSaver.saveAs(dataBlob, `${blueprint?.name}_data.json`)
+  }
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(lastScrapedData);
-  };
+    await navigator.clipboard.writeText(lastScrapedData)
+  }
 
   const handleRunScraper = () => {
-    runScraper({id: blueprintId,mode: "normal"});
-  };
+    runScraper({ json: { id: blueprintId, mode: "normal" } })
+  }
 
   const handleTestRunScraper = () => {
-    runScraper({id: blueprintId,mode: "test"});
-  };
+    runScraper({ json: { id: blueprintId, mode: "test" } })
+  }
 
   return (
     <div>
@@ -75,10 +77,20 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
                 <span className="text-xs">{JSON.parse(lastScrapedData).length ?? 0} results</span>
               </div>
               <div className="flex gap-4">
-                <Button variant={"link"} size={"icon"} className="m-0 p-0 h-max w-fit" onClick={handleDownload}>
+                <Button
+                  variant={"link"}
+                  size={"icon"}
+                  className="m-0 p-0 h-max w-fit"
+                  onClick={handleDownload}
+                >
                   <Download />
                 </Button>
-                <Button variant={"link"} size={"icon"} className="m-0 p-0 h-max w-fit" onClick={handleCopy}>
+                <Button
+                  variant={"link"}
+                  size={"icon"}
+                  className="m-0 p-0 h-max w-fit"
+                  onClick={handleCopy}
+                >
                   <Copy />
                 </Button>
               </div>
@@ -100,5 +112,5 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}

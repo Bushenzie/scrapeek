@@ -1,64 +1,62 @@
-import { schema } from "@scrapeek/db/schema";
-import { type Blueprint, blueprintSchema } from "@scrapeek/db/validators";
-import { eq, sql } from "drizzle-orm";
-import { Hono } from "hono";
-import { z } from "zod";
-import { db } from "@/lib/db.ts";
-import { scrapeData } from "@/lib/scrape.ts";
-import { zodValidator } from "@/middlewares/custom-zod-validator.ts";
+import { schema } from "@scrapeek/db/schema"
+import { type Blueprint, blueprintSchema } from "@scrapeek/db/validators"
+import { eq, sql } from "drizzle-orm"
+import { Hono } from "hono"
+import { z } from "zod"
+import { db } from "@/lib/db.ts"
+import { scrapeData } from "@/lib/scrape.ts"
+import { zodValidator } from "@/middlewares/custom-zod-validator.ts"
+import { StatusError } from "@/lib/error"
+import { StatusCodes } from "http-status-codes"
 
 const app = new Hono().post(
-	"/",
-	zodValidator(
-		"json",
-		z.object({
-			id: z.uuid(),
-			mode: z.union([z.literal("test"), z.literal("normal")]).optional(),
-		}),
-	),
-	async (c) => {
-		const { id, mode } = await c.req.valid("json");
+  "/",
+  zodValidator(
+    "json",
+    z.object({
+      id: z.uuid(),
+      mode: z.union([z.literal("test"), z.literal("normal")]).optional(),
+    }),
+  ),
+  async (c) => {
+    const { id, mode } = await c.req.valid("json")
 
-		const blueprint = await db.query.blueprint
-			.findFirst({
-				where: {
-					id,
-				},
-			})
-			.catch(() => {
-				throw new Error("No blueprints found");
-			});
+    const blueprint = await db.query.blueprint.findFirst({
+      where: {
+        id,
+      },
+    })
 
-		const parsedBlueprint = blueprintSchema.parse(blueprint);
+    if (!blueprint) throw new StatusError("No blueprint found", StatusCodes.NOT_FOUND)
 
-		const isTestRun = mode === "test";
+    const parsedBlueprint = blueprintSchema.parse(blueprint)
 
-		const data = await scrapeData([parsedBlueprint], isTestRun);
+    const isTestRun = mode === "test"
 
-		if (!isTestRun) {
-			const existingResult = await db.query.result.findFirst({
-				where: {
-					blueprintId: parsedBlueprint.id,
-				},
-			});
+    const data = await scrapeData([parsedBlueprint], isTestRun)
 
-			if (!existingResult) {
-				await db
-					.insert(schema.result)
-					.values({ blueprintId: parsedBlueprint.id, data: data[0] });
-			} else {
-				await db
-					.update(schema.result)
-					.set({
-						data: data[0],
-						updatedAt: sql`NOW()`,
-					})
-					.where(eq(schema.result.blueprintId, parsedBlueprint.id));
-			}
-		}
+    if (!isTestRun) {
+      const existingResult = await db.query.result.findFirst({
+        where: {
+          blueprintId: parsedBlueprint.id,
+        },
+      })
 
-		return c.json({ data });
-	},
-);
+      if (!existingResult) {
+        await db.insert(schema.result).values({ blueprintId: parsedBlueprint.id, data: data[0] })
+      } else {
+        await db
+          .update(schema.result)
+          .set({
+            data: data[0],
+            updatedAt: sql`NOW()`,
+          })
+          .where(eq(schema.result.blueprintId, parsedBlueprint.id))
+      }
+    }
 
-export default app;
+    return c.json({ data })
+  },
+)
+
+export default app

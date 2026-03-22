@@ -1,43 +1,42 @@
-import type { CheckedState } from "@radix-ui/react-checkbox";
-import {
-  BLUEPRINT_HTTP_METHODS,
-  BlueprintType,
-} from "@scrapeek/db/constants";
+import type { CheckedState } from "@radix-ui/react-checkbox"
+import { BLUEPRINT_HTTP_METHODS, BlueprintType } from "@scrapeek/db/constants"
 import {
   type APIBlueprintWithRelations,
+  apiInsertBlueprintSchema,
   apiUpdateBlueprintSchema,
   type Blueprint,
   type EditableAPIBlueprint,
-} from "@scrapeek/db/validators";
-import { formOptions } from "@tanstack/react-form";
-import { useRouter } from "@tanstack/react-router";
-import { XIcon } from "lucide-react";
-import { type FC, useState } from "react";
-import { Button } from "@/components/ui/button/button";
-import { Checkbox } from "@/components/ui/checkbox/checkbox";
-import { Input } from "@/components/ui/input/input";
-import { Label } from "@/components/ui/label/label";
-import { Textarea } from "@/components/ui/textarea/textarea";
-import { useAppForm } from "@/hooks/use-app-form";
-import { authClient } from "@/lib/clients/auth";
-import { useCreateBlueprint, useEditBlueprint } from "../../api/blueprints.mutations";
+} from "@scrapeek/db/validators"
+import { formOptions } from "@tanstack/react-form"
+import { useRouter } from "@tanstack/react-router"
+import { XIcon } from "lucide-react"
+import { type FC, useState } from "react"
+import { Button } from "@/components/ui/button/button"
+import { Checkbox } from "@/components/ui/checkbox/checkbox"
+import { Input } from "@/components/ui/input/input"
+import { Label } from "@/components/ui/label/label"
+import { useAppForm } from "@/hooks/use-app-form"
+import { authClient } from "@/lib/clients/auth"
+import { useCreateBlueprint, useEditBlueprint } from "../../api/blueprints.mutations"
 
 // TODO: Cleanup this form
 
 type APIBlueprintFormProps = {
-  blueprint?: APIBlueprintWithRelations;
-};
+  blueprint?: APIBlueprintWithRelations
+}
 
 export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
-  const [showPagination, setShowPagination] = useState(blueprint && blueprint?.config.pagination ? true : false);
-  const router = useRouter();
-  const { mutateAsync: addBlueprint } = useCreateBlueprint();
-  const { mutateAsync: editBlueprint } = useEditBlueprint();
-  const { data: session } = authClient.useSession();
+  const [showPagination, setShowPagination] = useState(
+    blueprint && blueprint?.config.pagination ? true : false,
+  )
+  const router = useRouter()
+  const { mutateAsync: addBlueprint } = useCreateBlueprint()
+  const { mutateAsync: editBlueprint } = useEditBlueprint()
+  const { data: session } = authClient.useSession()
 
   if (blueprint?.result) {
-    const { result, ...formattedBlueprint } = blueprint;
-    blueprint = formattedBlueprint;
+    const { result, ...formattedBlueprint } = blueprint
+    blueprint = formattedBlueprint
   }
 
   const defaultOptions = formOptions({
@@ -60,19 +59,19 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
           query: {},
         },
       } as EditableAPIBlueprint),
-  });
+  })
 
   const form = useAppForm({
     ...defaultOptions,
     validators: {
-      onChange: apiUpdateBlueprintSchema,
+      onChange: blueprint ? apiUpdateBlueprintSchema : apiInsertBlueprintSchema,
     },
     listeners: {
       onChange: ({ formApi, fieldApi }) => {
-        if (!(fieldApi.getInfo().instance?.name === "config.pagination.type")) return null;
+        if (!(fieldApi.getInfo().instance?.name === "config.pagination.type")) return null
 
-        const paginationType = formApi.getFieldValue("config.pagination.type");
-        const fieldToCheck = formApi.getFieldValue("config.pagination.fieldToCheck");
+        const paginationType = formApi.getFieldValue("config.pagination.type")
+        const fieldToCheck = formApi.getFieldValue("config.pagination.fieldToCheck")
         switch (paginationType) {
           case "cursor":
             formApi.setFieldValue("config.pagination", {
@@ -82,15 +81,15 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                 queryKey: "",
                 path: "",
               },
-            });
-            break;
+            })
+            break
           case "nextPage":
             formApi.setFieldValue("config.pagination", {
               fieldToCheck: fieldToCheck ?? "",
               type: "nextPage",
               path: "",
-            });
-            break;
+            })
+            break
           case "offsetLimit":
             formApi.setFieldValue("config.pagination", {
               fieldToCheck: fieldToCheck ?? "",
@@ -103,8 +102,8 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                 queryKey: "",
                 value: 0,
               },
-            });
-            break;
+            })
+            break
           case "pageSize":
             formApi.setFieldValue("config.pagination", {
               fieldToCheck: fieldToCheck ?? "",
@@ -117,22 +116,22 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                 queryKey: "",
                 value: 0,
               },
-            });
-            break;
+            })
+            break
         }
       },
     },
     onSubmit: async ({ value }) => {
-      let blueprintId: string | null = null;
+      let blueprintId: string | null = null
 
       if (blueprint) {
-        const response = await editBlueprint(value as Blueprint);
-        const data = await response.json();
-        blueprintId = data.data.id;
+        const response = await editBlueprint({ json: value, param: { id: blueprint.id } })
+        const data = await response.json()
+        blueprintId = data.data.id
       } else {
-        const response = await addBlueprint(value as Blueprint);
-        const data = await response.json();
-        blueprintId = data.data.id;
+        const response = await addBlueprint({ json: value as Blueprint })
+        const data = await response.json()
+        blueprintId = data.data.id
       }
 
       await router.navigate({
@@ -140,17 +139,17 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
         params: {
           blueprintId: blueprintId!,
         },
-      });
+      })
     },
-  });
+  })
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
+    e.preventDefault()
+    e.stopPropagation()
+  }
 
   const handlePaginationChange = (checked: CheckedState) => {
-    setShowPagination((prev) => !prev);
+    setShowPagination((prev) => !prev)
     if (checked) {
       form.setFieldValue("config.pagination", {
         fieldToCheck: "",
@@ -159,18 +158,21 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
           queryKey: "",
           path: "",
         },
-      });
+      })
     } else {
-      form.setFieldValue("config.pagination", undefined);
+      form.setFieldValue("config.pagination", undefined)
     }
-  };
+  }
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-2">
+      <div className=" gap-2">
         <div>
           <form onSubmit={handleSubmit} className="space-y-4 col-span-1">
-            <form.AppField name="name" children={(field) => <field.TextField label="Blueprint name" />} />
+            <form.AppField
+              name="name"
+              children={(field) => <field.TextField label="Blueprint name" />}
+            />
             <form.AppField
               name="description"
               children={(field) => <field.TextareaField label="Blueprint description" />}
@@ -180,13 +182,19 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                 name="config.method"
                 children={(field) => (
                   <field.SelectField
-                    options={BLUEPRINT_HTTP_METHODS.map((method) => ({ label: method, value: method }))}
+                    options={BLUEPRINT_HTTP_METHODS.map((method) => ({
+                      label: method,
+                      value: method,
+                    }))}
                     triggerLabel={field.form.getFieldValue("config.method") ?? "Select value"}
                     label="HTTP Method"
                   />
                 )}
               />
-              <form.AppField name="config.timeout" children={(field) => <field.NumberField label="Timeout (ms)" />} />
+              <form.AppField
+                name="config.timeout"
+                children={(field) => <field.NumberField label="Timeout (ms)" />}
+              />
             </div>
             <form.AppField name="url" children={(field) => <field.TextField label="URL" />} />
             <div className="flex flex-col gap-2">
@@ -234,7 +242,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
                     <Button
                       className="w-full"
                       onClick={() => {
-                        field.pushValue({ key: "", selector: "" });
+                        field.pushValue({ key: "", selector: "" })
                       }}
                     >
                       Add element
@@ -245,14 +253,21 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
             </div>
 
             <div className="flex gap-2">
-              <Checkbox id="pagination" checked={showPagination} onCheckedChange={handlePaginationChange} />
+              <Checkbox
+                id="pagination"
+                checked={showPagination}
+                onCheckedChange={handlePaginationChange}
+              />
               <Label htmlFor="pagination">Include pagination</Label>
             </div>
             <form.AppField
               name="respectRobotsTxt"
               children={(field) => <field.CheckboxField label="Respect robots.txt" />}
             />
-            <form.AppField name="public" children={(field) => <field.CheckboxField label="Public" />} />
+            <form.AppField
+              name="public"
+              children={(field) => <field.CheckboxField label="Public" />}
+            />
             {showPagination && (
               <>
                 <div className="flex gap-2">
@@ -353,6 +368,8 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
             )}
           </form>
         </div>
+        {/*
+
         <form.Subscribe
           selector={(state) => state.values}
           children={(state) => (
@@ -362,6 +379,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
             </div>
           )}
         />
+          */}
       </div>
       <div className="flex my-2 justify-end">
         <form.AppForm>
@@ -369,5 +387,5 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
         </form.AppForm>
       </div>
     </>
-  );
-};
+  )
+}

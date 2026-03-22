@@ -1,9 +1,9 @@
-import * as LabelPrimitive from "@radix-ui/react-label";
-import { type ComponentProps, type FC } from "react";
+import * as LabelPrimitive from "@radix-ui/react-label"
+import type { ComponentProps, FC } from "react"
 
-import { cn } from "@/lib/class";
+import { cn } from "@/lib/class"
 
-type LabelProps = ComponentProps<typeof LabelPrimitive.Root>;
+type LabelProps = ComponentProps<typeof LabelPrimitive.Root>
 
 export const Label: FC<LabelProps> = ({ className, ...props }) => {
   return (
@@ -11,9 +11,9 @@ export const Label: FC<LabelProps> = ({ className, ...props }) => {
       data-slot="label"
       className={cn(
         "flex items-center truncate gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
-        className
+        className,
       )}
       {...props}
     />
-  );
-};
+  )
+}

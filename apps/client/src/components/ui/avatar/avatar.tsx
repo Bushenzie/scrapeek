@@ -1,13 +1,9 @@
-import * as AvatarPrimitive from "@radix-ui/react-avatar";
-import type { FC } from "react";
+import * as AvatarPrimitive from "@radix-ui/react-avatar"
+import type { FC } from "react"
 
-import { cn } from "@/lib/class";
-import type {
-  AvatarFallbackProps,
-  AvatarImageProps,
-  AvatarProps,
-} from "./avatar.types";
-import { avatarVariants } from "./avatar.variants";
+import { cn } from "@/lib/class"
+import type { AvatarFallbackProps, AvatarImageProps, AvatarProps } from "./avatar.types"
+import { avatarVariants } from "./avatar.variants"
 
 export const Avatar: FC<AvatarProps> = ({ className, size, ...props }) => {
   return (
@@ -16,8 +12,8 @@ export const Avatar: FC<AvatarProps> = ({ className, size, ...props }) => {
       className={cn(avatarVariants({ size }), className)}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const AvatarImage: FC<AvatarImageProps> = ({ className, ...props }) => {
   return (
@@ -26,21 +22,18 @@ export const AvatarImage: FC<AvatarImageProps> = ({ className, ...props }) => {
       className={cn("aspect-square size-full", className)}
       {...props}
     />
-  );
-};
+  )
+}
 
-export const AvatarFallback: FC<AvatarFallbackProps> = ({
-  className,
-  ...props
-}) => {
+export const AvatarFallback: FC<AvatarFallbackProps> = ({ className, ...props }) => {
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
       className={cn(
         "bg-blueprint-100 text-blueprint-700 flex size-full items-center justify-center rounded-full",
-        className
+        className,
       )}
       {...props}
     />
-  );
-};
+  )
+}

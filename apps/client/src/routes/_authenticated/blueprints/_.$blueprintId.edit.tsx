@@ -1,17 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Suspense } from "react";
-import { Box } from "@/components/ui/box/box";
-import { GoBackButton } from "@/components/ui/go-back-button/go-back-button";
-import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner";
-import { Separator } from "@/components/ui/separator/separator";
-import { EditBlueprint } from "@/features/blueprints/components/edit-blueprint";
+import { createFileRoute } from "@tanstack/react-router"
+import { Suspense } from "react"
+import { Box } from "@/components/ui/box/box"
+import { GoBackButton } from "@/components/ui/go-back-button/go-back-button"
+import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner"
+import { Separator } from "@/components/ui/separator/separator"
+import { EditBlueprint } from "@/features/blueprints/components/edit-blueprint"
 
 export const Route = createFileRoute("/_authenticated/blueprints/_/$blueprintId/edit")({
   component: ViewBlueprintPage,
-});
+})
 
 function ViewBlueprintPage() {
-  const { blueprintId } = Route.useParams();
+  const { blueprintId } = Route.useParams()
 
   return (
     <div>
@@ -26,5 +26,5 @@ function ViewBlueprintPage() {
         </Suspense>
       </Box>
     </div>
-  );
+  )
 }

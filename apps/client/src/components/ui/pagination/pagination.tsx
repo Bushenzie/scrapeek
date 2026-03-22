@@ -1,7 +1,7 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { FC } from "react";
-import { Button } from "../button/button";
-import type { PaginationProps } from "./pagination.types";
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import type { FC } from "react"
+import { Button } from "../button/button"
+import type { PaginationProps } from "./pagination.types"
 
 export const Pagination: FC<PaginationProps> = ({
   currentPage,
@@ -9,7 +9,7 @@ export const Pagination: FC<PaginationProps> = ({
   itemsTotal,
   setCurrentPage,
 }) => {
-  const totalPages = Math.ceil(itemsTotal / itemsPerPage);
+  const totalPages = Math.ceil(itemsTotal / itemsPerPage)
 
   return (
     <div className="flex items-center gap-1">
@@ -17,7 +17,7 @@ export const Pagination: FC<PaginationProps> = ({
         variant={"outline"}
         size={"sm"}
         onClick={() => {
-          setCurrentPage((prev) => (prev === 1 ? 1 : prev - 1));
+          setCurrentPage((prev) => (prev === 1 ? 1 : prev - 1))
         }}
         disabled={currentPage === 1}
       >
@@ -28,9 +28,7 @@ export const Pagination: FC<PaginationProps> = ({
         variant={"outline"}
         size={"sm"}
         onClick={() => {
-          setCurrentPage((prev) =>
-            prev === totalPages ? totalPages : prev + 1
-          );
+          setCurrentPage((prev) => (prev === totalPages ? totalPages : prev + 1))
         }}
         disabled={currentPage === totalPages}
       >
@@ -38,5 +36,5 @@ export const Pagination: FC<PaginationProps> = ({
         <ChevronRight />
       </Button>
     </div>
-  );
-};
+  )
+}

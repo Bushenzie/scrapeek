@@ -1,12 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { Pagination } from "@/components/ui/pagination/pagination";
-import { blueprintListPublicOptions } from "../api/blueprints.queries";
-import { PublicBlueprintListItem } from "./public-blueprint-list-item";
+import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
+import { Pagination } from "@/components/ui/pagination/pagination"
+import { blueprintListPublicOptions } from "../api/blueprints.queries"
+import { PublicBlueprintListItem } from "./public-blueprint-list-item"
 
 export const PublicBlueprintsList = () => {
-  const [page, setPage] = useState(1);
-  const { data } = useQuery(blueprintListPublicOptions());
+  const [page, setPage] = useState(1)
+  const { data } = useQuery(
+    blueprintListPublicOptions({
+      query: {
+        page: String(page),
+      },
+    }),
+  )
 
   return (
     <>
@@ -18,7 +24,6 @@ export const PublicBlueprintsList = () => {
         )}
         {(data?.blueprints ?? []).length > 0 &&
           data?.blueprints?.map((blueprint) => (
-            // @ts-expect-error ...
             <PublicBlueprintListItem key={blueprint.id} blueprint={blueprint} />
           ))}
       </div>
@@ -26,10 +31,10 @@ export const PublicBlueprintsList = () => {
         <Pagination
           currentPage={page}
           itemsPerPage={12}
-          itemsTotal={data?.totalCount}
+          itemsTotal={data?.totalCount ?? 0}
           setCurrentPage={setPage}
         />
       </div>
     </>
-  );
-};
+  )
+}

@@ -1,25 +1,25 @@
-import { useStore } from "@tanstack/react-form";
-import { type FC } from "react";
-import { Label } from "@/components/ui/label/label";
+import { useStore } from "@tanstack/react-form"
+import type { FC } from "react"
+import { Label } from "@/components/ui/label/label"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select/select";
-import { useFieldContext } from "@/hooks/use-app-form";
-import { ErrorField } from "./error-field";
+} from "@/components/ui/select/select"
+import { useFieldContext } from "@/hooks/use-app-form"
+import { ErrorField } from "./error-field"
 
 type SelectFieldProps = {
-  label: string;
-  triggerLabel: string;
+  label: string
+  triggerLabel: string
   options: {
-    label: string;
-    value: string;
-  }[];
-  showError?: boolean;
-};
+    label: string
+    value: string
+  }[]
+  showError?: boolean
+}
 
 export const SelectField: FC<SelectFieldProps> = ({
   label,
@@ -27,21 +27,16 @@ export const SelectField: FC<SelectFieldProps> = ({
   options,
   showError = true,
 }) => {
-  const field = useFieldContext<string>();
+  const field = useFieldContext<string>()
 
-  const currentValue = useStore(field.store, (state) => state.value);
+  const currentValue = useStore(field.store, (state) => state.value)
 
   return (
     <div className="flex flex-col gap-2 w-full">
       <Label>{label}</Label>
-      <Select
-        value={field.state.value}
-        onValueChange={(val) => field.handleChange(val)}
-      >
+      <Select value={field.state.value} onValueChange={(val) => field.handleChange(val)}>
         <SelectTrigger className="w-full">
-          <SelectValue>
-            {currentValue ? currentValue : triggerLabel}
-          </SelectValue>
+          <SelectValue>{currentValue ? currentValue : triggerLabel}</SelectValue>
         </SelectTrigger>
         <SelectContent>
           {options.map((option, index) => (
@@ -53,5 +48,5 @@ export const SelectField: FC<SelectFieldProps> = ({
       </Select>
       {showError && <ErrorField fieldMeta={field.getMeta()} />}
     </div>
-  );
-};
+  )
+}

@@ -1,18 +1,17 @@
-import type { FC } from "react";
-
-import { cn } from "@/lib/class";
-import { Button } from "@/components/ui/button/button";
-import { Input } from "@/components/ui/input/input";
-import { Textarea } from "@/components/ui/textarea/textarea";
-import { inputGroupAddonVariants, inputGroupButtonVariants } from "./input-group.variants";
+import type { FC } from "react"
+import { Button } from "@/components/ui/button/button"
+import { Input } from "@/components/ui/input/input"
+import { Textarea } from "@/components/ui/textarea/textarea"
+import { cn } from "@/lib/class"
 import type {
-  InputGroupProps,
   InputGroupAddonProps,
   InputGroupButtonProps,
-  InputGroupTextProps,
   InputGroupInputProps,
+  InputGroupProps,
   InputGroupTextareaProps,
-} from "./input-group.types";
+  InputGroupTextProps,
+} from "./input-group.types"
+import { inputGroupAddonVariants, inputGroupButtonVariants } from "./input-group.variants"
 
 export const InputGroup: FC<InputGroupProps> = ({ className, ...props }) => {
   return (
@@ -20,7 +19,7 @@ export const InputGroup: FC<InputGroupProps> = ({ className, ...props }) => {
       data-slot="input-group"
       role="group"
       className={cn(
-        "group/input-group border-input dark:bg-input/30 relative flex w-full items-center rounded-md border shadow-xs transition-[color,box-shadow] outline-none",
+        "group/input-group border-input dark:bg-input/30 relative flex w-full items-center  border shadow-xs transition-[color,box-shadow] outline-none",
         "h-9 min-w-0 has-[>textarea]:h-auto",
 
         // Variants based on alignment.
@@ -39,10 +38,14 @@ export const InputGroup: FC<InputGroupProps> = ({ className, ...props }) => {
       )}
       {...props}
     />
-  );
-};
+  )
+}
 
-export const InputGroupAddon: FC<InputGroupAddonProps> = ({ className, align = "inline-start", ...props }) => {
+export const InputGroupAddon: FC<InputGroupAddonProps> = ({
+  className,
+  align = "inline-start",
+  ...props
+}) => {
   return (
     <div
       role="group"
@@ -51,14 +54,14 @@ export const InputGroupAddon: FC<InputGroupAddonProps> = ({ className, align = "
       className={cn(inputGroupAddonVariants({ align }), className)}
       onClick={(e) => {
         if ((e.target as HTMLElement).closest("button")) {
-          return;
+          return
         }
-        e.currentTarget.parentElement?.querySelector("input")?.focus();
+        e.currentTarget.parentElement?.querySelector("input")?.focus()
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const InputGroupButton: FC<InputGroupButtonProps> = ({
   className,
@@ -75,8 +78,8 @@ export const InputGroupButton: FC<InputGroupButtonProps> = ({
       className={cn(inputGroupButtonVariants({ size }), className)}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const InputGroupText: FC<InputGroupTextProps> = ({ className, ...props }) => {
   return (
@@ -87,8 +90,8 @@ export const InputGroupText: FC<InputGroupTextProps> = ({ className, ...props })
       )}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const InputGroupInput: FC<InputGroupInputProps> = ({ className, ...props }) => {
   return (
@@ -100,8 +103,8 @@ export const InputGroupInput: FC<InputGroupInputProps> = ({ className, ...props 
       )}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const InputGroupTextarea: FC<InputGroupTextareaProps> = ({ className, ...props }) => {
   return (
@@ -113,5 +116,5 @@ export const InputGroupTextarea: FC<InputGroupTextareaProps> = ({ className, ...
       )}
       {...props}
     />
-  );
-};
+  )
+}

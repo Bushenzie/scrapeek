@@ -1,22 +1,18 @@
-import type { QueryClient } from "@tanstack/react-query";
-import {
-  createRootRouteWithContext,
-  HeadContent,
-  Scripts,
-} from "@tanstack/react-router";
-import { Navbar } from "@/components/ui/navbar/navbar";
-import { Toaster } from "@/components/ui/toasts/toasts";
-import { getSession } from "@/features/auth/utils/get-session";
-import css from "../styles.css?url";
+import type { QueryClient } from "@tanstack/react-query"
+import { createRootRouteWithContext, HeadContent, Scripts } from "@tanstack/react-router"
+import { Navbar } from "@/components/ui/navbar/navbar"
+import { Toaster } from "@/components/ui/toasts/toasts"
+import { getSession } from "@/features/auth/utils/get-session"
+import css from "../styles.css?url"
 
 interface MyRouterContext {
-  queryClient: QueryClient;
+  queryClient: QueryClient
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   beforeLoad: async () => {
-    const session = await getSession();
-    return session;
+    const session = await getSession()
+    return session
   },
   head: () => ({
     meta: [
@@ -39,7 +35,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   shellComponent: RootDocument,
-});
+})
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
@@ -57,5 +53,5 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
-  );
+  )
 }

@@ -1,19 +1,12 @@
-import { BlueprintType } from "@scrapeek/db/constants";
-import { useRouter } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog/dialog";
-import { useAppForm } from "@/hooks/use-app-form";
-import { blueprintTypeSelectSchema } from "../../schemas/blueprint-type";
+import { BlueprintType } from "@scrapeek/db/constants"
+import { useRouter } from "@tanstack/react-router"
+import { Plus } from "lucide-react"
+import { Modal } from "@/components/modal/modal"
+import { useAppForm } from "@/hooks/use-app-form"
+import { blueprintTypeSelectSchema } from "../../schemas/blueprint-type"
 
 export const CreateBlueprintDialog = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   const form = useAppForm({
     defaultValues: {
@@ -29,48 +22,41 @@ export const CreateBlueprintDialog = () => {
         search: {
           type: value.type as BlueprintType,
         },
-      });
+      })
     },
-  });
+  })
+
+  const options = [
+    { label: "API", value: BlueprintType.API },
+    { label: "Static", value: BlueprintType.Static },
+    { label: "Dynamic", value: BlueprintType.Dynamic },
+  ]
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button>Add</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>Select type</DialogHeader>
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-        >
-          <form.AppField
-            name="type"
-            children={(field) => (
-              <field.RadioGroupField
-                label=""
-                options={[
-                  { label: "API", value: BlueprintType.API },
-                  { label: "Static", value: BlueprintType.Static },
-                  { label: "Dynamic", value: BlueprintType.Dynamic },
-                ]}
-              />
-            )}
-          />
-          <DialogFooter>
-            <DialogClose>
-              <Button variant={"outline"}>Close</Button>
-            </DialogClose>
-
-            <Button type="submit" onClick={form.handleSubmit}>
-              Add
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
-};
+    <Modal
+      title="Select type"
+      submitBtn={{
+        text: "Create",
+        onSubmit: form.handleSubmit,
+      }}
+      trigger={{
+        content: "Create",
+        props: {
+          icon: <Plus />,
+        },
+      }}
+    >
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        }}
+      >
+        <form.AppField
+          name="type"
+          children={(field) => <field.RadioGroupField label="" options={options} />}
+        />
+      </form>
+    </Modal>
+  )
+}
