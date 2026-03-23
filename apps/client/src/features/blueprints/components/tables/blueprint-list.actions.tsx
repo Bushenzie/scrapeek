@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuItemLink,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown/dropdown"
+} from "@/components/ui/dropdown-menu/dropdown-menu"
 import { AddBlueprintToGroupModal } from "@/features/groups/components/modals/add-blueprint-to-group"
 
 type BlueprintListTableActionsProps = {

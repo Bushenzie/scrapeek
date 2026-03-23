@@ -1,11 +1,23 @@
-import { Slot } from "@radix-ui/react-slot"
+import { mergeProps } from "@base-ui/react/merge-props"
+import { useRender } from "@base-ui/react/use-render"
 import type { FC } from "react"
 import { cn } from "@/lib/class"
 import type { BadgeProps } from "./badge.types"
 import { badgeVariants } from "./badge.variants"
 
-export const Badge: FC<BadgeProps> = ({ className, variant, asChild = false, ...props }) => {
-  const Comp = asChild ? Slot : "span"
-
-  return <Comp data-slot="badge" className={cn(badgeVariants({ variant }), className)} {...props} />
+export const Badge: FC<BadgeProps> = ({ className, variant = "default", render, ...props }) => {
+  return useRender({
+    defaultTagName: "span",
+    props: mergeProps<"span">(
+      {
+        className: cn(badgeVariants({ variant }), className),
+      },
+      props,
+    ),
+    render,
+    state: {
+      slot: "badge",
+      variant,
+    },
+  })
 }

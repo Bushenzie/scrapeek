@@ -15,32 +15,16 @@ import {
   CardTitle,
 } from "@/components/ui/card/card"
 import { Checkbox } from "@/components/ui/checkbox/checkbox"
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from "@/components/ui/combobox-core/combobox-core"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog/dialog"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown/dropdown"
+} from "@/components/ui/dropdown-menu/dropdown-menu"
 import { Input } from "@/components/ui/input/input"
 import { Label } from "@/components/ui/label/label"
 import { Pagination } from "@/components/ui/pagination/pagination"
@@ -120,13 +104,13 @@ function DashboardPage() {
           ></Modal>
         </div>
         <div className="flex gap-2">
-          <Badge variant={"primary"}>primary</Badge>
+          <Badge variant={"default"}>primary</Badge>
           <Badge variant={"destructive"}>destructive</Badge>
           <Badge variant={"outline"}>outline</Badge>
           <Badge variant={"secondary"}>secondary</Badge>
         </div>
-        Current page: {page}
-        <Pagination currentPage={page} setCurrentPage={setPage} itemsPerPage={10} itemsTotal={89} />
+        {/*Current page: {page}*/}
+        {/*<Pagination currentPage={page} setCurrentPage={setPage} itemsPerPage={10} itemsTotal={89} />*/}
         <Input placeholder="test" />
         <RadioGroup defaultValue="2">
           <div className="flex items-center gap-2">
@@ -161,7 +145,7 @@ function DashboardPage() {
           <Label htmlFor="checkbox">Click this to enable checkbox</Label>
         </div>
         <div className="flex gap-2">
-          <Button variant={"primary"}>Primary</Button>
+          <Button variant={"default"}>Primary</Button>
           <Button variant={"destructive"}>Destructive</Button>
           <Button variant={"ghost"}>Ghost</Button>
           <Button variant={"link"}>Link</Button>
@@ -188,16 +172,18 @@ function DashboardPage() {
           </TableBody>
         </Table>
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button>Open dropdown</Button>
+          <DropdownMenuTrigger render={<Button variant="outline" />}>
+            Open dropdown
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>Billing</DropdownMenuItem>
+              <DropdownMenuItem>Team</DropdownMenuItem>
+              <DropdownMenuItem>Subscription</DropdownMenuItem>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </Box>
