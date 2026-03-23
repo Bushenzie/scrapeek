@@ -1,4 +1,3 @@
-import type { CheckedState } from "@radix-ui/react-checkbox"
 import { BlueprintType } from "@scrapeek/db/constants"
 import {
   type Blueprint,
@@ -15,11 +14,9 @@ import { Button } from "@/components/ui/button/button"
 import { Checkbox } from "@/components/ui/checkbox/checkbox"
 import { Input } from "@/components/ui/input/input"
 import { Label } from "@/components/ui/label/label"
-import { Textarea } from "@/components/ui/textarea/textarea"
 import { useAppForm } from "@/hooks/use-app-form"
 import { authClient } from "@/lib/clients/auth"
 import { useCreateBlueprint, useEditBlueprint } from "../../api/blueprints.mutations"
-import type { BlueprintDetailResponse } from "../../api/blueprints.types"
 
 type DynamicBlueprintFormProps = {
   blueprint?: DynamicBlueprintWithRelations
@@ -91,7 +88,7 @@ export const DynamicBlueprintForm: FC<DynamicBlueprintFormProps> = ({ blueprint 
     e.stopPropagation()
   }
 
-  const handlePaginationChange = (checked: CheckedState) => {
+  const handlePaginationChange = (checked: boolean) => {
     setShowPagination((prev) => !prev)
     if (checked) {
       form.setFieldValue("config.pagination", {
