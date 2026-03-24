@@ -30,27 +30,31 @@ export const Modal: FC<ModalProps> = ({
       open={state ? state.open : openInternal}
       onOpenChange={(currState) => (state ? state.setOpen(currState) : setOpenInternal(currState))}
     >
-      <DialogTrigger
-        render={
-          trigger !== null ? (
-            <>
-              {isDropdownMenuItem ? (
-                <DropdownMenuItem
-                  onClick={() => (state ? state.setOpen(true) : setOpenInternal(true))}
-                >
-                  <Button variant={"outline"} {...trigger?.props}>
-                    {trigger?.content}
-                  </Button>
-                </DropdownMenuItem>
-              ) : (
-                <Button variant={"outline"} {...trigger?.props}>
-                  {trigger?.content}
-                </Button>
-              )}
-            </>
-          ) : undefined
-        }
-      ></DialogTrigger>
+      {trigger !== null && (
+        <DialogTrigger
+          render={
+            isDropdownMenuItem ? (
+              <DropdownMenuItem
+                onSelect={(e) => e.preventDefault()}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (state) {
+                    state.setOpen(true)
+                    return
+                  }
+                  setOpenInternal(true)
+                }}
+              >
+                {trigger?.content ?? "Modal"}
+              </DropdownMenuItem>
+            ) : (
+              <Button variant={"outline"} {...trigger?.props}>
+                {trigger?.content ?? "Modal"}
+              </Button>
+            )
+          }
+        />
+      )}
 
       <DialogContent className={"flex flex-col gap-4"}>
         <DialogHeader>
