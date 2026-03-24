@@ -7,6 +7,9 @@ import { Separator } from "@/components/ui/separator/separator"
 import { EditBlueprint } from "@/features/blueprints/components/edit-blueprint"
 
 export const Route = createFileRoute("/_authenticated/blueprints/_/$blueprintId/edit")({
+  head: () => ({
+    meta: [{ title: "Scrapeek - edit" }],
+  }),
   component: ViewBlueprintPage,
 })
 

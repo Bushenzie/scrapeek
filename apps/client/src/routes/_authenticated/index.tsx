@@ -51,11 +51,14 @@ import { toast } from "@/components/ui/toasts/toast"
 // import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/")({
+  head: () => ({
+    meta: [{ title: "Scrapeek - dashboard" }],
+  }),
   component: DashboardPage,
 })
 
 function DashboardPage() {
-  const [page, setPage] = useState(1)
+  // const [page, setPage] = useState(1)
   const [openOutOfBountModal, setOpenOutOfBountModal] = useState(false)
 
   return (

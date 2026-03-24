@@ -7,6 +7,9 @@ import { BlueprintList } from "@/features/blueprints/components/blueprint-list"
 import { CreateBlueprintDialog } from "@/features/blueprints/components/modals/create-blueprint-modal"
 
 export const Route = createFileRoute("/_authenticated/blueprints/")({
+  head: () => ({
+    meta: [{ title: "Scrapeek - blueprints" }],
+  }),
   component: BlueprintsPage,
 })
 

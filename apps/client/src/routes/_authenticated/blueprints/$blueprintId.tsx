@@ -11,6 +11,9 @@ import { BlueprintDetail } from "@/features/blueprints/components/blueprint-deta
 import { DeleteBlueprintModal } from "@/features/blueprints/components/modals/delete-blueprint-modal"
 
 export const Route = createFileRoute("/_authenticated/blueprints/$blueprintId")({
+  head: () => ({
+    meta: [{ title: "Scrapeek - blueprint detail" }],
+  }),
   component: ViewBlueprintPage,
 })
 

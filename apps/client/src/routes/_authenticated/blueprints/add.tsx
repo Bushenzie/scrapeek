@@ -8,6 +8,9 @@ import { StaticBlueprintForm } from "@/features/blueprints/components/forms/stat
 import { blueprintTypeSelectSchema } from "@/features/blueprints/schemas/blueprint-type"
 
 export const Route = createFileRoute("/_authenticated/blueprints/add")({
+  head: () => ({
+    meta: [{ title: "Scrapeek - add blueprint" }],
+  }),
   validateSearch: blueprintTypeSelectSchema,
   onError: () => {
     throw redirect({ to: "/blueprints" })
