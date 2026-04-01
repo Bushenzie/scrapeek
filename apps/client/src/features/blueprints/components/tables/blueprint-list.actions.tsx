@@ -14,6 +14,8 @@ type BlueprintListTableActionsProps = {
 }
 
 export const BlueprintListTableActions: FC<BlueprintListTableActionsProps> = ({ blueprintId }) => {
+  const [openGroupModal, setOpenGroupModal] = useState(false)
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center w-full justify-center cursor-pointer">
@@ -38,8 +40,17 @@ export const BlueprintListTableActions: FC<BlueprintListTableActionsProps> = ({ 
         >
           Edit
         </DropdownMenuItemLink>
-        <AddBlueprintToGroupModal blueprintId={blueprintId} isDropdownMenuItem />
+        <DropdownMenuItem className={"cursor-pointer"} onClick={() => setOpenGroupModal(true)}>
+          Edit groups
+        </DropdownMenuItem>
       </DropdownMenuContent>
+      <AddBlueprintToGroupModal
+        state={{
+          open: openGroupModal,
+          setOpen: setOpenGroupModal,
+        }}
+        blueprintId={blueprintId}
+      />
     </DropdownMenu>
   )
 }
