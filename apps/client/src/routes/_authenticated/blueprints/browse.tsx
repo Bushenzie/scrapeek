@@ -4,6 +4,9 @@ import { Separator } from "@/components/ui/separator/separator"
 import { PublicBlueprintsList } from "@/features/blueprints/components/public-blueprints-list"
 
 export const Route = createFileRoute("/_authenticated/blueprints/browse")({
+  head: () => ({
+    meta: [{ title: "Scrapeek - public blueprints" }],
+  }),
   component: BlueprintBrowsePage,
 })
 

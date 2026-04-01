@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown/dropdown"
+} from "@/components/ui/dropdown-menu/dropdown-menu"
 import type { GroupListResponse } from "../../api/groups.types"
 import { DeleteGroupModal } from "../modals/delete-group.modal"
 import { EditCreateGroupModal } from "../modals/edit-create-group-modal"

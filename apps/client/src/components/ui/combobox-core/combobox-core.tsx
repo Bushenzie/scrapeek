@@ -10,21 +10,19 @@ import {
 } from "@/components/ui/input-group/input-group"
 import { cn } from "@/lib/class"
 import type {
-  ComboboxChipsInputProps,
-  ComboboxContentProps,
-  ComboboxLabelProps,
-  ComboboxSeparatorProps,
-} from "./combobox-core.types"
-import type {
   ComboboxChipProps,
+  ComboboxChipsInputProps,
   ComboboxChipsProps,
   ComboboxClearProps,
   ComboboxCollectionProps,
+  ComboboxContentProps,
   ComboboxEmptyProps,
   ComboboxGroupProps,
   ComboboxInputProps,
   ComboboxItemProps,
+  ComboboxLabelProps,
   ComboboxListProps,
+  ComboboxSeparatorProps,
   ComboboxTriggerProps,
   ComboboxValueProps,
 } from "./combobox-core.types"
@@ -80,7 +78,6 @@ export const ComboboxInput: FC<ComboboxInputProps> = ({
           <InputGroupButton
             size="icon-xs"
             variant="ghost"
-            asChild
             data-slot="input-group-button"
             className="border border-blueprint-400 group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent"
             disabled={disabled}

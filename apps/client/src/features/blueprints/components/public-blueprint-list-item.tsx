@@ -49,7 +49,7 @@ export const PublicBlueprintListItem: FC<PublicBlueprintListItemProps> = ({ blue
           <Button
             variant={
               blueprint?.upvotes?.find((upvote) => upvote.userId === session?.user.id) !== undefined
-                ? "primary"
+                ? "default"
                 : "outline"
             }
             size={"sm"}

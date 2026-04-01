@@ -26,7 +26,7 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
   const resultURL = useMemo(() => {
     if (!blueprint?.result) return undefined
     return `http://localhost:3001/api/result/${blueprint?.result?.id}`
-  }, [blueprint, data])
+  }, [blueprint])
 
   const lastScrapedData = useMemo(() => {
     const source = (data && Array.isArray(data) ? data[0] : data) ?? blueprint?.result?.data
@@ -61,11 +61,11 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
           <div className="space-y-4">
             <div className="flex flex-col gap-2">
               <Label>Name</Label>
-              <Input value={blueprint?.name} readOnly />
+              <Input value={blueprint?.name ?? ""} readOnly />
             </div>
             <div className="flex flex-col gap-2">
               <Label>URL</Label>
-              <Input value={blueprint?.url} readOnly />
+              <Input value={blueprint?.url ?? ""} readOnly />
             </div>
           </div>
         </div>
@@ -99,7 +99,7 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
           </div>
           <div className="flex flex-col gap-2">
             <Label>Result URL</Label>
-            <Input value={resultURL} readOnly />
+            <Input value={resultURL ?? ""} readOnly />
           </div>
         </div>
       </div>

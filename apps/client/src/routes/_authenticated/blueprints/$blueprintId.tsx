@@ -3,7 +3,6 @@ import { PenBoxIcon } from "lucide-react"
 import { Suspense } from "react"
 import { Box } from "@/components/ui/box/box"
 import { GoBackButton } from "@/components/ui/go-back-button/go-back-button"
-// import { GoBackButton } from "@/components/ui/go-back-button/go-back-button";
 import { LinkButton } from "@/components/ui/link-button/link-button"
 import { LoadingSpinner } from "@/components/ui/loading-spinner/loading-spinner"
 import { Separator } from "@/components/ui/separator/separator"
@@ -11,6 +10,9 @@ import { BlueprintDetail } from "@/features/blueprints/components/blueprint-deta
 import { DeleteBlueprintModal } from "@/features/blueprints/components/modals/delete-blueprint-modal"
 
 export const Route = createFileRoute("/_authenticated/blueprints/$blueprintId")({
+  head: () => ({
+    meta: [{ title: "Scrapeek - blueprint detail" }],
+  }),
   component: ViewBlueprintPage,
 })
 

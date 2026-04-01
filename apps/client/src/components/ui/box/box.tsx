@@ -4,7 +4,7 @@ import type { BoxProps } from "./box.types"
 
 export const Box: FC<BoxProps> = ({ children, className }) => {
   return (
-    <div className={cn("border  shadow-2xl bg-blueprint-700/75 border-blueprint-400", className)}>
+    <div className={cn("border shadow-2xl bg-blueprint-700/75 border-blueprint-400", className)}>
       {children}
     </div>
   )

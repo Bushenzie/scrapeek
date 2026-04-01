@@ -1,8 +1,15 @@
-import type { Dispatch, SetStateAction } from "react"
+import type { ComponentProps } from "react"
+import { Button } from "../button/button";
+import type { PaginationLink } from "./pagination";
 
-export type PaginationProps = {
-  currentPage: number
-  setCurrentPage: Dispatch<SetStateAction<number>>
-  itemsPerPage: number
-  itemsTotal: number
-}
+
+export type PaginationProps = ComponentProps<"nav">
+export type PaginationContentProps = ComponentProps<"ul">
+export type PaginationItemProps = ComponentProps<"li">
+export type PaginationEllipsisProps = ComponentProps<"span">
+export type PaginationLinkProps = {
+  isActive?: boolean
+} & Pick<ComponentProps<typeof Button>, "size"> &
+  ComponentProps<"a">
+export type PaginationNextProps = ComponentProps<typeof PaginationLink> & { text?: string }
+export type PaginationPreviousProps = ComponentProps<typeof PaginationLink> & { text?: string }

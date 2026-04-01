@@ -19,14 +19,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
-      "correctness": {
-        "useUniqueElementIds": "off",
-        "noChildrenProp": "off"
-      },
-      "suspicious": {
-        "noArrayIndexKey": "off"
-      }
+      "recommended": true
     },
     "includes": ["**/*.ts", "**/*.tsx"]
   },

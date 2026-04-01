@@ -1,4 +1,4 @@
-import { Slot } from "@radix-ui/react-slot"
+import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import type { FC } from "react"
 import { cn } from "@/lib/class"
 import { LoadingSpinner } from "../loading-spinner/loading-spinner"
@@ -7,18 +7,16 @@ import { buttonVariants } from "./button.variants"
 
 export const Button: FC<ButtonProps> = ({
   className,
-  size,
-  variant,
+  children,
+  variant = "default",
+  size = "default",
   icon,
-  disabled = false,
-  loading = false,
-  asChild = false,
+  disabled,
+  loading,
   ...props
 }) => {
-  const Comp = asChild ? Slot : "button"
-
   return (
-    <Comp
+    <ButtonPrimitive
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       disabled={disabled || loading}
@@ -26,7 +24,7 @@ export const Button: FC<ButtonProps> = ({
     >
       {icon && <span className="size-4">{icon}</span>}
       {loading && <LoadingSpinner size="sm" />}
-      {props.children}
-    </Comp>
+      {children}
+    </ButtonPrimitive>
   )
 }

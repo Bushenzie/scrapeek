@@ -31,7 +31,7 @@ export const ProfileAPIManagementTab = () => {
           </TableHeader>
           <TableBody>
             {apiKeys?.map((apiKey) => (
-              <TableRow>
+              <TableRow key={apiKey.id}>
                 <TableCell>{apiKey.name ?? "API Key"}</TableCell>
                 <TableCell>
                   {format(apiKey.createdAt, "dd.MM.yyyy / HH:mm")} (

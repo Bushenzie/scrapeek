@@ -50,9 +50,8 @@ export const CreateApiKeyModal: FC<CreateApiKeyModalProps> = ({ isOpen, setIsOpe
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => (open ? setIsOpen(true) : handleClose())}>
-      <DialogTrigger className="z-10" asChild>
-        <Button>Add API Key</Button>
-      </DialogTrigger>
+      <DialogTrigger className="z-10" render={<Button>Add API Key</Button>} />
+
       {!data ? (
         <DialogContent>
           <DialogTitle>Add API Key</DialogTitle>

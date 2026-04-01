@@ -1,16 +1,15 @@
-import * as LabelPrimitive from "@radix-ui/react-label"
-import type { ComponentProps, FC } from "react"
+/** biome-ignore-all lint/a11y/noLabelWithoutControl: x */
 
+import type { FC } from "react"
 import { cn } from "@/lib/class"
-
-type LabelProps = ComponentProps<typeof LabelPrimitive.Root>
+import type { LabelProps } from "./label.types"
 
 export const Label: FC<LabelProps> = ({ className, ...props }) => {
   return (
-    <LabelPrimitive.Root
+    <label
       data-slot="label"
       className={cn(
-        "flex items-center truncate gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+        "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
         className,
       )}
       {...props}

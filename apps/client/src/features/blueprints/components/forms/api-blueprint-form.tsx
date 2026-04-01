@@ -1,4 +1,3 @@
-import type { CheckedState } from "@radix-ui/react-checkbox"
 import { BLUEPRINT_HTTP_METHODS, BlueprintType } from "@scrapeek/db/constants"
 import {
   type APIBlueprintWithRelations,
@@ -148,7 +147,7 @@ export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
     e.stopPropagation()
   }
 
-  const handlePaginationChange = (checked: CheckedState) => {
+  const handlePaginationChange = (checked: boolean) => {
     setShowPagination((prev) => !prev)
     if (checked) {
       form.setFieldValue("config.pagination", {

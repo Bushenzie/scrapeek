@@ -11,7 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../dropdown/dropdown"
+} from "../dropdown-menu/dropdown-menu"
 import { LinkButton } from "../link-button/link-button"
 
 type NavbarProps = ComponentProps<"div">

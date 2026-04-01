@@ -1,10 +1,11 @@
+import type { Button as ButtonPrimitive } from "@base-ui/react/button"
 import type { VariantProps } from "class-variance-authority"
-import type { ComponentProps, ReactNode } from "react"
 import type { buttonVariants } from "./button.variants"
+import type { ReactNode } from "react";
 
-export type ButtonProps = ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-    icon?: ReactNode
-    loading?: boolean
-  }
+export type ButtonProps = {
+  icon?: ReactNode,
+  disabled?: boolean;
+  loading?: boolean;
+} &
+  ButtonPrimitive.Props & VariantProps<typeof buttonVariants>

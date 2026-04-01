@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog/dialog"
-import { DropdownMenuItem } from "../ui/dropdown/dropdown"
+import { DropdownMenuItem } from "../ui/dropdown-menu/dropdown-menu"
 import type { ModalProps } from "./modal.types"
 
 export const Modal: FC<ModalProps> = ({
@@ -21,7 +21,6 @@ export const Modal: FC<ModalProps> = ({
   state,
   submitBtn,
   trigger,
-  overlayClose,
   isDropdownMenuItem = false,
 }) => {
   const [openInternal, setOpenInternal] = useState(false)
@@ -32,32 +31,31 @@ export const Modal: FC<ModalProps> = ({
       onOpenChange={(currState) => (state ? state.setOpen(currState) : setOpenInternal(currState))}
     >
       {trigger !== null && (
-        <Fragment>
-          {isDropdownMenuItem ? (
-            <DropdownMenuItem
-              asChild
-              onSelect={(e) => console.log("Ssd")}
-              onClick={() => (state ? state.setOpen(true) : setOpenInternal(true))}
-            >
-              <DialogTrigger
-                render={
-                  <Button variant={"outline"} {...trigger?.props}>
-                    {trigger?.content}
-                  </Button>
-                }
-              />
-            </DropdownMenuItem>
-          ) : (
-            <DialogTrigger
-              render={
-                <Button variant={"outline"} {...trigger?.props}>
-                  {trigger?.content}
-                </Button>
-              }
-            />
-          )}
-        </Fragment>
+        <DialogTrigger
+          render={
+            isDropdownMenuItem ? (
+              <DropdownMenuItem
+                onSelect={(e) => e.preventDefault()}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (state) {
+                    state.setOpen(true)
+                    return
+                  }
+                  setOpenInternal(true)
+                }}
+              >
+                {trigger?.content ?? "Modal"}
+              </DropdownMenuItem>
+            ) : (
+              <Button variant={"outline"} {...trigger?.props}>
+                {trigger?.content ?? "Modal"}
+              </Button>
+            )
+          }
+        />
       )}
+
       <DialogContent className={"flex flex-col gap-4"}>
         <DialogHeader>
           <DialogTitle>{title ?? "New dialog"}</DialogTitle>

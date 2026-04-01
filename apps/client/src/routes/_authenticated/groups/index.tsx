@@ -7,6 +7,9 @@ import { GroupList } from "@/features/groups/components/group-list"
 import { EditCreateGroupModal } from "@/features/groups/components/modals/edit-create-group-modal"
 
 export const Route = createFileRoute("/_authenticated/groups/")({
+  head: () => ({
+    meta: [{ title: "Scrapeek - groups" }],
+  }),
   component: GroupListPage,
 })
 

@@ -1,9 +1,11 @@
-import type * as AvatarPrimitive from "@radix-ui/react-avatar"
-import type { VariantProps } from "class-variance-authority"
+import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
 import type { ComponentProps } from "react"
-import type { avatarVariants } from "./avatar.variants"
 
-export type AvatarProps = ComponentProps<typeof AvatarPrimitive.Root> &
-  VariantProps<typeof avatarVariants>
-export type AvatarImageProps = ComponentProps<typeof AvatarPrimitive.Image>
-export type AvatarFallbackProps = ComponentProps<typeof AvatarPrimitive.Fallback>
+export type AvatarProps = AvatarPrimitive.Root.Props & {
+  size?: "default" | "sm" | "lg"
+}
+export type AvatarImageProps = AvatarPrimitive.Image.Props
+export type AvatarFallbackProps = AvatarPrimitive.Fallback.Props
+export type AvatarBadgeProps = ComponentProps<"span">
+export type AvatarGroupProps = ComponentProps<"div">
+export type AvatarGroupCountProps = ComponentProps<"div">

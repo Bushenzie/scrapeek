@@ -20,7 +20,6 @@ export const CheckboxField: FC<CheckboxFieldProps> = ({ label, showError = true 
         id={id}
         checked={field.state.value}
         onCheckedChange={(checked) => {
-          console.log(checked)
           field.handleChange(checked as boolean)
         }}
       />

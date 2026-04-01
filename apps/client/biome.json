@@ -4,5 +4,20 @@
   "extends": "//",
   "files": {
     "includes": ["**", "!**/routeTree.gen.ts", "!**/.*/**"]
+  },
+  "linter": {
+    "rules": {
+      "correctness": {
+        "useUniqueElementIds": "off",
+        "noChildrenProp": "off"
+      },
+      "a11y": {
+        "useKeyWithClickEvents": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      }
+    },
+    "includes": ["**/*.ts", "**/*.tsx"]
   }
 }

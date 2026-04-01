@@ -1,25 +1,18 @@
-import type * as SelectPrimitive from "@radix-ui/react-select"
+import { Select as SelectPrimitive } from "@base-ui/react/select"
+import type { ComponentProps } from "react"
 
-export type SelectProps = React.ComponentProps<typeof SelectPrimitive.Root>
-
-export type SelectGroupProps = React.ComponentProps<typeof SelectPrimitive.Group>
-
-export type SelectValueProps = React.ComponentProps<typeof SelectPrimitive.Value>
-
-export type SelectTriggerProps = React.ComponentProps<typeof SelectPrimitive.Trigger> & {
+export type SelectGroupProps = SelectPrimitive.Group.Props
+export type SelectContentProps = SelectPrimitive.Popup.Props &
+  Pick<
+    SelectPrimitive.Positioner.Props,
+    "align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger"
+  >
+export type SelectItemProps = SelectPrimitive.Item.Props
+export type SelectLabelProps = SelectPrimitive.GroupLabel.Props
+export type SelectScrollDownButtonProps = ComponentProps<typeof SelectPrimitive.ScrollDownArrow>
+export type SelectScrollUpButtonProps = ComponentProps<typeof SelectPrimitive.ScrollUpArrow>
+export type SelectSeparatorProps = SelectPrimitive.Separator.Props
+export type SelectTriggerProps = SelectPrimitive.Trigger.Props & {
   size?: "sm" | "default"
 }
-
-export type SelectContentProps = React.ComponentProps<typeof SelectPrimitive.Content>
-
-export type SelectLabelProps = React.ComponentProps<typeof SelectPrimitive.Label>
-
-export type SelectItemProps = React.ComponentProps<typeof SelectPrimitive.Item>
-
-export type SelectSeparatorProps = React.ComponentProps<typeof SelectPrimitive.Separator>
-
-export type SelectScrollUpButtonProps = React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>
-
-export type SelectScrollDownButtonProps = React.ComponentProps<
-  typeof SelectPrimitive.ScrollDownButton
->
+export type SelectValueProps = SelectPrimitive.Value.Props
