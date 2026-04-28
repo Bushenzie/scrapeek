@@ -1,5 +1,5 @@
 import { type Group, groupInsertSchema } from "@scrapeek/db/validators"
-import type { FC } from "react"
+import type { Dispatch, FC, SetStateAction } from "react"
 import { Modal } from "@/components/modal/modal"
 import { useAppForm } from "@/hooks/use-app-form"
 import { useCreateGroup, useEditGroup } from "../../api/groups.mutations"
@@ -7,11 +7,16 @@ import { useCreateGroup, useEditGroup } from "../../api/groups.mutations"
 type EditCreateGroupModalProps = {
   group?: Group
   isDropdownMenuItem?: boolean
+  state?: {
+    open: boolean
+    setOpen: Dispatch<SetStateAction<boolean>>
+  }
 }
 
 export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({
   group,
   isDropdownMenuItem = false,
+  state,
 }) => {
   const createGroup = useCreateGroup()
   const editGroup = useEditGroup()
@@ -46,12 +51,17 @@ export const EditCreateGroupModal: FC<EditCreateGroupModalProps> = ({
   return (
     <Modal
       title={`${group ? "Edit" : "Create"} group`}
-      trigger={{
-        content: `${group ? "Edit" : "Create"} group`,
-        props: {
-          variant: "outline",
-        },
-      }}
+      trigger={
+        state
+          ? null
+          : {
+              content: `${group ? "Edit" : "Create"} group`,
+              props: {
+                variant: "outline",
+              },
+            }
+      }
+      state={state}
       submitBtn={{
         text: group ? "Edit" : "Create",
         onSubmit: form.handleSubmit,

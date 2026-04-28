@@ -2,6 +2,7 @@ import type { Blueprint, Group } from "@scrapeek/db/validators"
 import type { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
 import { EllipsisVertical } from "lucide-react"
+import { useState } from "react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +12,27 @@ import {
 import type { GroupListResponse } from "../../api/groups.types"
 import { DeleteGroupModal } from "../modals/delete-group.modal"
 import { EditCreateGroupModal } from "../modals/edit-create-group-modal"
+
+const GroupActionsCell = ({ group }: { group: GroupListResponse["data"][number] }) => {
+  const [editOpen, setEditOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="flex items-center w-full justify-center cursor-pointer">
+          <EllipsisVertical />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onClick={() => setEditOpen(true)}>Edit group</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setDeleteOpen(true)}>Delete group</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <EditCreateGroupModal group={group} state={{ open: editOpen, setOpen: setEditOpen }} />
+      <DeleteGroupModal groupId={group.id} state={{ open: deleteOpen, setOpen: setDeleteOpen }} />
+    </>
+  )
+}
 
 export const columns: ColumnDef<GroupListResponse["data"][number]>[] = [
   {
@@ -38,16 +60,6 @@ export const columns: ColumnDef<GroupListResponse["data"][number]>[] = [
     header: () => (
       <span className="flex items-center w-full justify-center cursor-pointer">Actions</span>
     ),
-    cell: ({ row }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center w-full justify-center cursor-pointer">
-          <EllipsisVertical />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <EditCreateGroupModal group={row.original} isDropdownMenuItem />
-          <DeleteGroupModal groupId={row.original.id} isDropdownMenuItem />
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({ row }) => <GroupActionsCell group={row.original} />,
   },
 ]

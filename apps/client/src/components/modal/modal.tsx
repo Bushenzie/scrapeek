@@ -48,7 +48,18 @@ export const Modal: FC<ModalProps> = ({
                 {trigger?.content ?? "Modal"}
               </DropdownMenuItem>
             ) : (
-              <Button variant={"outline"} {...trigger?.props}>
+              <Button
+                variant={"outline"}
+                {...trigger?.props}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (state) {
+                    state.setOpen(true)
+                    return
+                  }
+                  setOpenInternal(true)
+                }}
+              >
                 {trigger?.content ?? "Modal"}
               </Button>
             )
