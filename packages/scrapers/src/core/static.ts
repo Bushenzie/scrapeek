@@ -60,7 +60,8 @@ export class StaticScraper implements IScraper {
 				pagination !== undefined && !this.options?.ignorePagination;
 
 			if (shouldPaginate) {
-				const { attribute, selector } = pagination;
+        const { attribute, selector } = pagination;
+				if(!attribute) return scrapedData
 				const nextPageLink = root.querySelector(selector)?.getAttribute(attribute);
 
 				if (!nextPageLink) return scrapedData;

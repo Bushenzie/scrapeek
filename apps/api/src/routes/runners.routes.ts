@@ -8,7 +8,7 @@ import { scrapeData } from "@/lib/scrape.ts"
 import { zodValidator } from "@/middlewares/custom-zod-validator.ts"
 import { StatusError } from "@/lib/error"
 import { StatusCodes } from "http-status-codes"
-// 1.0.0-beta.15-859cf75
+
 const app = new Hono().post(
   "/",
   zodValidator(

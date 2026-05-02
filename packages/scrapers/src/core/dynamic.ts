@@ -90,7 +90,7 @@ export class DynamicScraper implements IScraper {
 				}
 
 				const paginationLink = await locator.evaluate(
-					(item, { attribute }) => item.getAttribute(attribute) ?? null,
+					(item, { attribute }) => attribute ? (item.getAttribute(attribute) ?? null) : null,
 					{
 						attribute,
 					},
