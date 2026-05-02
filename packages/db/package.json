@@ -24,12 +24,12 @@
   "packageManager": "pnpm@10.9.0",
   "dependencies": {
     "@scrapeek/shared": "workspace:*",
-    "drizzle-orm": "1.0.0-beta.15-859cf75",
+    "drizzle-orm": "1.0.0-beta.22",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.2",
     "@types/node": "^25.2.3",
-    "drizzle-kit": "1.0.0-beta.15-859cf75"
+    "drizzle-kit": "1.0.0-beta.22"
   }
 }

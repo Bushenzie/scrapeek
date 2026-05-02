@@ -16,7 +16,7 @@ import { upvoteSelectSchema } from "./upvote";
 
 const elementParamSelectorSchema = z.object({
 	selector: z.string(),
-	attribute: z.string(), // TODO: optional?
+  attribute: z.string().optional(), // TODO: optional?
 });
 
 const staticAndDynamicPaginationSchema = elementParamSelectorSchema.extend({
@@ -85,7 +85,12 @@ const staticConfigSchema = z.object({
 		z.object({
 			key: z.string(),
 			selector: z.string(),
-			attribute: z.string().optional(),
+      attribute: z.string().optional(),
+			crawl: z.object({
+				key: z.string(),
+				selector: z.string(),
+        attribute: z.string().optional(),
+			}).optional()
 		}),
 	),
 	timeout: z.number().min(0).max(5000).optional(),
@@ -97,7 +102,12 @@ const dynamicConfigSchema = z.object({
 		z.object({
 			key: z.string(),
 			selector: z.string(),
-			attribute: z.string().optional(),
+      attribute: z.string().optional(),
+      crawl: z.object({
+				key: z.string(),
+				selector: z.string(),
+           attribute: z.string().optional(),
+			}).optional()
 		}),
 	),
 	timeout: z.number().min(0).max(5000).optional(),
