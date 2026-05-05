@@ -1,4 +1,4 @@
 import { parseEnv } from "./env";
-import { parseURL } from "./url";
+import { parseURL,type ParsedURL } from "./url";
 
-export { parseURL, parseEnv };
+export { parseURL, parseEnv, type ParsedURL };

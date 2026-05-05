@@ -16,7 +16,7 @@ export const SelectGroups: FC<SelectGroupsProps> = ({ value, setValue }) => {
   return (
     <MultiSelect
       label={"Groups"}
-      options={(groups ?? [])?.map((group) => ({ label: group.name, value: group.id }))}
+      options={(groups?.data ?? [])?.map((group) => ({ label: group.name, value: group.id }))}
       value={value}
       onChange={(opt) => setValue(opt)}
     />

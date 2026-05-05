@@ -1,4 +1,4 @@
-import { type VariantProps } from "class-variance-authority"
+import type { VariantProps } from "class-variance-authority"
 import type { ComponentProps } from "react"
 import type { Button } from "../button/button"
 import type { inputGroupAddonVariants, inputGroupButtonVariants } from "./input-group.variants"

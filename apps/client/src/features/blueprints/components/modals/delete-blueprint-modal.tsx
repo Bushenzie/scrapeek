@@ -1,16 +1,6 @@
 import { Trash } from "lucide-react"
 import type { FC } from "react"
 import { Modal } from "@/components/modal/modal"
-import { Button } from "@/components/ui/button/button"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog/dialog"
 import { useDeleteBlueprint } from "../../api/blueprints.mutations"
 
 type DeleteBlueprintModalProps = {

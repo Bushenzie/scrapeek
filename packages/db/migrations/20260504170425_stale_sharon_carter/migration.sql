@@ -1,0 +1,1 @@
+ALTER TABLE "result" ADD COLUMN "duration" numeric DEFAULT '0' NOT NULL;

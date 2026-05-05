@@ -19,6 +19,22 @@ const elementParamSelectorSchema = z.object({
   attribute: z.string().optional(), // TODO: optional?
 });
 
+
+const elementsSchema = z.object({
+  key: z.string(),
+  container: z.object({
+    selector: z.string(),
+    elements: z.object({
+        key: z.string(),
+        selector: z.string(),
+        attribute: z.string().optional()
+        // quantity: z.enum(["all","single"]),
+        // type: z.enum(["className"])
+      }).array()
+  }),
+})
+
+
 const staticAndDynamicPaginationSchema = elementParamSelectorSchema.extend({
 	variant: z.enum(["link", "button"]),
 });
@@ -81,35 +97,13 @@ const apiConfigSchema = z.object({
 });
 
 const staticConfigSchema = z.object({
-	elements: z.array(
-		z.object({
-			key: z.string(),
-			selector: z.string(),
-      attribute: z.string().optional(),
-			crawl: z.object({
-				key: z.string(),
-				selector: z.string(),
-        attribute: z.string().optional(),
-			}).optional()
-		}),
-	),
+	elements: z.array(elementsSchema),
 	timeout: z.number().min(0).max(5000).optional(),
 	pagination: staticAndDynamicPaginationSchema.optional(),
 });
 
 const dynamicConfigSchema = z.object({
-	elements: z.array(
-		z.object({
-			key: z.string(),
-			selector: z.string(),
-      attribute: z.string().optional(),
-      crawl: z.object({
-				key: z.string(),
-				selector: z.string(),
-           attribute: z.string().optional(),
-			}).optional()
-		}),
-	),
+	elements: z.array(elementsSchema),
 	timeout: z.number().min(0).max(5000).optional(),
 	waitSelectorElement: z.string(),
 	pagination: staticAndDynamicPaginationSchema.optional(),
@@ -271,4 +265,6 @@ export type InsertAPIBlueprint = z.infer<typeof apiInsertBlueprintSchema>;
 export type InsertStaticBlueprint = z.infer<typeof staticInsertBlueprintSchema>;
 export type InsertDynamicBlueprint = z.infer<
 	typeof dynamicInsertBlueprintSchema
->;
+  >;
+
+export type ElementSelector = z.infer<typeof elementsSchema>

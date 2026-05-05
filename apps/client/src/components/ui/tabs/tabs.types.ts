@@ -1,4 +1,4 @@
-import { Tabs as TabsPrimitive } from "@base-ui/react/tabs"
+import type { Tabs as TabsPrimitive } from "@base-ui/react/tabs"
 import type { VariantProps } from "class-variance-authority"
 import type { tabsListVariants } from "./tabs.variants"
 

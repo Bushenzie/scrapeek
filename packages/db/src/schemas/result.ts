@@ -1,4 +1,4 @@
-import { jsonb, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
+import { jsonb, pgTable, timestamp, uuid, numeric } from "drizzle-orm/pg-core";
 import { blueprint } from "./blueprint";
 
 export const result = pgTable("result", {
@@ -8,5 +8,6 @@ export const result = pgTable("result", {
 	blueprintId: uuid("blueprint_id")
 		.references(() => blueprint.id, { onDelete: "cascade" })
 		.notNull(),
-	data: jsonb("data").notNull().default({}),
+  data: jsonb("data").notNull().default({}),
+	duration: numeric("duration",{mode: "number"}).notNull().default(0)
 });

@@ -19,9 +19,9 @@
   "license": "ISC",
   "packageManager": "pnpm@10.9.0",
   "dependencies": {
-    "@scrapeek/shared": "workspace:*",
     "@scrapeek/db": "workspace:*",
-    "axios": "^1.12.2",
+    "@scrapeek/shared": "workspace:*",
+    "axios": "^1.13.5",
     "cheerio": "^1.1.2",
     "node-html-parser": "^7.0.1",
     "patchright": "^1.57.0",

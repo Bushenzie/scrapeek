@@ -7,10 +7,10 @@ export const BlueprintList = () => {
 
   return (
     <div className="flex flex-col">
-      {blueprints?.length === 0 && (
+      {blueprints?.data?.length === 0 && (
         <span className="text-blueprint-200 text-center my-4">No blueprints found</span>
       )}
-      <BlueprintListTable blueprints={blueprints ?? []} />
+      <BlueprintListTable blueprints={blueprints?.data ?? []} />
     </div>
   )
 }

@@ -67,6 +67,6 @@ export const columns: ColumnDef<BlueprintListResponse["data"][number]>[] = [
     header: () => (
       <span className="flex items-center w-full justify-center cursor-pointer">Actions</span>
     ),
-    cell: ({ row }) => <BlueprintListTableActions blueprint={row.original} />,
+    cell: ({ row }) => <BlueprintListTableActions blueprintId={row.original.id} />,
   },
 ]

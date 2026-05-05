@@ -35,8 +35,10 @@ const app = new Hono().post(
     const isTestRun = mode === "test"
 
     const start = performance.now();
-    const results = await scrapeData([parsedBlueprint], isTestRun)
+    const data = await scrapeData([parsedBlueprint], isTestRun)
     const end = performance.now();
+
+    const duration = parseFloat((end-start).toFixed(3))
 
     if (!isTestRun) {
       const existingResult = await db.query.result.findFirst({
@@ -46,19 +48,20 @@ const app = new Hono().post(
       })
 
       if (!existingResult) {
-        await db.insert(schema.result).values({ blueprintId: parsedBlueprint.id, data: results[0] })
+        await db.insert(schema.result).values({ blueprintId: parsedBlueprint.id, data: data[0] })
       } else {
         await db
           .update(schema.result)
           .set({
-            data: results[0],
+            data: data[0],
+            duration,
             updatedAt: sql`NOW()`,
           })
           .where(eq(schema.result.blueprintId, parsedBlueprint.id))
       }
     }
 
-    return c.json({ results, duration: (end - start).toFixed(3) })
+    return c.json({ data, duration })
   },
 )
 

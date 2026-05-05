@@ -1,4 +1,4 @@
-import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
+import type { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
 import type { ComponentProps } from "react"
 
 export type AvatarProps = AvatarPrimitive.Root.Props & {

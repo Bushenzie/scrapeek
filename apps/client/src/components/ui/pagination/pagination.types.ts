@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react"
-import { Button } from "../button/button";
+import type { Button } from "../button/button";
 import type { PaginationLink } from "./pagination";
 
 

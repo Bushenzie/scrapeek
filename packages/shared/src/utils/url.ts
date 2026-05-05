@@ -25,3 +25,5 @@ export const parseURL = (url: string) => {
 
 	return parsedURL;
 };
+
+export type ParsedURL = ReturnType<typeof parseURL>

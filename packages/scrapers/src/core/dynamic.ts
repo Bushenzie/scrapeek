@@ -45,7 +45,7 @@ export class DynamicScraper implements IScraper {
 			let scrapedData: Record<string, string>[] = [];
 
 			for (const { key, selector, attribute } of elements) {
-				const locator = await page.locator(selector);
+				const locator = await page.locator(selector.value);
 
 				const foundItems = await locator.evaluateAll(
 					(scrapedData, props) =>
