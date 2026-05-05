@@ -24,7 +24,7 @@ type StaticBlueprintFormProps = {
 
 export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint }) => {
   const [showPagination, setShowPagination] = useState(
-    blueprint && blueprint?.config.pagination ? true : false,
+    blueprint && blueprint?.config?.pagination ? true : false,
   )
 
   const router = useRouter()
@@ -50,7 +50,15 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
         userId: session?.user?.id,
         config: {
           timeout: 0,
-          elements: [{ key: "", selector: "", attribute: undefined }],
+          elements: [
+            {
+              key: "",
+              container: {
+                selector: "",
+                elements: [],
+              },
+            },
+          ],
         },
       } as EditableStaticBlueprint),
   })
@@ -119,65 +127,130 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
             />
             <form.AppField name="url" children={(field) => <field.TextField label="URL" />} />
             <div className="flex flex-col gap-2">
-              <Label>Elements</Label>
+              <Label>Containers</Label>
               <form.AppField
                 mode="array"
                 name="config.elements"
-                children={(field) => (
+                children={(containersField) => (
                   <>
-                    {field?.state?.value?.map((_, index) => (
-                      <div key={index}>
+                    {containersField?.state?.value?.map((_, containerIndex) => (
+                      <div
+                        key={containerIndex}
+                        className="flex flex-col border border-blueprint-400 p-4 gap-2"
+                      >
                         <div className="grid grid-cols-8 gap-2">
                           <form.AppField
-                            name={`config.elements[${index}].key`}
-                            children={(field) => (
-                              <Input
-                                value={field.state.value}
-                                onChange={(e) => field.handleChange(e.target.value)}
-                                className="col-span-2"
-                                placeholder="Key"
-                              />
-                            )}
-                          />
-                          <form.Field
-                            name={`config.elements[${index}].selector`}
+                            name={`config.elements[${containerIndex}].key`}
                             children={(field) => (
                               <Input
                                 value={field.state.value}
                                 onChange={(e) => field.handleChange(e.target.value)}
                                 className="col-span-3"
-                                placeholder="Selector"
+                                placeholder="Container key"
                               />
                             )}
                           />
-                          <form.Field
-                            name={`config.elements[${index}].attribute`}
+                          <form.AppField
+                            name={`config.elements[${containerIndex}].container.selector`}
                             children={(field) => (
                               <Input
                                 value={field.state.value}
-                                onChange={(e) => field.handleChange(e.target.value || undefined)}
-                                className="col-span-2"
-                                placeholder="Attribute"
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                className="col-span-4"
+                                placeholder="Container selector"
                               />
                             )}
                           />
                           <Button
                             variant={"destructive"}
                             className="col-span-1 h-full"
-                            onClick={() => field.removeValue(index)}
+                            onClick={() => containersField.removeValue(containerIndex)}
                           >
                             <XIcon />
                           </Button>
+                        </div>
+
+                        <div className="flex flex-col gap-2 pl-4 py-2">
+                          <Label>Elements</Label>
+                          <form.AppField
+                            mode="array"
+                            name={`config.elements[${containerIndex}].container.elements`}
+                            children={(elementsField) => (
+                              <>
+                                {elementsField?.state?.value?.map((_, elementIndex) => (
+                                  <div key={elementIndex} className="grid grid-cols-8 gap-2">
+                                    <form.AppField
+                                      name={`config.elements[${containerIndex}].container.elements[${elementIndex}].key`}
+                                      children={(field) => (
+                                        <Input
+                                          value={field.state.value}
+                                          onChange={(e) => field.handleChange(e.target.value)}
+                                          className="col-span-2"
+                                          placeholder="Key"
+                                        />
+                                      )}
+                                    />
+                                    <form.AppField
+                                      name={`config.elements[${containerIndex}].container.elements[${elementIndex}].selector`}
+                                      children={(field) => (
+                                        <Input
+                                          value={field.state.value}
+                                          onChange={(e) => field.handleChange(e.target.value)}
+                                          className="col-span-3"
+                                          placeholder="Selector"
+                                        />
+                                      )}
+                                    />
+                                    <form.AppField
+                                      name={`config.elements[${containerIndex}].container.elements[${elementIndex}].attribute`}
+                                      children={(field) => (
+                                        <Input
+                                          value={field.state.value ?? ""}
+                                          onChange={(e) =>
+                                            field.handleChange(e.target.value || undefined)
+                                          }
+                                          className="col-span-2"
+                                          placeholder="Attribute"
+                                        />
+                                      )}
+                                    />
+                                    <Button
+                                      variant={"destructive"}
+                                      className="col-span-1 h-full"
+                                      onClick={() => elementsField.removeValue(elementIndex)}
+                                    >
+                                      <XIcon />
+                                    </Button>
+                                  </div>
+                                ))}
+                                <Button
+                                  className="w-full"
+                                  onClick={() =>
+                                    elementsField.pushValue({
+                                      key: "",
+                                      selector: "",
+                                      attribute: undefined,
+                                    })
+                                  }
+                                >
+                                  Add element
+                                </Button>
+                              </>
+                            )}
+                          />
                         </div>
                       </div>
                     ))}
                     <Button
                       className="w-full"
-                      onClick={() => {
-                        field.pushValue({ key: "", selector: "" })
-                      }}
+                      onClick={() =>
+                        containersField.pushValue({
+                          key: "",
+                          container: { selector: "", elements: [] },
+                        })
+                      }
                     >
-                      Add element
+                      Add container
                     </Button>
                   </>
                 )}
