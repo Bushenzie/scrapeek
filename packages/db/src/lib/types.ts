@@ -1,1 +1,1 @@
-export type EditableFields<T> = Partial<Record<keyof T, true | undefined>>;
+export type EditableFields<T> = Partial<Record<keyof T, true | undefined>>

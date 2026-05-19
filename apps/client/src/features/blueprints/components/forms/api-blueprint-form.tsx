@@ -26,7 +26,7 @@ type APIBlueprintFormProps = {
 
 export const APIBlueprintForm: FC<APIBlueprintFormProps> = ({ blueprint }) => {
   const [showPagination, setShowPagination] = useState(
-    blueprint && blueprint?.config.pagination ? true : false,
+    blueprint && blueprint?.config?.pagination ? true : false,
   )
   const router = useRouter()
   const { mutateAsync: addBlueprint } = useCreateBlueprint()

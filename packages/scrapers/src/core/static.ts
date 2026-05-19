@@ -1,127 +1,216 @@
-import type { ElementSelector, StaticBlueprint } from "@scrapeek/db/validators";
-import { parseURL, type ParsedURL } from "@scrapeek/shared/utils";
-import { HTMLElement, parse } from "node-html-parser";
-import type { IScraper, ScraperOptions } from "@/types";
-import { canScrape } from "../utils/robots";
-import { sleep } from "../utils/sleep";
-import { axiosClient } from "../utils/axios";
+import type {
+  ContainerElementSelector,
+  ElementSelector,
+  StaticBlueprint,
+} from "@scrapeek/db/validators"
+import { type ParsedURL, parseURL } from "@scrapeek/shared/utils"
+import { type HTMLElement, parse } from "node-html-parser"
+import type { IScraper, ScrapedDataPrimitive, ScrapedDataShape, ScrapedDataValue } from "@/types"
+import type { ScrapeOptions } from "../types"
+import { axiosClient } from "../utils/axios"
+import { canScrape } from "../utils/robots"
+import { sleep } from "../utils/sleep"
 
 export class StaticScraper implements IScraper {
-	blueprint: StaticBlueprint;
-  parsedURL: ParsedURL;
-  scrapedData: Record<string, Record<string, string | null>[]>;
-  options?: ScraperOptions;
+  blueprint: StaticBlueprint
+  parsedURL: ParsedURL
+  scrapedData: Record<string, ScrapedDataShape[]>
 
-	constructor(blueprint: StaticBlueprint, options?: ScraperOptions) {
-		this.blueprint = blueprint;
-		this.options = options ?? {
-			ignorePagination: false,
-			isTestRun: false,
-    };
-    this.parsedURL = parseURL(this.blueprint.url);
-		this.scrapedData = {}
+  constructor(blueprint: StaticBlueprint) {
+    this.blueprint = blueprint
+    this.parsedURL = parseURL(this.blueprint.url)
+    this.scrapedData = {}
   }
 
   async checkRobotsTxt() {
-
-    const isScrappable = await canScrape(this.parsedURL.originalUrl);
-		if (!isScrappable) {
-			throw new Error(
-				"Site is forbidden from being scraped due to restriction inside robots.txt",
-      );
+    const isScrappable = await canScrape(this.parsedURL.originalUrl)
+    if (!isScrappable) {
+      throw new Error("Site is forbidden from being scraped due to restriction inside robots.txt")
     }
-	}
+  }
 
-  async scrapePage(url: string) {
+  async fetchPage(url: string) {
     try {
-      console.log(`Scraping page \"${url}\".`)
-
+      console.log(`Fetching page "${url}".`)
       if (this.blueprint.respectRobotsTxt) await this.checkRobotsTxt()
 
-      const { data } = await axiosClient(url, { method: "GET" });
-      const root = parse(data);
+      const { data } = await axiosClient(url, { method: "GET" })
+      return data
+    } catch (err) {
+      throw new Error(`There was error fetching "${this.parsedURL.originalUrl}" page`, {
+        cause: err,
+      })
+    }
+  }
 
-      const values: Record<string, Array<Record<string,string|null>>> = {}
+  formatValue(value: string | null, element: ElementSelector) {
+    const { type } = element
 
-      for (const { key: containerKey, container } of this.blueprint.config.elements) {
+    let formattedValue: ScrapedDataPrimitive = value
+    switch (type) {
+      case "number":
+        formattedValue = Number(value)
+        break
+      case "boolean":
+        if (element.condition.operation === "equals") {
+          formattedValue = value === String(element.condition.to)
+        } else {
+          formattedValue = value !== String(element.condition.to)
+        }
+        break
+      case "string":
+        if (value && element.removeNewLines) {
+          formattedValue = value.replace(/\r?\n|\r/gm, "")
+        }
+        break
+    }
+
+    return formattedValue
+  }
+
+  extractValue(node: HTMLElement | null, element: ElementSelector) {
+    const { key, selector, attribute } = element
+
+    try {
+      const value: ScrapedDataValue =
+        attribute !== undefined
+          ? (node?.getAttribute(attribute) ?? null)
+          : (node?.textContent?.trim() ?? null)
+
+      return value
+    } catch (err) {
+      throw new Error(`There was error extracting value "key: ${key} | selector: ${selector}" `, {
+        cause: err,
+      })
+    }
+  }
+
+  resolveFullURL(path: string) {
+    return path.startsWith("http")
+      ? path
+      : `${this.parsedURL.protocol}://${this.parsedURL.domain}${path}`
+  }
+
+  // TODO: this is hella bloated...
+  async scrapePage(url: string, elements: ContainerElementSelector[]) {
+    try {
+      console.log(`Scraping page "${url}".`)
+
+      const data = await this.fetchPage(url)
+      const root = parse(data)
+
+      const values: Record<string, ScrapedDataShape[]> = {}
+
+      for (const { key: containerKey, container } of elements) {
         const foundContainers = root.querySelectorAll(container.selector)
 
-        if(!values[containerKey]) values[containerKey] = []
+        if (!values[containerKey]) values[containerKey] = []
 
-        foundContainers.forEach(cont => {
-          let currentObj: Record<string,string|null> = {}
-          container.elements.forEach(({ key: elementKey, selector, attribute }) => {
-            const foundElement = cont.querySelector(selector);
+        for (const cont of foundContainers) {
+          const currentObj: ScrapedDataShape = {}
 
-            if (!foundElement) {
-              return {[elementKey]: null}
+          for (const element of container.elements) {
+            const { key: elementKey, selector, crawl } = element
+            const foundElement = cont.querySelector(selector)
+
+            const rawValue = this.extractValue(foundElement, element)
+            const value = this.formatValue(rawValue, element)
+
+            if (crawl && value !== null && typeof value === "string") {
+              const crawlablePageLink = this.resolveFullURL(value)
+
+              const wrappedElements: ContainerElementSelector[] = [
+                {
+                  key: elementKey,
+                  container: {
+                    selector: "html",
+                    elements: crawl.map((c) => ({ ...c, type: "string" as const })),
+                  },
+                },
+              ]
+
+              const { data: crawledScrapedData } = await this.scrapePage(
+                crawlablePageLink,
+                wrappedElements,
+              )
+
+              currentObj[elementKey] = crawledScrapedData[elementKey]?.[0] ?? {}
+            } else {
+              currentObj[elementKey] = value
             }
-
-            currentObj[elementKey] = attribute !== undefined ? foundElement.getAttribute(attribute) ?? null : foundElement.textContent.trim()
-          })
+          }
 
           values[containerKey].push(currentObj)
-        })
+        }
       }
 
       return {
         data: values,
         root,
       }
-    } catch {
-      throw new Error(`There was error scraping "${this.parsedURL.originalUrl}" page`);
-		}
-  }
-
-  async handlePagination(root: HTMLElement) {
-    try {
-      const { pagination, timeout } = this.blueprint.config
-      const { attribute, selector } = pagination!;
-
-      while (true) {
-
-        if (!attribute) break;
-
-        const nextPageLink = root.querySelector(selector)?.getAttribute(attribute);
-
-        if (!nextPageLink || nextPageLink === this.blueprint.url) break;
-
-  			let newPageUrl = nextPageLink.startsWith("http")
-  				? nextPageLink
-  				: `${this.parsedURL.protocol}://${this.parsedURL.domain}${nextPageLink}`;
-
-   			if (timeout) await sleep(timeout);
-
-   			let {data: newlyScrapedData, root: newRoot} = await this.scrapePage(newPageUrl);
-        root = newRoot;
-
-   			for (const key of Object.keys(newlyScrapedData)) {
-    				this.scrapedData[key] = [...(this.scrapedData[key] ?? []), ...newlyScrapedData[key]];
-   			}
-        }
-
-        return this.scrapedData;
-    } catch {
-      throw new Error(`There was during pagination of "${this.parsedURL.originalUrl}" page`);
+    } catch (err) {
+      throw new Error(`There was error scraping "${this.parsedURL.originalUrl}" page`, {
+        cause: err,
+      })
     }
   }
 
-	async scrape() {
-		try {
+  async handlePagination(root: HTMLElement, isTestRun?: boolean) {
+    try {
+      const { pagination, timeout } = this.blueprint.config
 
-			if (this.blueprint.respectRobotsTxt) await this.checkRobotsTxt()
+      if (!pagination) return
 
-			let {data, root} = await this.scrapePage(this.parsedURL.originalUrl)
+      const { attribute, selector } = pagination
 
-			this.scrapedData = data
+      while (true) {
+        if (!attribute) break
 
-      if (this.blueprint.config.pagination !== undefined && !this.options?.ignorePagination) {
-        await this.handlePagination(root)
-			}
+        const nextPageLink = root.querySelector(selector)?.getAttribute(attribute)
 
-			return this.scrapedData;
-		} catch (err) {
-			throw new Error((err as Error).message);
-		}
-	}
+        if (!nextPageLink || nextPageLink === this.blueprint.url) break
+
+        const newPageUrl = this.resolveFullURL(nextPageLink)
+
+        if (timeout) await sleep(timeout)
+
+        const { data: newlyScrapedData, root: newRoot } = await this.scrapePage(
+          newPageUrl,
+          this.blueprint.config.elements,
+        )
+        root = newRoot
+
+        for (const key of Object.keys(newlyScrapedData)) {
+          this.scrapedData[key] = [...(this.scrapedData[key] ?? []), ...newlyScrapedData[key]]
+        }
+
+        if (isTestRun) break
+      }
+
+      return this.scrapedData
+    } catch (err) {
+      throw new Error(`There was during pagination of "${this.parsedURL.originalUrl}" page`, {
+        cause: err,
+      })
+    }
+  }
+
+  async scrape({ isTestRun }: ScrapeOptions) {
+    try {
+      const { data, root } = await this.scrapePage(
+        this.parsedURL.originalUrl,
+        this.blueprint.config.elements,
+      )
+
+      this.scrapedData = data
+
+      if (this.blueprint.config.pagination !== undefined) {
+        await this.handlePagination(root, isTestRun)
+      }
+
+      return this.scrapedData
+    } catch (err) {
+      throw new Error((err as Error).message)
+    }
+  }
 }

@@ -12,7 +12,6 @@ import { XIcon } from "lucide-react"
 import { type FC, useState } from "react"
 import { Button } from "@/components/ui/button/button"
 import { Checkbox } from "@/components/ui/checkbox/checkbox"
-import { Input } from "@/components/ui/input/input"
 import { Label } from "@/components/ui/label/label"
 import { useAppForm } from "@/hooks/use-app-form"
 import { authClient } from "@/lib/clients/auth"
@@ -55,7 +54,14 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
               key: "",
               container: {
                 selector: "",
-                elements: [],
+                elements: [
+                  {
+                    key: "",
+                    selector: "",
+                    type: "string",
+                    attribute: "",
+                  },
+                ],
               },
             },
           ],
@@ -138,32 +144,26 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
                         key={containerIndex}
                         className="flex flex-col border border-blueprint-400 p-4 gap-2"
                       >
-                        <div className="grid grid-cols-8 gap-2">
-                          <form.AppField
-                            name={`config.elements[${containerIndex}].key`}
-                            children={(field) => (
-                              <Input
-                                value={field.state.value}
-                                onChange={(e) => field.handleChange(e.target.value)}
-                                className="col-span-3"
-                                placeholder="Container key"
-                              />
-                            )}
-                          />
-                          <form.AppField
-                            name={`config.elements[${containerIndex}].container.selector`}
-                            children={(field) => (
-                              <Input
-                                value={field.state.value}
-                                onChange={(e) => field.handleChange(e.target.value)}
-                                className="col-span-4"
-                                placeholder="Container selector"
-                              />
-                            )}
-                          />
+                        <div className="grid grid-cols-8 gap-2 items-end">
+                          <div className="col-span-2">
+                            <form.AppField
+                              name={`config.elements[${containerIndex}].key`}
+                              children={(field) => (
+                                <field.TextField label="Key" showError={false} />
+                              )}
+                            />
+                          </div>
+                          <div className="col-span-4">
+                            <form.AppField
+                              name={`config.elements[${containerIndex}].container.selector`}
+                              children={(field) => (
+                                <field.TextField label="Selector" showError={false} />
+                              )}
+                            />
+                          </div>
                           <Button
                             variant={"destructive"}
-                            className="col-span-1 h-full"
+                            className="col-span-1"
                             onClick={() => containersField.removeValue(containerIndex)}
                           >
                             <XIcon />
@@ -178,49 +178,372 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
                             children={(elementsField) => (
                               <>
                                 {elementsField?.state?.value?.map((_, elementIndex) => (
-                                  <div key={elementIndex} className="grid grid-cols-8 gap-2">
-                                    <form.AppField
-                                      name={`config.elements[${containerIndex}].container.elements[${elementIndex}].key`}
-                                      children={(field) => (
-                                        <Input
-                                          value={field.state.value}
-                                          onChange={(e) => field.handleChange(e.target.value)}
-                                          className="col-span-2"
-                                          placeholder="Key"
+                                  <div key={elementIndex} className="flex flex-col gap-2">
+                                    <div className="grid grid-cols-10 gap-2 items-end">
+                                      <div className="col-span-2">
+                                        <form.AppField
+                                          name={`config.elements[${containerIndex}].container.elements[${elementIndex}].key`}
+                                          children={(field) => (
+                                            <field.TextField label="Key" showError={false} />
+                                          )}
                                         />
-                                      )}
-                                    />
-                                    <form.AppField
-                                      name={`config.elements[${containerIndex}].container.elements[${elementIndex}].selector`}
-                                      children={(field) => (
-                                        <Input
-                                          value={field.state.value}
-                                          onChange={(e) => field.handleChange(e.target.value)}
-                                          className="col-span-3"
-                                          placeholder="Selector"
+                                      </div>
+                                      <div className="col-span-3">
+                                        <form.AppField
+                                          name={`config.elements[${containerIndex}].container.elements[${elementIndex}].selector`}
+                                          children={(field) => (
+                                            <field.TextField label="Selector" showError={false} />
+                                          )}
                                         />
-                                      )}
-                                    />
-                                    <form.AppField
-                                      name={`config.elements[${containerIndex}].container.elements[${elementIndex}].attribute`}
-                                      children={(field) => (
-                                        <Input
-                                          value={field.state.value ?? ""}
-                                          onChange={(e) =>
-                                            field.handleChange(e.target.value || undefined)
-                                          }
-                                          className="col-span-2"
-                                          placeholder="Attribute"
+                                      </div>
+                                      <div className="col-span-2">
+                                        <form.AppField
+                                          name={`config.elements[${containerIndex}].container.elements[${elementIndex}].attribute`}
+                                          children={(field) => (
+                                            <field.TextField label="Attribute" showError={false} />
+                                          )}
                                         />
-                                      )}
+                                      </div>
+                                      <div className="col-span-2">
+                                        <form.AppField
+                                          name={`config.elements[${containerIndex}].container.elements[${elementIndex}].type`}
+                                          listeners={{
+                                            onChange: ({ value }) => {
+                                              const path =
+                                                `config.elements[${containerIndex}].container.elements[${elementIndex}].condition` as const
+                                              if (value === "boolean") {
+                                                form.setFieldValue(path, {
+                                                  operation: "equals",
+                                                  to: "",
+                                                })
+                                              } else {
+                                                form.setFieldValue(path, undefined as never)
+                                              }
+                                            },
+                                          }}
+                                          children={(field) => (
+                                            <field.SelectField
+                                              label="Datatype"
+                                              triggerLabel="Datatype"
+                                              showError={false}
+                                              options={[
+                                                { label: "String", value: "string" },
+                                                { label: "Number", value: "number" },
+                                                { label: "Boolean", value: "boolean" },
+                                              ]}
+                                            />
+                                          )}
+                                        />
+                                      </div>
+                                      <Button
+                                        variant={"destructive"}
+                                        className="col-span-1"
+                                        onClick={() => elementsField.removeValue(elementIndex)}
+                                      >
+                                        <XIcon />
+                                      </Button>
+                                    </div>
+                                    <form.Subscribe
+                                      selector={(state) =>
+                                        state?.values?.config?.elements?.[containerIndex]?.container
+                                          ?.elements?.[elementIndex]?.type === "boolean"
+                                      }
+                                      children={(isBoolean) =>
+                                        isBoolean ? (
+                                          <div className="grid grid-cols-10 gap-2 items-end pl-8">
+                                            <div className="col-span-4">
+                                              <form.AppField
+                                                name={`config.elements[${containerIndex}].container.elements[${elementIndex}].condition.operation`}
+                                                children={(field) => (
+                                                  <field.SelectField
+                                                    label="Operation"
+                                                    triggerLabel="Operation"
+                                                    showError={false}
+                                                    options={[
+                                                      { label: "Equals", value: "equals" },
+                                                      { label: "Not equals", value: "notEquals" },
+                                                    ]}
+                                                  />
+                                                )}
+                                              />
+                                            </div>
+                                            <div className="col-span-5">
+                                              <form.AppField
+                                                name={`config.elements[${containerIndex}].container.elements[${elementIndex}].condition.to`}
+                                                children={(field) => (
+                                                  <field.TextField
+                                                    label="Compare to"
+                                                    showError={false}
+                                                  />
+                                                )}
+                                              />
+                                            </div>
+                                          </div>
+                                        ) : null
+                                      }
                                     />
-                                    <Button
-                                      variant={"destructive"}
-                                      className="col-span-1 h-full"
-                                      onClick={() => elementsField.removeValue(elementIndex)}
-                                    >
-                                      <XIcon />
-                                    </Button>
+                                    <form.Subscribe
+                                      selector={(state) =>
+                                        state?.values?.config?.elements?.[containerIndex]?.container
+                                          ?.elements?.[elementIndex]?.type === "string"
+                                      }
+                                      children={(isString) =>
+                                        isString ? (
+                                          <div className="grid grid-cols-10 gap-2 items-end pl-6">
+                                            <div className="col-span-4">
+                                              <form.AppField
+                                                name={`config.elements[${containerIndex}].container.elements[${elementIndex}].removeNewLines`}
+                                                children={(field) => (
+                                                  <field.CheckboxField
+                                                    label="Remove new lines"
+                                                    showError={false}
+                                                  />
+                                                )}
+                                              />
+                                            </div>
+                                          </div>
+                                        ) : null
+                                      }
+                                    />
+                                    <form.Subscribe
+                                      selector={(state) =>
+                                        state?.values?.config?.elements?.[containerIndex]?.container
+                                          ?.elements?.[elementIndex]?.crawl
+                                      }
+                                      children={(crawl) =>
+                                        crawl === undefined ? (
+                                          <div className="pl-8">
+                                            <Button
+                                              onClick={() =>
+                                                form.setFieldValue(
+                                                  `config.elements[${containerIndex}].container.elements[${elementIndex}].crawl`,
+                                                  [
+                                                    {
+                                                      key: "",
+                                                      selector: "",
+                                                      attribute: undefined,
+                                                      type: "string",
+                                                      removeNewLines: true,
+                                                    },
+                                                  ],
+                                                )
+                                              }
+                                            >
+                                              Enable crawl
+                                            </Button>
+                                          </div>
+                                        ) : (
+                                          <div className="flex flex-col gap-2 pl-8 py-2 border-l border-blueprint-400">
+                                            <div className="flex items-center justify-between">
+                                              <Label>Crawl fields</Label>
+                                              <Button
+                                                variant="destructive"
+                                                onClick={() =>
+                                                  form.setFieldValue(
+                                                    `config.elements[${containerIndex}].container.elements[${elementIndex}].crawl`,
+                                                    undefined as never,
+                                                  )
+                                                }
+                                              >
+                                                Disable crawl
+                                              </Button>
+                                            </div>
+                                            <form.AppField
+                                              mode="array"
+                                              name={`config.elements[${containerIndex}].container.elements[${elementIndex}].crawl`}
+                                              children={(crawlField) => (
+                                                <>
+                                                  {crawlField?.state?.value?.map(
+                                                    (_, crawlIndex) => (
+                                                      <div
+                                                        key={crawlIndex}
+                                                        className="flex flex-col gap-2"
+                                                      >
+                                                        <div className="grid grid-cols-12 gap-2 items-end">
+                                                          <div className="col-span-2">
+                                                            <form.AppField
+                                                              name={`config.elements[${containerIndex}].container.elements[${elementIndex}].crawl[${crawlIndex}].key`}
+                                                              children={(field) => (
+                                                                <field.TextField
+                                                                  label="Key"
+                                                                  showError={false}
+                                                                />
+                                                              )}
+                                                            />
+                                                          </div>
+                                                          <div className="col-span-3">
+                                                            <form.AppField
+                                                              name={`config.elements[${containerIndex}].container.elements[${elementIndex}].crawl[${crawlIndex}].selector`}
+                                                              children={(field) => (
+                                                                <field.TextField
+                                                                  label="Selector"
+                                                                  showError={false}
+                                                                />
+                                                              )}
+                                                            />
+                                                          </div>
+                                                          <div className="col-span-2">
+                                                            <form.AppField
+                                                              name={`config.elements[${containerIndex}].container.elements[${elementIndex}].crawl[${crawlIndex}].attribute`}
+                                                              children={(field) => (
+                                                                <field.TextField
+                                                                  label="Attribute"
+                                                                  showError={false}
+                                                                />
+                                                              )}
+                                                            />
+                                                          </div>
+                                                          <div className="col-span-4">
+                                                            <form.AppField
+                                                              name={`config.elements[${containerIndex}].container.elements[${elementIndex}].crawl[${crawlIndex}].type`}
+                                                              listeners={{
+                                                                onChange: ({ value }) => {
+                                                                  const path =
+                                                                    `config.elements[${containerIndex}].container.elements[${elementIndex}].crawl[${crawlIndex}].condition` as const
+                                                                  if (value === "boolean") {
+                                                                    form.setFieldValue(path, {
+                                                                      operation: "equals",
+                                                                      to: "",
+                                                                    })
+                                                                  } else {
+                                                                    form.setFieldValue(
+                                                                      path,
+                                                                      undefined as never,
+                                                                    )
+                                                                  }
+                                                                },
+                                                              }}
+                                                              children={(field) => (
+                                                                <field.SelectField
+                                                                  label="Datatype"
+                                                                  triggerLabel="Datatype"
+                                                                  showError={false}
+                                                                  options={[
+                                                                    {
+                                                                      label: "String",
+                                                                      value: "string",
+                                                                    },
+                                                                    {
+                                                                      label: "Number",
+                                                                      value: "number",
+                                                                    },
+                                                                    {
+                                                                      label: "Boolean",
+                                                                      value: "boolean",
+                                                                    },
+                                                                  ]}
+                                                                />
+                                                              )}
+                                                            />
+                                                          </div>
+                                                          <Button
+                                                            variant="destructive"
+                                                            className="col-span-1"
+                                                            onClick={() =>
+                                                              crawlField.removeValue(crawlIndex)
+                                                            }
+                                                          >
+                                                            <XIcon />
+                                                          </Button>
+                                                        </div>
+                                                        <form.Subscribe
+                                                          selector={(state) =>
+                                                            state?.values?.config?.elements?.[
+                                                              containerIndex
+                                                            ]?.container?.elements?.[elementIndex]
+                                                              ?.crawl?.[crawlIndex]?.type ===
+                                                            "boolean"
+                                                          }
+                                                          children={(isBoolean) =>
+                                                            isBoolean ? (
+                                                              <div className="grid grid-cols-12 gap-2 items-end pl-8">
+                                                                <div className="col-span-5">
+                                                                  <form.AppField
+                                                                    name={`config.elements[${containerIndex}].container.elements[${elementIndex}].crawl[${crawlIndex}].condition.operation`}
+                                                                    children={(field) => (
+                                                                      <field.SelectField
+                                                                        label="Operation"
+                                                                        triggerLabel="Operation"
+                                                                        showError={false}
+                                                                        options={[
+                                                                          {
+                                                                            label: "Equals",
+                                                                            value: "equals",
+                                                                          },
+                                                                          {
+                                                                            label: "Not equals",
+                                                                            value: "notEquals",
+                                                                          },
+                                                                        ]}
+                                                                      />
+                                                                    )}
+                                                                  />
+                                                                </div>
+                                                                <div className="col-span-6">
+                                                                  <form.AppField
+                                                                    name={`config.elements[${containerIndex}].container.elements[${elementIndex}].crawl[${crawlIndex}].condition.to`}
+                                                                    children={(field) => (
+                                                                      <field.TextField
+                                                                        label="Compare to"
+                                                                        showError={false}
+                                                                      />
+                                                                    )}
+                                                                  />
+                                                                </div>
+                                                              </div>
+                                                            ) : null
+                                                          }
+                                                        />
+                                                        <form.Subscribe
+                                                          selector={(state) =>
+                                                            state?.values?.config?.elements?.[
+                                                              containerIndex
+                                                            ]?.container?.elements?.[elementIndex]
+                                                              ?.crawl?.[crawlIndex]?.type ===
+                                                            "string"
+                                                          }
+                                                          children={(isString) =>
+                                                            isString ? (
+                                                              <div className="grid grid-cols-12 gap-2 items-end pl-6">
+                                                                <div className="col-span-5">
+                                                                  <form.AppField
+                                                                    name={`config.elements[${containerIndex}].container.elements[${elementIndex}].crawl[${crawlIndex}].removeNewLines`}
+                                                                    children={(field) => (
+                                                                      <field.CheckboxField
+                                                                        label="Remove new lines"
+                                                                        showError={false}
+                                                                      />
+                                                                    )}
+                                                                  />
+                                                                </div>
+                                                              </div>
+                                                            ) : null
+                                                          }
+                                                        />
+                                                      </div>
+                                                    ),
+                                                  )}
+                                                  <Button
+                                                    className="w-full"
+                                                    onClick={() =>
+                                                      crawlField.pushValue({
+                                                        key: "",
+                                                        selector: "",
+                                                        attribute: undefined,
+                                                        type: "string",
+                                                        removeNewLines: true,
+                                                      })
+                                                    }
+                                                  >
+                                                    Add crawl field
+                                                  </Button>
+                                                </>
+                                              )}
+                                            />
+                                          </div>
+                                        )
+                                      }
+                                    />
                                   </div>
                                 ))}
                                 <Button
@@ -230,6 +553,8 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
                                       key: "",
                                       selector: "",
                                       attribute: undefined,
+                                      type: "string",
+                                      removeNewLines: true,
                                     })
                                   }
                                 >
@@ -309,15 +634,6 @@ export const StaticBlueprintForm: FC<StaticBlueprintFormProps> = ({ blueprint })
             )}
           </form>
         </div>
-        {/*<form.Subscribe
-          selector={(state) => state.values}
-          children={(state) => (
-            <div className="flex flex-col gap-2">
-              <Label>Config (JSON)</Label>
-              <Textarea className="h-full" value={JSON.stringify(state, null, 4)} readOnly />
-            </div>
-          )}
-        />*/}
       </div>
       <div className="flex my-2 justify-end">
         <form.AppForm>

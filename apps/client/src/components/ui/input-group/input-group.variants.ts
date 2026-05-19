@@ -1,4 +1,4 @@
-import { cva } from "class-variance-authority";
+import { cva } from "class-variance-authority"
 
 export const inputGroupAddonVariants = cva(
   "flex h-auto cursor-text items-center justify-center gap-2 py-1.5 text-sm font-medium text-muted-foreground select-none group-data-[disabled=true]/input-group:opacity-50 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4",
@@ -18,7 +18,6 @@ export const inputGroupAddonVariants = cva(
     },
   },
 )
-
 
 export const inputGroupButtonVariants = cva("flex items-center gap-2 text-sm shadow-none", {
   variants: {

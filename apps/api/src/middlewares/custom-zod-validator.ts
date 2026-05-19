@@ -9,7 +9,6 @@ export const zodValidator = <Target extends keyof ValidationTargets, Schema exte
   schema: Schema,
 ) => {
   return zValidator(target, schema, (result) => {
-
     if (!result.success) {
       const { issues } = result.error
 

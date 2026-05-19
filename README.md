@@ -71,6 +71,7 @@ packages/
 
 - Clone the repo and setup each `.env` _(in both `/apps` and `/packages`)_ based on provied `.env.example`
 - Install dependencies with `pnpm install`
+- Install playwright browser with `pnpm exec playwright install`
 - Run DB migrations using `pnpm --filter @scrapeek/db db:migrate`
 - Start the dev server  `pnpm dev` _(By default client is on PORT 3000 and API on 3001)_
 
