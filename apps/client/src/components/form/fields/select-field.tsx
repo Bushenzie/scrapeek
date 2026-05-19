@@ -34,9 +34,11 @@ export const SelectField: FC<SelectFieldProps> = ({
   return (
     <div className="flex flex-col gap-2 w-full">
       <Label>{label}</Label>
-      <Select value={field.state.value} onValueChange={(val) => field.handleChange(val)}>
+      <Select value={field.state.value} onValueChange={(val) => field.handleChange(val as string)}>
         <SelectTrigger className="w-full">
-          <SelectValue>{currentValue ? currentValue : triggerLabel}</SelectValue>
+          <SelectValue>
+            {currentValue ? options.find((val) => val.value === currentValue)?.label : triggerLabel}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {options.map((option, index) => (
