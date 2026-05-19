@@ -101,6 +101,7 @@ packages/
 - Chrome extension to easily select selectors
 - MCP and AI friendly setup
 - Data compression to easy DB space for heavy scrapers
+- Better concurrency + BullMQ setup
 - Credit-base subscription system
 
 ## License
