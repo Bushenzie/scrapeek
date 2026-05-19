@@ -16,7 +16,7 @@ export const AddBlueprintToGroupModal: FC<AddBlueprintToGroupModalProps> = ({
   isDropdownMenuItem = false,
   ...props
 }) => {
-  const { data: blueprint } = useQuery(
+  const { data: _blueprint } = useQuery(
     blueprintDetailOptions({
       param: { id: blueprintId },
     }),

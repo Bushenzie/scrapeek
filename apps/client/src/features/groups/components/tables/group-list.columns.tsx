@@ -1,4 +1,4 @@
-import type { Blueprint, Group } from "@scrapeek/db/validators"
+import type { Blueprint } from "@scrapeek/db/validators"
 import type { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
 import { EllipsisVertical } from "lucide-react"

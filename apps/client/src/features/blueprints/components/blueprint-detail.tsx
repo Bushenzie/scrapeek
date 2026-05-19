@@ -21,25 +21,35 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
       },
     }),
   )
-  const { data, isPending, mutate: runScraper } = useRunBlueprint()
+  const { data: result, isPending, mutate: runScraper } = useRunBlueprint()
 
   const resultURL = useMemo(() => {
-    if (!blueprint?.result) return undefined
-    return `http://localhost:3001/api/result/${blueprint?.result?.id}`
+    if (!blueprint?.data.result) return undefined
+    return `http://localhost:3001/api/result/${blueprint?.data?.result?.id}`
   }, [blueprint])
 
   const lastScrapedData = useMemo(() => {
-    const source = (data && Array.isArray(data) ? data[0] : data) ?? blueprint?.result?.data
+    const source =
+      (result && Array.isArray(result.data) ? result.data[0] : result?.data) ??
+      blueprint?.data?.result?.data
 
     const lastScrapedData = source ?? {}
 
     return JSON.stringify(lastScrapedData, null, 4)
-  }, [blueprint, data])
+  }, [blueprint, result])
+
+  const duration = useMemo(() => {
+    const source = result?.duration || blueprint?.data?.result?.duration
+
+    const duration = source ?? 0
+
+    return duration
+  }, [blueprint, result])
 
   const handleDownload = () => {
     const dataBlob = new Blob([lastScrapedData], { type: "application/json" })
 
-    fileSaver.saveAs(dataBlob, `${blueprint?.name}_data.json`)
+    fileSaver.saveAs(dataBlob, `${blueprint?.data.name}_data.json`)
   }
 
   const handleCopy = async () => {
@@ -61,11 +71,11 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
           <div className="space-y-4">
             <div className="flex flex-col gap-2">
               <Label>Name</Label>
-              <Input value={blueprint?.name ?? ""} readOnly />
+              <Input value={blueprint?.data.name ?? ""} readOnly />
             </div>
             <div className="flex flex-col gap-2">
               <Label>URL</Label>
-              <Input value={blueprint?.url ?? ""} readOnly />
+              <Input value={blueprint?.data.url ?? ""} readOnly />
             </div>
           </div>
         </div>
@@ -74,7 +84,9 @@ export const BlueprintDetail: FC<BlueprintDetailProps> = ({ blueprintId }) => {
             <div className="flex justify-between">
               <div className="flex flex-col">
                 <h2 className="text-sm">Last scraper run result</h2>
-                <span className="text-xs">{JSON.parse(lastScrapedData).length ?? 0} results</span>
+                <span className="text-xs">
+                  {JSON.parse(lastScrapedData).length ?? 0} results | {duration}ms
+                </span>
               </div>
               <div className="flex gap-4">
                 <Button

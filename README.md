@@ -1,54 +1,108 @@
-### Scrapeek
+> [!WARNING]
+> This project is still being developed!
 
-- Scrapeek is a service, that allows you to retrieve data via simple API request from publicly available websites using scrapers that can be extremely simply defined using "blueprints".
-- Scrapeek offers extensive features:
-  - Ability to scrape:
-    - APIs
-    - Static sites
-    - Dynamic sites generated using JS _(SPAs etc...)_
-  - Ability to:
-    - Define what to scrape using field/element selectos with custom keys.
-    - Define types of scraped data _(normal scrape of website will always return strings)_
-    - Define variables and compose result
-      - _(for example.: append variable BASE_URL to scraped field "url")_
-    - Customize almost every aspect of scraper like headers, queries, timeout between requests etc.
-  - Anti-bot measures - Rotating proxies & reCaptcha solvers
-  - Ability to handle:
-    - Pagination
-    - Infinite scrolling
-    - Popups removals
-    - Data behind login wall _(if not prohibited)_
-    - Recursive scrape
-  - Ability to set CRON intervals to rescrape
-  - Safety measures - only HTTPS and other malicious usage probited
-  - Check of robots.txt to prohibit scraping websites that do not allow it
-  - Developer friendly
-    - Documentation available
-    - Scrapeek google extension that will allow to click on element and it will return best possible query selector to create blueprints in seconds
-    - Simple API Key management
-  - Library of public scrapers defined by users /w upvoting
-  - Credit-base subscription system + One-time payments for refills
+# Scrapeek
 
-### Tech stack
+- Scrapeek is a fullstack web scraping platform for creating reusable scraper definitions called blueprints. A blueprint describes where to fetch data from, which fields to extract, and how the result should be then exposed through simple API call.
 
-- `client`:
-  - Typescript
-  - Tanstack router/start
-  - Tailwind + ShadcnUI
+## Features
+
+- User authentication with Better Auth and social login providers
+- End-to-end type safety using RPC, drizzle-zod etc...
+- Ability to define blueprint for API, Static and Dynamic scraping of pages with UI
+- API key management for programmatic result access
+- Simple API call with API key to retrieve scraped data
+- Configurable field selectors, typed extracted values, request timeouts...
+  pagination options
+- Nested container extraction, recursive crawling
+- Public blueprints to share with upvotes system
+- Legal safety checks which take into consideration `robots.txt` etc..
+
+## Tech Stack
+
+- **Client**
+  - TanStack Start _(React)_
+  - TanStack Query
+  - TanStack Form
+  - Tailwind CSS
+  - ShadcnUI
   - Zod
-- `api`:
-  - Typescript
-  - Hono
-  - Drizzle /w Neon
+
+- **API**
+  - Hono /w RPC
+  - DrizzleORM
+  - Better auth
+  - Postgres/Neon DB
   - Zod
-  - Better-auth
+  - Hono typed client
+
+- **Scrapers**
+  - Axios
+  - Node-html-parser
+  - Undici
   - Playwright
-- `landing`:
-  - Astro
-- `docs`:
-  - Docusaurus
 
-### Requirements
+- **Tooling**
+  - pnpm
+  - Turborepo /w pnpm workspaces
+  - TypeScript
+  - Biome
 
-- Node.js v22.14.0
-- pnpm v10.9.0
+## Monorepo Structure
+
+```txt
+apps/
+  api/       Hono API server
+  client/    React/TanStack client
+
+packages/
+  db/        Drizzle schemas, relations, migrations, validators
+  scrapers/  API, static, and dynamic scraper implementations
+  shared/    Shared utilities
+```
+
+## Requirements
+
+- Node.js `22.14.0`
+- pnpm `10.9.0`
+- Postgres database, for example Neon
+
+## Getting Started
+
+- Clone the repo and setup each `.env` _(in both `/apps` and `/packages`)_ based on provied `.env.example`
+- Install dependencies with `pnpm install`
+- Install playwright browser with `pnpm exec playwright install`
+- Run DB migrations using `pnpm --filter @scrapeek/db db:migrate`
+- Start the dev server  `pnpm dev` _(By default client is on PORT 3000 and API on 3001)_
+
+## Blueprint Types
+
+- **API Blueprints** - to scrape REST API _(GraphQL scraper is planned)_
+- **Static Blueprints** - to scrape simple pages wuthout JS rendering
+- **Dynamic Blueprints** - to scrape dynamically rendered pages
+
+### Planned features
+
+- GraphQL API scraper
+- Blueprint grouping to run multiple scrapers
+- Performance optimization
+- Rotating proxies setup
+- reCaptcha solvers
+- Infinite scrolling
+- Accessing data behind login wall
+- Variables to compose scraped result
+- Customization of every aspect of scraper like headers, queries, retries etc...
+- CRON intervals to automatically rescrape
+- Safety measures to prohibit unsafe pages
+- Docker setup
+- Dashboard
+- Documentation
+- Landing page
+- Chrome extension to easily select selectors
+- MCP and AI friendly setup
+- Data compression to easy DB space for heavy scrapers
+- Credit-base subscription system
+
+## License
+
+This project is licensed under the terms in [LICENSE](./LICENSE).

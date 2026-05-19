@@ -1,4 +1,4 @@
-import { cva } from "class-variance-authority";
+import { cva } from "class-variance-authority"
 
 export const tabsListVariants = cva(
   "group/tabs-list inline-flex w-fit items-center justify-center p-[3px] text-blueprint-100 group-data-horizontal/tabs:h-10 group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col data-[variant=line]:rounded-none",

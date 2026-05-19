@@ -8,6 +8,7 @@ import { scrapeData } from "@/lib/scrape.ts"
 import { zodValidator } from "@/middlewares/custom-zod-validator.ts"
 import { StatusError } from "@/lib/error"
 import { StatusCodes } from "http-status-codes"
+import { performance } from "perf_hooks"
 
 const app = new Hono().post(
   "/",
@@ -33,7 +34,11 @@ const app = new Hono().post(
 
     const isTestRun = mode === "test"
 
+    const start = performance.now()
     const data = await scrapeData([parsedBlueprint], isTestRun)
+    const end = performance.now()
+
+    const duration = parseFloat((end - start).toFixed(3))
 
     if (!isTestRun) {
       const existingResult = await db.query.result.findFirst({
@@ -49,13 +54,14 @@ const app = new Hono().post(
           .update(schema.result)
           .set({
             data: data[0],
+            duration,
             updatedAt: sql`NOW()`,
           })
           .where(eq(schema.result.blueprintId, parsedBlueprint.id))
       }
     }
 
-    return c.json({ data })
+    return c.json({ data, duration })
   },
 )
 

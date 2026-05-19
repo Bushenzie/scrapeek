@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { type Dispatch, type FC, type SetStateAction, useState } from "react"
+import type { Dispatch, FC, SetStateAction } from "react"
 
 import { MultiSelect } from "@/components/ui/multi-select/multi-select"
 import type { Option } from "@/types/common"
@@ -16,7 +16,7 @@ export const SelectGroups: FC<SelectGroupsProps> = ({ value, setValue }) => {
   return (
     <MultiSelect
       label={"Groups"}
-      options={(groups ?? [])?.map((group) => ({ label: group.name, value: group.id }))}
+      options={(groups?.data ?? [])?.map((group) => ({ label: group.name, value: group.id }))}
       value={value}
       onChange={(opt) => setValue(opt)}
     />

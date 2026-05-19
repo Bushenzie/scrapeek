@@ -1,4 +1,4 @@
-import { Select as SelectPrimitive } from "@base-ui/react/select"
+import type { Select as SelectPrimitive } from "@base-ui/react/select"
 import type { ComponentProps } from "react"
 
 export type SelectGroupProps = SelectPrimitive.Group.Props

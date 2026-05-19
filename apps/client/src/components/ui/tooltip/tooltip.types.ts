@@ -1,4 +1,4 @@
-import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip"
+import type { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip"
 
 export type TooltipProviderProps = TooltipPrimitive.Provider.Props
 export type TooltipProps = TooltipPrimitive.Root.Props

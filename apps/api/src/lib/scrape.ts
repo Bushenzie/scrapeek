@@ -5,24 +5,22 @@ import { StaticScraper } from "@scrapeek/scrapers/static"
 import { StatusCodes } from "http-status-codes"
 import { StatusError } from "@/lib/error.ts"
 
-export const scrapeData = async (blueprints: Blueprint[], testRun = false) => {
+export const scrapeData = async (blueprints: Blueprint[], isTestRun = false) => {
   const scrapersToRun = blueprints.map((blueprint) => {
     if (blueprint.type === "api") {
-      const apiScraper = new APIScraper(blueprint, { isTestRun: testRun })
+      const apiScraper = new APIScraper(blueprint, { isTestRun })
       return apiScraper.scrape()
     }
     if (blueprint.type === "dynamic") {
-      const dynamicScraper = new DynamicScraper(blueprint, { isTestRun: testRun })
-      return dynamicScraper.scrape()
+      const dynamicScraper = new DynamicScraper(blueprint)
+      return dynamicScraper.scrape({ isTestRun })
     }
-    const staticScraper = new StaticScraper(blueprint, { isTestRun: testRun })
-    return staticScraper.scrape()
+    const staticScraper = new StaticScraper(blueprint)
+    return staticScraper.scrape({ isTestRun })
   })
 
   try {
-    console.time("scrape")
     const scrapedData = await Promise.all(scrapersToRun)
-    console.timeEnd("scrape")
 
     return scrapedData
   } catch (err) {
