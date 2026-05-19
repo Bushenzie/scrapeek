@@ -1,0 +1,135 @@
+[
+    {
+        "type": "static",
+        "url": "https://www.jobstack.it/it-jobs?keywords=typescript&isDetail=1",
+        "baseUrl": "https://www.jobstack.it",
+        "name": "JobstackIT",
+        "config": {
+            "elements": [
+                {
+                    "key": "link",
+                    "selector": ".jobposts-item .jobpost-mainlink",
+                    "attribute": "href"
+                },
+                {
+                    "key": "title",
+                    "selector": ".jobposts-item h3"
+                },
+                {
+                    "key": "company",
+                    "selector": ".jobposts-item .jobposts-item_names:nth-child(3) span:nth-child(1) span:nth-child(2)"
+                }
+            ],
+            "pagination": {
+                "variant": "link",
+                "selector": "li#page_next a",
+                "attribute": "href"
+            }
+        }
+    },
+    {
+        "type": "static",
+        "url": "https://www.easy-prace.cz/nabidka-zamestnani?h_text=typescript",
+        "baseUrl": "https://www.easy-prace.cz",
+        "name": "EasyPrace",
+        "config": {
+            "elements": [
+                {
+                    "key": "title",
+                    "selector": ".nabidkaItem .nabidkaItem-title a"
+                },
+                {
+                    "key": "company",
+                    "selector": ".nabidkaItem .nabidkaItem-info div:nth-child(2) a"
+                },
+                {
+                    "key": "variant",
+                    "selector": ".nabidkaItem .nabidkaItem-title a",
+                    "attribute": "href"
+                }
+            ],
+            "pagination": {
+                "variant": "link",
+                "selector": ".strankovani .pagination li:last-child a",
+                "attribute": "href"
+            }
+        }
+    },
+    {
+        "type": "dynamic",
+        "url": "https://www.jobs.cz/prace/?q=Typescript",
+        "baseUrl": "https://www.jobs.cz",
+        "name": "JobsCZ",
+        "config": {
+            "elements": [
+                {
+                    "key": "company",
+                    "selector": ".SearchResultCard__footerItem span"
+                },
+                {
+                    "key": "title",
+                    "selector": ".SearchResultCard__titleLink"
+                },
+                {
+                    "key": "link",
+                    "selector": ".SearchResultCard__titleLink",
+                    "attribute": "href"
+                }
+            ],
+            "pagination": {
+                "variant": "link",
+                "selector": "a.Pagination__button--next",
+                "attribute": "href"
+            },
+            "waitSelectorElement": "article.SearchResultCard"
+        }
+    },
+    {
+        "type": "static",
+        "url": "https://webtrh.cz/poptavky/poptavky-vyvoje-a-programovani/",
+        "baseUrl": "https://webtrh.cz",
+        "name": "Webtrh",
+        "config": {
+            "elements": [
+                {
+                    "key": "link",
+                    "selector": ".inquiry-box a",
+                    "attribute": "href"
+                },
+                {
+                    "key": "title",
+                    "selector": ".inquiry-box a .title span:nth-child(1)"
+                }
+            ],
+            "pagination": {
+                "variant": "link",
+                "selector": "a.next.page-numbers",
+                "attribute": "href"
+            }
+        }
+    },
+    {
+        "type": "api",
+        "url": "https://core.startupjobs.cz/api/search/offers?startupOnly=false&fields%5B%5D=back-end-vyvojar&fields%5B%5D=front-end-vyvojar&fields%5B%5D=full-stack-vyvojar",
+        "baseUrl": "https://www.startupjobs.cz",
+        "name": "StartupJobs",
+        "config": {
+            "fields": [
+                {
+                    "key": "title",
+                    "selector": "[member].title.cs"
+                },
+                {
+                    "key": "company",
+                    "selector": "[member].company.name"
+                }
+            ],
+            "apiBaseUrl": "https://core.startupjobs.cz",
+            "pagination": {
+                "path": "view.next",
+                "type": "nextPage",
+                "fieldToCheck": "[member]"
+            }
+        }
+    }
+]
